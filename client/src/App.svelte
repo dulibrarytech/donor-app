@@ -12,7 +12,6 @@
   import Footer from "./views/partials/Footer.svelte";
 
   // View Components
-  import LogoBanner from "./views/partials/LogoBanner.svelte";
   import Navbar from "./components/Navbar.svelte";
 
 	let page;
@@ -56,7 +55,6 @@
 
 <main>
 	<Header />
-	<LogoBanner />
 	<Navbar />
 
 	<svelte:component this={page} {params} />
