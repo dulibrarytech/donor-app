@@ -50,18 +50,14 @@
 	});
 
 	router.start();
-
 </script>
 
-<main>
-	<Header />
-	<Navbar />
-
+<Header />
+<Navbar />
+<main class="container">
 	<svelte:component this={page} {params} />
-
-	<Footer />
-
 	<!-- {#if page === Home} {
 		<Home />
 	} -->
 </main>
+<Footer />

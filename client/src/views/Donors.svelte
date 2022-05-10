@@ -3,6 +3,6 @@
 
 </script>
 
-
-
-<h1>Donors</h1>
+<div class="page-wrapper">
+  <h1>Donors</h1>
+</div>

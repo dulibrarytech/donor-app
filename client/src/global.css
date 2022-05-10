@@ -61,6 +61,10 @@ button:focus {
 	border-color: #666;
 }
 
+main {
+	min-height: calc(100vh - 50px - 50px - 150px);
+}
+
 div.header-logo-wrapper {
 	background-color: #8b2332;
 	height: 50px;
@@ -77,4 +81,14 @@ div.header-logo {
 div.header-logo img {
     max-height: 100%;
     max-width: 100%;
+}
+
+div.page-wrapper {
+	padding: 2.5em 0;
+}
+
+footer {
+    background-color: #8b2332;
+		color: #e5e3e1;
+		height: 150px;
 }
