@@ -1,3 +1,4 @@
+/* Template styles */
 html, body {
 	position: relative;
 	width: 100%;
@@ -62,7 +63,15 @@ button:focus {
 }
 
 main {
-	min-height: calc(100vh - 50px - 50px - 150px);
+	min-height: calc(100vh - 50px - 50px - 174px);
+}
+
+div.page {
+	padding: 2.5em 0;
+}
+
+div.page h1 {
+	margin-bottom: 2.5rem;
 }
 
 div.header-logo-wrapper {
@@ -83,12 +92,14 @@ div.header-logo img {
     max-width: 100%;
 }
 
-div.page-wrapper {
-	padding: 2.5em 0;
-}
-
 footer {
     background-color: #8b2332;
 		color: #e5e3e1;
 		height: 150px;
 }
+
+/* Global page and component styles */
+/* nav li.active {
+	font-weight: bold;
+	pointer-events: none;
+} */
