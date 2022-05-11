@@ -1,0 +1,20 @@
+<script>
+  export let items={items};
+  export let Table={Table};
+</script>
+
+<div class="item-list-display">
+  <Table {items} />
+</div>
+
+<style>
+  .item-list-display {
+    max-height: 375px;
+    overflow: hidden;
+    overflow-y: scroll;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #e5e3e1;
+    border-radius: 5px;
+  }
+</style>
