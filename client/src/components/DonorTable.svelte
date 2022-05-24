@@ -1,36 +1,27 @@
 <script>
-export let items;
-let donors = items;
+  export let items;
+  let donors = items;
 </script>
 
-<table class="table">
-  <thead>
+<thead>
+  <tr>
+    <th scope="col">Last Name/Organization</th>
+    <th scope="col">First Name</th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+  </tr>
+</thead>
+<tbody>
+  {#each donors as donor (donor.id)}
     <tr>
-      <th scope="col">Last Name/Organization</th>
-      <th scope="col">First Name</th>
-      <th scope="col"></th>
-      <th scope="col"></th>
+      <td>{donor.lastName}</td>
+      <td>{donor.firstName}</td>
+      <td>View</td>
+      <td>Add Gift</td>
     </tr>
-  </thead>
-  <tbody>
-
-    <!-- Iterate donors, create a <tr> with <td> for each item -->
-    {#each donors as donor (donor.id)}
-      <tr>
-        <td>{donor.lastName}</td>
-        <td>{donor.firstName}</td>
-        <td>View</td>
-        <td>Add Gift</td>
-      </tr>
-    {/each}
-
-  </tbody>
-</table>
+  {/each}
+</tbody>
 
 <style>
-  tbody tr:nth-child(even) { background: #e5e3e1; }
-
-  table thead {
-    background-color: #e5e3e1;
-  }
+ /* Column sizes, and styles specific to the donor table */
 </style>

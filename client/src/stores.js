@@ -59,5 +59,34 @@ export const Donors = writable([
 ])
 
 export const Donations = writable([
-  
+  {
+    id: 1,
+    lastName: "Smith",
+    firstName: "John",
+    dateOfGift: "2022-05-01",
+    CDate: "2022-05-10",
+    numberOfGifts: 25,
+    type: "Standard",
+    status: "Complete"
+  },
+  {
+    id: 2,
+    lastName: "Thompson",
+    firstName: "Jill",
+    dateOfGift: "2022-04-01",
+    CDate: "2022-04-10",
+    numberOfGifts: 2,
+    type: "Important",
+    status: "Pending"
+  },
+  {
+    id: 3,
+    lastName: "Wilson",
+    firstName: "Mary",
+    dateOfGift: "2022-03-01",
+    CDate: "2022-03-10",
+    numberOfGifts: 12,
+    type: "Standard",
+    status: "Pending"
+  }
 ])

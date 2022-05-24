@@ -3,12 +3,22 @@
   export let Table={Table};
 </script>
 
-<div class="item-list-display">
-  <Table {items} />
+<div class="data-display">
+  <table class="table">
+    <Table {items} />
+  </table>
 </div>
 
 <style>
-  .item-list-display {
+  div.data-display :global(tbody tr:nth-child(even)) {
+    background: #e5e3e1;
+  }
+
+  div.data-display :global(table thead) {
+    background-color: #e5e3e1;
+  }
+
+  div.data-display {
     max-height: 375px;
     overflow: hidden;
     overflow-y: scroll;
