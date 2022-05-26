@@ -30,8 +30,13 @@
   /* Culls the donors array upon entering search keywords in the search box */
   const filterDataDisplay = (filter = "") => {
     filter = filter.toLowerCase();
-    donorDisplay = donorDisplay.filter((item) => {
-      return item.lastName.toLowerCase().includes(filter);
+    console.log("Filter input:", filter)
+    donorDisplay = donors.filter((item) => {
+      console.log("Item in filter f()", item)
+      return (
+        item.lastName?.toLowerCase().includes(filter) ||
+        item.organization?.toLowerCase().includes(filter)
+      )
     });
   }
 
@@ -41,14 +46,16 @@
   }
 
   const onClickAddNewDonor = () => {
-    /* Called on NewItemLink click event */
-    console.log("Click add new donor. Display pre-array reset:", donorDisplay)
-    donorDisplay = donorDisplay.splice(2,2);
-    console.log("Display after array reset:", donorDisplay)
+    // TODO: Redirect to url "/donor" (no id, for blank form/'submit|add' button)
+  }
+
+  const onClickEditDonor = (event) => {
+    // TODO: Get id from clicked item, redirect to url "/donor/{id}"
   }
 
   const onFilterInput = (event) => {
-    if(event.target.value.length > 0) {
+    console.log("Event:", event)
+    if(event.target.value.length > 0 ) {  // OR if return key press?
       /* Any validation goes here */
       filterDataDisplay(event.target.value)
     }

@@ -5,21 +5,28 @@
 
 <thead>
   <tr>
-    <th scope="col">Last Name/Organization</th>
+    <th scope="col">Last Name</th>
     <th scope="col">First Name</th>
+    <th scope="col">Organization</th>
     <th scope="col"></th>
     <th scope="col"></th>
   </tr>
 </thead>
 <tbody>
-  {#each items as donor (donor.id)}
-    <tr>
-      <td>{donor.lastName}</td>
-      <td>{donor.firstName}</td>
-      <td>View</td>
-      <td>Add Gift</td>
-    </tr>
-  {/each}
+  {#if items.length > 0}
+    {#each items as donor (donor.id)}
+      <tr>
+        <td>{donor.lastName}</td>
+        <td>{donor.firstName}</td>
+        <td>{donor.organization ?? ""}</td>
+        <td>View</td>
+        <td>Add Gift</td>
+      </tr>
+    {/each}
+  {:else}
+    <h6>No results found.</h6>
+  {/if}
+
 </tbody>
 
 <style>
