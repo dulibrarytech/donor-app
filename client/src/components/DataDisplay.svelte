@@ -1,11 +1,13 @@
 <script>
   export let items={items};
   export let Table={Table};
+  console.log("Init data display,  items:", items)
 </script>
 
 <div class="data-display">
   <table class="table">
-    <Table {items} />
+    <!-- <Table bind:items={items} /> -->
+    <svelte:component this={Table} items={items} />
   </table>
 </div>
 

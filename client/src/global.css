@@ -96,7 +96,7 @@ div.search-form label {
 	margin-bottom: 3px;
 }
 
-.add-item-link {
+/* .add-item-link {
 	float: right;
 	color: rgb(0,80,160);
 	margin-bottom: 5px;
@@ -105,7 +105,7 @@ div.search-form label {
 .add-item-link a {
 	position: relative;
 	bottom: 2px;
-}
+} */
 
 footer {
     background-color: #8b2332;

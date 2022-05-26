@@ -1,6 +1,6 @@
 <script>
   export let items;
-  let donors = items;
+  console.log("Init donor table")
 </script>
 
 <thead>
@@ -12,7 +12,7 @@
   </tr>
 </thead>
 <tbody>
-  {#each donors as donor (donor.id)}
+  {#each items as donor (donor.id)}
     <tr>
       <td>{donor.lastName}</td>
       <td>{donor.firstName}</td>
@@ -23,5 +23,5 @@
 </tbody>
 
 <style>
- /* Column sizes, and styles specific to the donor table */
+ /* Column widths, and any other styles specific to the donor table */
 </style>

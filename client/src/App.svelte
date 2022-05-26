@@ -7,6 +7,7 @@
 
 	// Views
 	import Donors from "./views/Donors.svelte";
+	import Donor from "./views/Donors.svelte";
 	import Donations from "./views/Donations.svelte";
 	import NotFound from "./views/NotFound.svelte";
 
@@ -28,11 +29,10 @@
 		next();
 	}, () => page = Donors); // <-- next()
 
-	router('/donors/:donorId', (ctx, next) => {
+	router('/donor/:donorId', (ctx, next) => {
 		params = ctx.params;
-			console.log("/donors/:donorId Params:", params)
 		next();
-	}, () => page = Donors);
+	}, () => page = Donor);
 
 	router('/donations', (ctx, next) => {
 		params = ctx.params;

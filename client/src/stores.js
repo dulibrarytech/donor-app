@@ -34,22 +34,22 @@ export const Donors = writable([
   {
     id: 7,
     lastName: "Johnson",
-    firstName: "Bill",
+    firstName: "Bob",
   },
   {
     id: 8,
     lastName: "Wilson",
-    firstName: "Mary",
+    firstName: "Jenny",
   },
   {
     id: 9,
     lastName: "Smith",
-    firstName: "John",
+    firstName: "Frank",
   },
   {
     id: 10,
     lastName: "Thompson",
-    firstName: "Jill",
+    firstName: "Rob",
   },
   {
     id: 11,
