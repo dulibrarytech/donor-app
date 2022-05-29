@@ -1,24 +1,31 @@
 <script>
   import { onMount } from 'svelte';
-  import { Donors } from '../stores';
   import DataDisplay from "../components/DataDisplay.svelte";
   import DonorTable from "../components/DonorTable.svelte";
   import NewItemLink from "../components/NewItemLink.svelte";
 
-  /* Option: Import Donors.js module */
-  // import Donors from "../modules/Donors.js";
-  // Move functions to external module
-  /* End option Donors.js module */
+  // Dev
+  import { Donors } from '../stores';
 
   var donors = [];
   var donorDisplay = [];
+
+  /* Initializes page components */
+  const init = () => {
+    // TODO: Feedback message "Retrieving donors..." in display window, then remove after getDonorList() returns
+    //onMount(async () => {
+      donors = getDonorList();
+      console.log("Init donors page, donors:", donors)
+      showAllDonors();
+    //});
+  }
 
   /* Fetches an array containing all donors from the backend api */
   const getDonorList = () => {
     // Dev: Fetch donor list from store
     return $Donors;
 
-    // TODO: Fetch donor list from server
+    // TODO: Prod: Fetch donor list from server
     // let list = [];
     // let endpoint = "https://jsonplaceholder.typicode.com/posts";
     //
@@ -30,9 +37,7 @@
   /* Culls the donors array upon entering search keywords in the search box */
   const filterDataDisplay = (filter = "") => {
     filter = filter.toLowerCase();
-    console.log("Filter input:", filter)
     donorDisplay = donors.filter((item) => {
-      console.log("Item in filter f()", item)
       return (
         item.lastName?.toLowerCase().includes(filter) ||
         item.organization?.toLowerCase().includes(filter)
@@ -46,7 +51,7 @@
   }
 
   const onClickAddNewDonor = () => {
-    // TODO: Redirect to url "/donor" (no id, for blank form/'submit|add' button)
+    window.location.replace("/donor");
   }
 
   const onClickEditDonor = (event) => {
@@ -54,24 +59,13 @@
   }
 
   const onFilterInput = (event) => {
-    console.log("Event:", event)
-    if(event.target.value.length > 0 ) {  // OR if return key press?
-      /* Any validation goes here */
+    if(event.target.value.length > 0 ) {
+      // Any validation goes here
       filterDataDisplay(event.target.value)
     }
     else {
       donorDisplay = donors;
     }
-  }
-
-  /* Initializes page components */
-  const init = () => {
-    // TODO: Feedback message "Retrieving donors..." in display window, then remove after getDonorList() returns
-    //onMount(async () => {
-      donors = getDonorList();
-      console.log("Init donors page, donors:", donors)
-      showAllDonors();
-    //});
   }
 
   init();
@@ -89,12 +83,10 @@
 
   <div id="donor-list">
     <svelte:component this={DataDisplay} items={donorDisplay} Table={DonorTable}/>
-    <!-- <DataDisplay bind:items={donorDisplay} Table={DonorTable} /> -->
   </div>
 </div>
 
 <style>
-  /* Styles specific to the donor page. Should not be many here */
   input#donor-searchbox {
     min-width: 21em;
   }

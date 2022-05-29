@@ -1,6 +1,5 @@
 <script>
   export let items;
-  let donations = items;
 </script>
 
 <thead>
@@ -14,7 +13,7 @@
   </tr>
 </thead>
 <tbody>
-  {#each donations as donation (donation.id)}
+  {#each items as donation (donation.id)}
     <tr>
       <td>{donation.dateOfGift}</td>
       <td>{donation.lastName}</td>

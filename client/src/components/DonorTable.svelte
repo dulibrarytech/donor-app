@@ -1,6 +1,5 @@
 <script>
   export let items;
-  console.log("Init donor table")
 </script>
 
 <thead>
@@ -24,7 +23,7 @@
       </tr>
     {/each}
   {:else}
-    <h6>No results found.</h6>
+    <h6>No donors found.</h6>
   {/if}
 
 </tbody>
