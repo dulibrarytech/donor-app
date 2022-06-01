@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "dotenv": "^16.0.1",
+    "minisearch": "^5.0.0-beta2",
     "page.js": "^4.13.3"
   }
 }

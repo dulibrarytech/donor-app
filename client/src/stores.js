@@ -96,7 +96,7 @@ export const Donations = writable([
     type: "Important",
     status: "Pending",
     giftDescription: "Box of cassettes",
-    giftDetails: "20 items",
+    giftDetails: "20 items pasture",
     important: 1
   },
   {
@@ -109,7 +109,7 @@ export const Donations = writable([
     numberOfGifts: 12,
     type: "Standard",
     status: "Pending",
-    giftDescription: "Photographs",
+    giftDescription: "Photographs pasture",
     giftDetails: "Black and white photographs from 1918"
   },
   {
@@ -122,6 +122,6 @@ export const Donations = writable([
     type: "Standard",
     status: "Complete",
     giftDescription: "Box of books",
-    giftDetails: "10 Books"
+    giftDetails: "10 Books pasture"
   },
 ])

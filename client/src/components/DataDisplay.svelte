@@ -1,11 +1,13 @@
 <script>
   export let items={items};
   export let Table={Table};
+  export let args;
+  console.log("DD args in:", args)
 </script>
 
 <div class="data-display">
   <table class="table">
-    <svelte:component this={Table} items={items} />
+    <svelte:component this={Table} items={items} {args}/>
   </table>
 </div>
 

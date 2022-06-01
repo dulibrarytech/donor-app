@@ -1,7 +1,9 @@
 <script>
   import { onMount } from 'svelte';
+  import MiniSearch from 'minisearch';
   import DataDisplay from "../components/DataDisplay.svelte";
   import DonationTable from "../components/DonationTable.svelte";
+  import DonationSearchResultsTable from "../components/DonationSearchResultsTable.svelte";
   import NewItemLink from "../components/NewItemLink.svelte";
 
   // Dev
@@ -10,6 +12,11 @@
   var donations = [];
   var donationDisplay = [];
   var searchKeywords = "";
+  var searchField = 'giftDescription';
+  var searchResults = [];
+  var donationListDisplay = "block";
+  var donationFilterFormDisplay = "block";
+  var donationSearchResultsDisplay = "none";
   var filter = {
     fromDate: null,
     toDate: null,
@@ -66,29 +73,56 @@
   }
 
   const onKeywordSearch = (event) => {
-    console.log("onKeywordSearch:", event)
+    console.log("onKeywordSearch terms:", searchKeywords)
+    console.log("onKeywordSearch searchField group:", searchField)
+
+    // To initSearchIndex()
+    let miniSearch = new MiniSearch({
+      fields: [searchField],
+      storeFields: ['id']
+    })
+    // To initSearchIndex()
+    miniSearch.addAll(donationDisplay)
+
+    let results = miniSearch.search(searchKeywords, {prefix: true, fuzzy: 0.2})
+    searchResults = donationDisplay.filter((item) => {
+      return results.some(e => e.id === item.id);
+    });
+
+    showSearchResults();
+  }
+
+  const clearSearchResults = () => {
+    searchResults = [];
+    searchKeywords = "";
+    donationListDisplay = "block";
+    donationFilterFormDisplay = "block";
+    donationSearchResultsDisplay = "none";
+  }
+
+  const showSearchResults = () => {
+    donationListDisplay = "none";
+    donationFilterFormDisplay = "none";
+    donationSearchResultsDisplay = "block";
   }
 
   const onDaterangeSearch = (event) => {
-    console.log("onDaterangeSearch:", event)
     filterDataDisplay(filter);
   }
 
   const onSelectFilterOption = (event) => {
-    console.log("onSelectFilterOption:", )
     filterDataDisplay(filter);
   }
 
   const filterDataDisplay = (filter) => {
     donationDisplay = donations;
-    console.log("Filter object:", filter)
-    console.log("Donor type arr", filter.donorType)
 
     /* Donor type filter */
     if(filter.donorType.length > 0) {
       for(let type of filter.donorType) {
-        console.log("Donor type filter selected:", type)
         donationDisplay = donationDisplay.filter((item) => {
+
+          // TODO: Implement radio group, if 'known donor' return item.donorId != 1
           return item.donorId == 1;
         });
       }
@@ -97,7 +131,6 @@
     /* Donation type filter */
     if(filter.donationType.length > 0) {
       for(let type of filter.donationType) {
-        console.log("Donation type filter selected:", type)
         donationDisplay = donationDisplay.filter((item) => {
           return item.important == 1;
         });
@@ -113,29 +146,17 @@
       let from = new Date(filter.fromDate + "T00:00:00");
       let to = new Date(filter.toDate + "T23:59:59");
 
-      console.log("From date:", from);
-      console.log("To date:", to);
-
       // TEST: Performance, if issues, convert date string to numeric and compare, or string compare
       let itemDate;
       donationDisplay = donationDisplay.filter((item) => {
         if(item.dateOfGift) {
-          console.log("itemDate string:", item.dateOfGift);
           itemDate = new Date(item.dateOfGift)
-          console.log("itemDate:", itemDate);
           return (
             itemDate >= from &&
             itemDate <= to
           )
         }
       });
-
-      // donationDisplay = donationDisplay.filter((item) => {
-      //   return (
-      //     item.dateOfGift >= filter.fromDate &&
-      //     item.dateOfGift <= filter.toDate
-      //   )
-      // });
     }
   }
 
@@ -149,34 +170,8 @@
     <div class="row">
       <div class="col-md">
 
-        <!-- Search form -->
-        <form id="donations-keyword-search">
-          <div class="form-group search-form">
-            <label for="donation-searchbox">Keyword Search:</label>
-            <input id="donation-searchbox" type="text" on:input={onKeywordSearch} placeholder="Search descriptions"/>
-            <button on:click={onKeywordSearch}>Search</button>
-          </div>
-
-          <div class="form-group radio-group">
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="searchFieldSelect" id="search-donation-description-option" checked>
-              <label class="form-check-label" for="search-donation-description-option">
-                Search Description
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="searchFieldSelect" id="search-donation-details-option">
-              <label class="form-check-label" for="search-donation-details-option">
-                Search Details
-              </label>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="col-md">
-
         <!-- Filter form -->
-        <form id="donations-filter">
+        <form id="donation-filter" style="display:{donationFilterFormDisplay}">
           <label>Filter:</label>
           <div class="form-group">
             <div class="form-check">
@@ -201,11 +196,42 @@
           </div>
         </form>
       </div>
+      <div class="col-md">
+
+        <!-- Search form -->
+        <form id="donations-keyword-search">
+          <div class="form-group search-form">
+            <label for="donation-searchbox">Keyword Search:</label>
+            <input id="donation-searchbox" type="text" bind:value={searchKeywords} placeholder="Search descriptions"/>
+            <button on:click|preventDefault={onKeywordSearch}>Search</button>
+          </div>
+
+          <div class="form-group radio-group">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="searchField" value="giftDescription" bind:group={searchField} on:change={onKeywordSearch} id="search-donation-description-option" checked={searchField=='giftDescription'}>
+              <label class="form-check-label" for="search-donation-description-option">
+                Search Description
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="searchField" value="giftDetails" bind:group={searchField} on:change={onKeywordSearch} id="search-donation-details-option" checked={searchField=='giftDetails'}>
+              <label class="form-check-label" for="search-donation-details-option">
+                Search Details
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
-  <div id="donation-list">
+  <div id="donation-list" style="display:{donationListDisplay}">
     <DataDisplay items={donationDisplay} Table={DonationTable} />
+  </div>
+
+  <div id="donation-search-results" style="display:{donationSearchResultsDisplay}">
+    <button on:click={clearSearchResults}>Exit Search</button>
+    <DataDisplay items={searchResults} Table={DonationSearchResultsTable} args={searchField} />
   </div>
 </div>
 
