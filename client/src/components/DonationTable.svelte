@@ -13,16 +13,20 @@
   </tr>
 </thead>
 <tbody>
-  {#each items as donation (donation.id)}
-    <tr>
-      <td>{donation.dateOfGift}</td>
-      <td>{donation.lastName}</td>
-      <td>{donation.firstName}</td>
-      <td>{donation.type}</td>
-      <td>{donation.status}</td>
-      <td>View</td>
-    </tr>
-  {/each}
+  {#if items.length > 0}
+    {#each items as donation (donation.id)}
+      <tr>
+        <td>{donation.dateOfGift?.match(/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/) ?? "No date"}</td>
+        <td>{donation.lastName || ""}</td>
+        <td>{donation.firstName || ""}</td>
+        <td>{donation.type || "Standard"}</td>
+        <td>{donation.status}</td>
+        <td>View</td>
+      </tr>
+    {/each}
+  {:else}
+    <h6>No results found.</h6>
+  {/if}
 </tbody>
 
 <style>

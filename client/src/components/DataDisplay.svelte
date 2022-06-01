@@ -10,15 +10,19 @@
 </div>
 
 <style>
-  div.data-display :global(tbody tr:nth-child(even)) {
+  :global(tbody tr:nth-child(even)) {
     background: #e5e3e1;
   }
 
-  div.data-display :global(table thead) {
+  :global(table thead) {
     background-color: #e5e3e1;
   }
 
-  div.data-display {
+  .data-display {
+    margin-top: 25px;
+  }
+
+  table {
     max-height: 375px;
     overflow: hidden;
     overflow-y: scroll;

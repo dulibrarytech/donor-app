@@ -74,9 +74,10 @@ export const Donors = writable([
 export const Donations = writable([
   {
     id: 1,
+    donorId: 4,
     lastName: "Smith",
     firstName: "John",
-    dateOfGift: "2022-05-01",
+    dateOfGift: "2022-05-01T12:15:10",
     CDate: "2022-05-10",
     numberOfGifts: 25,
     type: "Standard",
@@ -86,26 +87,41 @@ export const Donations = writable([
   },
   {
     id: 2,
+    donorId: 5,
     lastName: "Thompson",
     firstName: "Jill",
-    dateOfGift: "2022-04-01",
+    dateOfGift: "2022-04-01T12:15:10",
     CDate: "2022-04-10",
     numberOfGifts: 2,
     type: "Important",
     status: "Pending",
     giftDescription: "Box of cassettes",
-    giftDetails: "20 items"
+    giftDetails: "20 items",
+    important: 1
   },
   {
     id: 3,
+    donorId: 3,
     lastName: "Wilson",
     firstName: "Mary",
-    dateOfGift: "2022-03-01",
+    dateOfGift: "2022-03-01T12:15:10",
     CDate: "2022-03-10",
     numberOfGifts: 12,
     type: "Standard",
     status: "Pending",
     giftDescription: "Photographs",
     giftDetails: "Black and white photographs from 1918"
-  }
+  },
+  {
+    id: 4,
+    donorId: 1,
+    lastName: "Anonymous",
+    dateOfGift: "2022-05-01T12:15:10",
+    CDate: "2022-05-10",
+    numberOfGifts: 25,
+    type: "Standard",
+    status: "Complete",
+    giftDescription: "Box of books",
+    giftDetails: "10 Books"
+  },
 ])

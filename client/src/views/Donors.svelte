@@ -27,7 +27,7 @@
 
     // TODO: Prod: Fetch donor list from server
     // let list = [];
-    // let endpoint = "https://jsonplaceholder.typicode.com/posts";
+    // let endpoint = "https://jsonplaceholder.typicode.com/posts"; // Get from config
     //
     // const response = await fetch(endpoint);
     // list = await response.json();
@@ -74,14 +74,18 @@
 <div class="page">
   <h1>Donors</h1>
 
-  <div class="search-form">
-    <label for="donor-searchbox">Filter:</label>
-    <input id="donor-searchbox" type="text" on:input={onFilterInput} placeholder="Search by any part of name or organization"/>
+  <div class="data-display-controls">
+    <form>
+      <div class="form-group search-form">
+        <label for="donor-searchbox">Filter:</label>
+        <input id="donor-searchbox" type="text" on:input={onFilterInput} placeholder="Search by any part of name or organization"/>
+      </div>
+    </form>
   </div>
 
   <NewItemLink text="Add new donor" on:click-new-item-link={onClickAddNewDonor} />
 
-  <div id="donor-list">
+  <div id="donor-list" class="data-display">
     <svelte:component this={DataDisplay} items={donorDisplay} Table={DonorTable}/>
   </div>
 </div>

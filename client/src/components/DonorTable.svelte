@@ -23,7 +23,7 @@
       </tr>
     {/each}
   {:else}
-    <h6>No donors found.</h6>
+    <h6>No donors found.</h6> <!-- TODO: Abstract this in DataDisplay -->
   {/if}
 
 </tbody>

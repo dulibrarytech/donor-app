@@ -92,20 +92,9 @@ div.header-logo img {
     max-width: 100%;
 }
 
-div.search-form label {
-	margin-bottom: 3px;
+div.data-display-controls label {
+	margin-bottom: 6px;
 }
-
-/* .add-item-link {
-	float: right;
-	color: rgb(0,80,160);
-	margin-bottom: 5px;
-}
-
-.add-item-link a {
-	position: relative;
-	bottom: 2px;
-} */
 
 footer {
     background-color: #8b2332;
