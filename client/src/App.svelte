@@ -10,6 +10,7 @@
 	import Donors from "./views/Donors.svelte";
 	import Donor from "./views/Donor.svelte";
 	import Donations from "./views/Donations.svelte";
+	import Donation from "./views/Donation.svelte";
 	import NotFound from "./views/NotFound.svelte";
 
   // View Components
@@ -48,11 +49,17 @@
 		next();
 	}, () => page = Donations);
 
-	router('/donations/:donationId', (ctx, next) => {
+	router('/donation', (ctx, next) => {
 		params = ctx.params;
-			console.log("/donations/:donationId Params:", params)
+			console.log("/donation Params:", params)
 		next();
-	}, () => page = Donations);
+	}, () => page = Donation);
+
+	router('/donation/:donationId', (ctx, next) => {
+		params = ctx.params;
+			console.log("/donation/:donationId Params:", params)
+		next();
+	}, () => page = Donation);
 
 	router('/*', () => {
 		page = NotFound;

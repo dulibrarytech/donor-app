@@ -13,7 +13,6 @@
   const donorId = params.donorId ?? null;
   var donorData = {};
   var donationDisplay = [];
-  var donationDisplayStyle = "none";
   var pageLabel = "";
 
   const fetchDonorData = (id) => {
@@ -41,17 +40,17 @@
     return data;
   }
 
-  const getPageLabel = (donorData) => {
+  const getPageLabel = ({firstName="", lastName="", organization=""}) => {
     let label = "Donor";
 
-    if(donorData.lastName.length > 0) {
-      label = `${donorData.lastName}`;
-      if(donorData.firstName.length > 0) {
-        label += `, ${donorData.firstName}`;
+    if(lastName.length > 0) {
+      label = `${lastName}`;
+      if(firstName.length > 0) {
+        label += `, ${firstName}`;
       }
     }
-    else if(donorData.organization.length > 0) {
-      label = `${donorData.organization}`;
+    else if(organization.length > 0) {
+      label = `${organization}`;
     }
 
     return label;
@@ -62,9 +61,6 @@
       donorData = fetchDonorData(donorId);
 
       if(donorData) {
-        /* show the donations display */
-        donationDisplayStyle = "block";
-
         /* Set page label to donor name or organization */
         pageLabel = getPageLabel(donorData);
 
@@ -85,15 +81,16 @@
 </script>
 
 <div class="page">
-  <div class="donor-info-section">
+  <div class="donor-data-section">
     <h3>{pageLabel}</h3>
     <svelte:component this={DonorForm} {donorId} data={donorData} />
   </div>
-
-  <div class="donor-donations-section" style="display:{donationDisplayStyle}">
-    <h5>Donations</h5>
-    <svelte:component this={DataDisplay} items={donationDisplay} Table={DonorDonationTable}/>
-  </div>
+  {#if donorId}
+    <div class="donor-donations-section">
+      <h5>Donations</h5>
+      <svelte:component this={DataDisplay} items={donationDisplay} Table={DonorDonationTable}/>
+    </div>
+  {/if}
 </div>
 
 <style>

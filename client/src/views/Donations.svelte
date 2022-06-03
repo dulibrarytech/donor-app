@@ -150,13 +150,19 @@
       let itemDate;
       donationDisplay = donationDisplay.filter((item) => {
         if(item.dateOfGift) {
-          itemDate = new Date(item.dateOfGift)
+          itemDate = new Date(item.dateOfGift);
           return (
             itemDate >= from &&
             itemDate <= to
           )
         }
       });
+    }
+  }
+
+  const sortDataDisplay = () => {
+    if(sortType.field == "dateOfRecord") {
+
     }
   }
 

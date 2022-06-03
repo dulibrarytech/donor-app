@@ -96,6 +96,10 @@ div.data-display-controls label {
 	margin-bottom: 6px;
 }
 
+form.form button {
+	background-color: #e5e3e1;
+}
+
 footer {
     background-color: #8b2332;
 		color: #e5e3e1;
