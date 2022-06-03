@@ -2,7 +2,7 @@
   import PageTitleLabel from "../components/PageTitleLabel.svelte";
   import DonorForm from "../components/DonorForm.svelte";
   import DataDisplay from "../components/DataDisplay.svelte";
-  import DonorDonationTable from "../components/DonorDonationTable.svelte";
+  import DonationTable from "../components/DonationTable.svelte";
 
   // Dev - test data
   import { Donors } from '../stores';
@@ -88,7 +88,7 @@
   {#if donorId}
     <div class="donor-donations-section">
       <h5>Donations</h5>
-      <svelte:component this={DataDisplay} items={donationDisplay} Table={DonorDonationTable}/>
+      <svelte:component this={DataDisplay} items={donationDisplay} Table={DonationTable} args={donorId}/>
     </div>
   {/if}
 </div>

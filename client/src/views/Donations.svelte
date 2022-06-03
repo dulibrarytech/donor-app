@@ -237,7 +237,7 @@
 
   <div id="donation-search-results" style="display:{donationSearchResultsDisplay}">
     <button on:click={clearSearchResults}>Exit Search</button>
-    <DataDisplay items={searchResults} Table={DonationSearchResultsTable} args={searchField} />
+    <DataDisplay items={searchResults} Table={DonationSearchResultsTable} args={searchField, null} />
   </div>
 </div>
 
