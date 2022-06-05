@@ -13,17 +13,22 @@
 
   const init = () => {
     if(searchFields[0]) {
-      searchField = searchFields[0].fieldName || "";
-      placeholder = `Search ${searchFields[0].fieldLabel}`;
+      reset();
     }
     else {
       dispatch('error', "Failed to initialize search box. At least one search field is required");
     }
   }
 
-  const onSelectSearchField = (event) => {
-    let index = event.target.getAttribute("data-index");
+  export const reset = () => {
     keywords = "";
+    searchField = searchFields[0].fieldName || "";
+    placeholder = `Search ${searchFields[0].fieldLabel}`;
+  }
+
+  const onSelectSearchField = (event) => {
+    keywords = "";
+    let index = event.target.getAttribute("data-index");
     placeholder = `Search ${searchFields[index].fieldLabel}`;
   }
 

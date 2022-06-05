@@ -12,6 +12,7 @@
 
   var donations = [];
   var donationDisplay = [];
+  var searchBox;
   var searchResults = [];
   var searchField = "";
   var donationListDisplay = "block";
@@ -84,6 +85,7 @@
   }
 
   const clearSearchResults = () => {
+    searchBox.reset();
     searchResults = [];
     searchField = "";
     donationListDisplay = "block";
@@ -197,7 +199,7 @@
 
         <!-- Search form -->
         <form id="donations-keyword-search">
-          <SearchBox index={donationDisplay} searchFields={searchFields} on:search={onKeywordSearch}/>
+          <SearchBox index={donationDisplay} searchFields={searchFields} on:search={onKeywordSearch} bind:this={searchBox} />
         </form>
       </div>
     </div>
