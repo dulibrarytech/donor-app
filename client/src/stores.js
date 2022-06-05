@@ -113,7 +113,7 @@ export const Donations = writable([
     type: "standard",
     status: "pending",
     giftDescription: "Photographs pasture",
-    giftDetails: "Black and white photographs from 1918"
+    giftDetails: "Black and white photographs book from 1918"
   },
   {
     id: 4,

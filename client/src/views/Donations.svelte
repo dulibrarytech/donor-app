@@ -1,22 +1,28 @@
 <script>
   import { onMount } from 'svelte';
-  import MiniSearch from 'minisearch';
+  //import MiniSearch from 'minisearch';
   import DataDisplay from "../components/DataDisplay.svelte";
   import DonationTable from "../components/DonationTable.svelte";
   import DonationSearchResultsTable from "../components/DonationSearchResultsTable.svelte";
   import NewItemLink from "../components/NewItemLink.svelte";
+  import SearchBox from "../components/SearchBox.svelte";
 
   // Dev
   import {Donations} from '../stores';
 
   var donations = [];
   var donationDisplay = [];
-  var searchKeywords = "";
-  var searchField = 'giftDescription';
   var searchResults = [];
+  var searchField = "";
   var donationListDisplay = "block";
   var donationFilterFormDisplay = "block";
   var donationSearchResultsDisplay = "none";
+
+  const searchFields = [
+    {fieldName: "giftDescription", fieldLabel: "Description"},
+    {fieldName: "giftDetails", fieldLabel: "Details"}
+  ]
+
   var filter = {
     fromDate: null,
     toDate: null,
@@ -44,7 +50,6 @@
     }
   }
 
-  /* Fetches an array containing all donors from the backend api */
   const getDonationList = () => {
     // Dev: Fetch donor list from store
     return $Donations;
@@ -58,7 +63,6 @@
     // return list;
   }
 
-  /* Remove any filters from the donor display */
   const showAllDonations = () => {
     resetFilters();
     donationDisplay = donations;
@@ -73,28 +77,15 @@
   }
 
   const onKeywordSearch = (event) => {
-    console.log("onKeywordSearch terms:", searchKeywords)
-    console.log("onKeywordSearch searchField group:", searchField)
-
-    // To initSearchIndex()
-    let miniSearch = new MiniSearch({
-      fields: [searchField],
-      storeFields: ['id']
-    })
-    // To initSearchIndex()
-    miniSearch.addAll(donationDisplay)
-
-    let results = miniSearch.search(searchKeywords, {prefix: true, fuzzy: 0.2})
-    searchResults = donationDisplay.filter((item) => {
-      return results.some(e => e.id === item.id);
-    });
-
+    console.log("On search data rx:", event.detail)
+    searchResults = event.detail.results;
+    searchField = event.detail.field;
     showSearchResults();
   }
 
   const clearSearchResults = () => {
     searchResults = [];
-    searchKeywords = "";
+    searchField = "";
     donationListDisplay = "block";
     donationFilterFormDisplay = "block";
     donationSearchResultsDisplay = "none";
@@ -206,26 +197,7 @@
 
         <!-- Search form -->
         <form id="donations-keyword-search">
-          <div class="form-group search-form">
-            <label for="donation-searchbox">Keyword Search:</label>
-            <input id="donation-searchbox" type="text" bind:value={searchKeywords} placeholder="Search descriptions"/>
-            <button on:click|preventDefault={onKeywordSearch}>Search</button>
-          </div>
-
-          <div class="form-group radio-group">
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="searchField" value="giftDescription" bind:group={searchField} on:change={onKeywordSearch} id="search-donation-description-option" checked={searchField=='giftDescription'}>
-              <label class="form-check-label" for="search-donation-description-option">
-                Search Description
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="searchField" value="giftDetails" bind:group={searchField} on:change={onKeywordSearch} id="search-donation-details-option" checked={searchField=='giftDetails'}>
-              <label class="form-check-label" for="search-donation-details-option">
-                Search Details
-              </label>
-            </div>
-          </div>
+          <SearchBox index={donationDisplay} searchFields={searchFields} on:search={onKeywordSearch}/>
         </form>
       </div>
     </div>
@@ -237,7 +209,7 @@
 
   <div id="donation-search-results" style="display:{donationSearchResultsDisplay}">
     <button on:click={clearSearchResults}>Exit Search</button>
-    <DataDisplay items={searchResults} Table={DonationSearchResultsTable} args={searchField, null} />
+    <DataDisplay items={searchResults} Table={DonationSearchResultsTable} args={searchField} />
   </div>
 </div>
 

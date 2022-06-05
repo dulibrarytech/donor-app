@@ -19,7 +19,7 @@
 	let page;
 	let params;
 
-	/* Import Router.svelte */
+	/* Import Router.svelte, remove router defs below */
 
 	router('/', () => {
 		window.location.replace("/donors");
