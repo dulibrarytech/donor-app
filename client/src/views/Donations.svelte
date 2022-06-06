@@ -198,9 +198,7 @@
       <div class="col-md">
 
         <!-- Search form -->
-        <form id="donations-keyword-search">
-          <SearchBox index={donationDisplay} searchFields={searchFields} on:search={onKeywordSearch} bind:this={searchBox} />
-        </form>
+        <SearchBox index={donationDisplay} searchFields={searchFields} on:search={onKeywordSearch} bind:this={searchBox} />
       </div>
     </div>
   </div>
@@ -216,15 +214,5 @@
 </div>
 
 <style>
-  .radio-group {
-    display: inline-flex;
-  }
-
-  .radio-group .form-check:not(:first-child) {
-    margin-left: 2em;
-  }
-
-  input#donation-searchbox {
-    min-width: 21em;
-  }
+  
 </style>
