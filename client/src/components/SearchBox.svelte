@@ -1,60 +1,62 @@
 <script>
-  import MiniSearch from 'minisearch';
-  import {createEventDispatcher} from 'svelte';
+'use strict'
 
-  export let index = [];
-  export let searchFields = [];
-  export let resultFields = ['id'];
+import MiniSearch from 'minisearch';
+import {createEventDispatcher} from 'svelte';
 
-  var keywords = "";
-  var searchField = "";
-  let placeholder = "";
-  const dispatch = createEventDispatcher();
+export let index = [];
+export let searchFields = [];
+export let resultFields = ['id'];
 
-  const init = () => {
-    if(searchFields[0]) {
-      reset();
-    }
-    else {
-      dispatch('error', "Failed to initialize search box. At least one search field is required");
-    }
+var keywords = "";
+var searchField = "";
+let placeholder = "";
+const dispatch = createEventDispatcher();
+
+const init = () => {
+  if(searchFields[0]) {
+    reset();
   }
-
-  export const reset = () => {
-    keywords = "";
-    searchField = searchFields[0].fieldName || "";
-    placeholder = `Search ${searchFields[0].fieldLabel}`;
+  else {
+    dispatch('error', "Failed to initialize search box. At least one search field is required");
   }
+}
 
-  const onSelectSearchField = (event) => {
-    let index = event.target.getAttribute("data-index");
-    placeholder = `Search ${searchFields[index].fieldLabel}`;
+export const reset = () => {
+  keywords = "";
+  searchField = searchFields[0].fieldName || "";
+  placeholder = `Search ${searchFields[0].fieldLabel}`;
+}
+
+const onSelectSearchField = (event) => {
+  let index = event.target.getAttribute("data-index");
+  placeholder = `Search ${searchFields[index].fieldLabel}`;
+}
+
+const search = () => {
+  try {
+    let miniSearch = new MiniSearch({
+      fields: [searchField],
+      storeFields: [resultFields]
+    })
+    miniSearch.addAll(index)
+
+    let results = miniSearch.search(keywords, {prefix: true, fuzzy: 0.2});
+    let resultData = index.filter((item) => {
+      return results.some(e => e.id === item.id);
+    });
+
+    dispatch('search', {
+      field: searchField,
+      results: resultData
+    });
   }
-
-  const search = () => {
-    try {
-      let miniSearch = new MiniSearch({
-        fields: [searchField],
-        storeFields: [resultFields]
-      })
-      miniSearch.addAll(index)
-
-      let results = miniSearch.search(keywords, {prefix: true, fuzzy: 0.2});
-      let resultData = index.filter((item) => {
-        return results.some(e => e.id === item.id);
-      });
-
-      dispatch('search', {
-        field: searchField,
-        results: resultData
-      });
-    }
-    catch(e) {
-      dispatch('error', `Search error: ${e}`);
-    }
+  catch(e) {
+    dispatch('error', `Search error: ${e}`);
   }
+}
 
-  init();
+init();
 </script>
 
 <form>

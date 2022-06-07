@@ -1,5 +1,6 @@
 <script>
   export let items={items};
+  console.log("DT items", items)
   export let Table={Table};
   export let args;
 </script>
