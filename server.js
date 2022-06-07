@@ -6,7 +6,7 @@ const morgan = require('morgan');
 
 const {port} = require('./config');
 
-const transactionsRoutes = require("./routes/transactions");
+const transactionsRoutes = require("./server/routes/transactions");
 
 app.use(cors());
 app.use(bodyParser.json());
