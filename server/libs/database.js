@@ -13,7 +13,7 @@
 
  'use strict'
 
-const config = require("../config.js"),
+const config = require(`../../config/${process.env.CONFIGURATION_FILE}`),
 	    mysql = require('mysql');
 
 var pool = mysql.createPool({
