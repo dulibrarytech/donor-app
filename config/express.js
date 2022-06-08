@@ -18,8 +18,9 @@ module.exports = function () {
   app.use('/donor', donorRoutes);
 
   app.route('/')
-      .get(function(req, res) {
-          res.redirect(baseUrl);
+    .get(function(req, res) {
+      //     res.redirect(baseUrl);
+      res.sendStatus(403);
   });
 
   return app;

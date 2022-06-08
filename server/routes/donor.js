@@ -5,14 +5,14 @@ const router = Router();
 const donorController = require("../controllers/donorController.js");
 
 router.use((req, res, next) => {
-  console.log('donor router: Time: ', Date.now())
+  console.log('/donor router: Time: ', Date.now())
   next()
 })
 
 router.get('/', async (req, res) => {
     console.log("GET /donors")
-
-}, donorController.donors);
+    donorController.donors(req, res);
+});
 
 // router.get('/:id', async (req, res) => {
 //     console.log("GET /donor")

@@ -13,19 +13,22 @@
 
  'use strict'
 
-const config = require(`../../config/${process.env.CONFIGURATION_FILE}`),
+const {databaseHost, databaseUser, databasePassword, databaseName} = require(`../../config/${process.env.CONFIGURATION_FILE}`),
 	    mysql = require('mysql');
 
 var pool = mysql.createPool({
     connectionLimit : 10,
-    host     : config.databaseHost,
-    user     : config.databaseUser,
-    password : config.databasePassword,
-    database : config.databaseName
+    host     : databaseHost,
+    user     : databaseUser,
+    password : databasePassword,
+    database : databaseName
   });
 
 if(pool == null) {
   console.error(`Error connecting to database: database is not running or is not available. Check database service.`)
+}
+else {
+  console.log(`Connection established to database at ${databaseHost}`)
 }
 
 module.exports = pool;
