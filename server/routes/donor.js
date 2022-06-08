@@ -6,11 +6,10 @@ const donorController = require("../controllers/donorController.js");
 
 router.use((req, res, next) => {
   console.log('/donor router: Time: ', Date.now())
-  next()
+  next();
 })
 
 router.get('/', async (req, res) => {
-    console.log("GET /donors")
     donorController.donors(req, res);
 });
 

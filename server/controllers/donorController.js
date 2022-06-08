@@ -3,5 +3,14 @@
 const Donors = require("../models/Donors.js");
 
 exports.donors = (req, res) => {
-  res.send(JSON.stringify(Donors.getAllDonors()))
+  Donors.getAllDonors()
+  .then(
+    function(data) {
+      res.send(JSON.stringify(data))
+    },
+    function(error) {
+      console.log(error)
+      res.sendStatus(500)
+    }
+  );
 }
