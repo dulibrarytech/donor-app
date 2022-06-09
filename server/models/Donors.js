@@ -1,7 +1,9 @@
 'use strict'
 
 const database = require('../libs/database.js');
+const Model = require('../libs/Model.js');
 
+/* {database field} : {response data field} */
 module.exports = (() => {
   const map = {
     "donorID":      "id",
@@ -19,8 +21,9 @@ module.exports = (() => {
     "Country":      "country"
   }
 
-  const getAllDonors = () => {
-    let query = `
+  const queries = {
+    'get_all': `
+
       SELECT
         Donors.donorID AS       ${map.donorID},
         Titles.title AS         ${map.title},
@@ -36,29 +39,22 @@ module.exports = (() => {
         Donors.Organization AS  ${map.Organization},
         Donors.Country AS       ${map.Country}
       FROM tbl_donorinfo Donors
-      INNER JOIN tbl_donortitle_lkup Titles ON Donors.titleID=Titles.titleID;`;
+      INNER JOIN tbl_donortitle_lkup Titles ON Donors.titleID=Titles.titleID;`
+  }
 
-    let donors = [];
+  const DonorsModel = new Model(database, queries);
+
+  const getAllDonors = () => {
     return new Promise((resolve, reject) => {
-      database.getConnection((error, connection) => {
-        try {
-          if(error) throw new Error(`Error connecting to database: ${error}`);
-
-          connection.query(query, (error, results, fields) => {
-            if(error) {
-              reject(error)
-            }
-            else {
-              donors = results;
-              resolve(donors);
-            }
-            connection.release();
-          });
+      DonorsModel.execute_query('get_all')
+      .then(
+        function(donors) {
+          resolve(donors)
+        },
+        function(error) {
+          reject(error);
         }
-        catch(error) {
-          reject(`Database error: ${error}`);
-        }
-      });
+      );
     });
   }
 

@@ -9,7 +9,7 @@ exports.donors = (req, res) => {
       res.send(JSON.stringify(data))
     },
     function(error) {
-      console.log(error)
+      console.error(error)
       res.sendStatus(500)
     }
   );

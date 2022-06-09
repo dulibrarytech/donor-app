@@ -39,7 +39,7 @@
     donorDisplay = event.detail;
   }
 
-  /* Remove any filters from the donor display */
+  /* Removes any filters from the donor display */
   const showAllDonors = () => {
     donorDisplay = donors;
   }
