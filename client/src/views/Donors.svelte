@@ -13,42 +13,21 @@
   var donorDisplay = [];
 
   /* Initializes page components */
-  const init = () => {
+  const init = async () => {
     // TODO: Feedback message "Retrieving donors..." in display window, then remove after getDonorList() returns
-    //onMount(async () => {
-      donors = getDonorList();
-      console.log("Init donors page, donors:", donors)
-      showAllDonors();
-    //});
+    donors = await getDonorList();
+    console.log("Init donors page, donors:", donors)
+    showAllDonors();
   }
 
   /* Fetches an array containing all donors from the backend api */
   const getDonorList = async () => {
     let list = [],
-        url = `${$Configuration.donorApiDomain}/donor`; // TODO: Get domain from config
+        url = `${$Configuration.donorApiDomain}/donor`;
 
-    console.log("Baseurl:", url)
-
-    return $Donors;
-
-    fetch(url)
-    .then(res => {
-      if(res.ok) {
-        console.log("Success")
-      }
-      else {
-        console.log("Not successful")
-      }
-    })
-    .then(data => {
-      console.log(data)
-      list = data;
-
-      // TODO: Assign to donors []
-    })
-    .catch(error => {
-      console.error(error)
-    })
+    const response = await fetch(url);
+    list = await response.json();
+    return list;
   }
 
   const onFilter = (event) => {
