@@ -6,6 +6,7 @@ exports.donations = (req, res) => {
   Donation.getAllDonations()
   .then(
     function(data) {
+      console.log("C Rx data:", data)
       res.send(JSON.stringify(data))
     },
     function(error) {

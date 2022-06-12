@@ -46,6 +46,8 @@ module.exports = (() => {
       INNER JOIN tbl_donortitle_lkup Titles ON Donors.titleID=Titles.titleID;`
   }
 
+  console.log(queries.get_all)
+
   const DonorModel = new Model(database, queries);
 
   const getAllDonors = () => {

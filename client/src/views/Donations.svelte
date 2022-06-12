@@ -2,7 +2,7 @@
 'use strict'
 
 import { onMount } from 'svelte';
-//import MiniSearch from 'minisearch';
+import { Configuration } from '../config';
 import DataDisplay from "../components/DataDisplay.svelte";
 import DonationTable from "../components/DonationTable.svelte";
 import DonationSearchResultsTable from "../components/DonationSearchResultsTable.svelte";
@@ -50,25 +50,23 @@ var filters = [
   }
 ];
 
-const init = () => {
+const init = async () => {
   // TODO: Feedback message "Retrieving donation..." in display window, then remove after getDonationList() returns
-  //onMount(async () => {
-    donations = getDonationList();
-    console.log("Init donations page, donations:", donations)
-    showAllDonations();
-  //});
+  donations = await getDonationList();
+  console.log("Init donations page, donations:", donations)
+  showAllDonations();
 }
 
-const getDonationList = () => {
+const getDonationList = async () => {
   // Dev: Fetch donor list from store
-  return $Donations;
+  //return $Donations;
 
-  // let list = [],
-  //     url = `${$Configuration.donorApiDomain}/donations`;
-  //
-  // const response = await fetch(url);
-  // list = await response.json();
-  // return list;
+  let list = [],
+      url = `${$Configuration.donorApiDomain}/donation`;
+
+  const response = await fetch(url);
+  list = await response.json();
+  return list;
 }
 
 const showAllDonations = () => {

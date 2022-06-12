@@ -2,6 +2,14 @@
   export let items;
   export let args;
   let donorId = args;
+
+  const formatGiftTypeField = (value=false) => {
+    return value == true ? "Hand Typed" : "Standard";
+  }
+
+  const formatStatusField = (value=false) => {
+    return value == true ? "Pending letter" : "Complete";
+  }
 </script>
 
 <thead>
@@ -26,8 +34,8 @@
           <td>{donation.lastName || ""}</td>
           <td>{donation.firstName || ""}</td>
         {/if}
-        <td>{donation.type || "Standard"}</td>
-        <td>{donation.status}</td>
+        <td>{formatGiftTypeField(donation.type) || "Unknown"}</td>
+        <td>{formatStatusField(donation.status) || "Unknown"}</td>
         <td>{donation.giftDescription}</td>
         <td>View</td>
       </tr>

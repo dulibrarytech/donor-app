@@ -39,14 +39,16 @@ module.exports = (() => {
         Gifts.important AS                ${map.important},
         Gifts.letter AS                   ${map.letter},
         Descriptions.giftDescription1 AS  ${map.giftDescription1},
-        Descriptions.giftDetails AS       ${map.giftDetails},
+        Descriptions.giftDetails AS       ${map.giftDetails}
 
       FROM tbl_donorgifts Gifts
-      INNER JOIN tbl_donorgiftdescriptions Descriptions
+      LEFT JOIN tbl_donorgiftdescriptions Descriptions
       ON Gifts.giftsID=Descriptions.giftsID
       INNER JOIN tbl_donorinfo Donors
       ON Gifts.donorID=Donors.donorID;`
   }
+
+  console.log(queries.get_all)
 
   const DonationModel = new Model(database, queries);
 
