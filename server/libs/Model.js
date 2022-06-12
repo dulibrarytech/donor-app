@@ -26,7 +26,6 @@ class Model {
             }
             else {
               items = results;
-              console.log("Model items to return:", items)
               resolve(items);
             }
             connection.release();

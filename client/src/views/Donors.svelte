@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { Configuration } from '../config';
   import DataDisplay from "../components/DataDisplay.svelte";
   import DonorTable from "../components/DonorTable.svelte";
   import TextFilter from "../components/TextFilter.svelte";
@@ -22,17 +23,32 @@
   }
 
   /* Fetches an array containing all donors from the backend api */
-  const getDonorList = () => {
-    // Dev: Fetch donor list from store
+  const getDonorList = async () => {
+    let list = [],
+        url = `${$Configuration.donorApiDomain}/donor`; // TODO: Get domain from config
+
+    console.log("Baseurl:", url)
+
     return $Donors;
 
-    // TODO: Prod: Fetch donor list from server
-    // let list = [];
-    // let endpoint = "https://jsonplaceholder.typicode.com/posts"; // Get from config
-    //
-    // const response = await fetch(endpoint);
-    // list = await response.json();
-    // return list;
+    fetch(url)
+    .then(res => {
+      if(res.ok) {
+        console.log("Success")
+      }
+      else {
+        console.log("Not successful")
+      }
+    })
+    .then(data => {
+      console.log(data)
+      list = data;
+
+      // TODO: Assign to donors []
+    })
+    .catch(error => {
+      console.error(error)
+    })
   }
 
   const onFilter = (event) => {
