@@ -1,9 +1,9 @@
 'use strict'
 
-const Donations = require("../models/Donations.js");
+const Donation = require("./Donation");
 
 exports.donations = (req, res) => {
-  Donations.getAllDonations()
+  Donation.getAllDonations()
   .then(
     function(data) {
       res.send(JSON.stringify(data))

@@ -2,7 +2,7 @@
 
 const { Router } = require("express");
 const router = Router();
-const donorController = require("../controllers/donorController.js");
+const donorController = require("./controller");
 
 router.use((req, res, next) => {
   console.log('/donor router: Time: ', Date.now())

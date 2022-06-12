@@ -63,11 +63,10 @@ const getDonationList = () => {
   // Dev: Fetch donor list from store
   return $Donations;
 
-  // TODO: Prod: Fetch donation list from server
-  // let list = [];
-  // let endpoint = "https://jsonplaceholder.typicode.com/posts"; // Get from config
+  // let list = [],
+  //     url = `${$Configuration.donorApiDomain}/donations`;
   //
-  // const response = await fetch(endpoint);
+  // const response = await fetch(url);
   // list = await response.json();
   // return list;
 }

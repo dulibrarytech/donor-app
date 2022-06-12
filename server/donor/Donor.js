@@ -1,3 +1,7 @@
+/*
+ * Donor model
+ */
+
 'use strict'
 
 const database = require('../libs/database.js');
@@ -42,11 +46,11 @@ module.exports = (() => {
       INNER JOIN tbl_donortitle_lkup Titles ON Donors.titleID=Titles.titleID;`
   }
 
-  const DonorsModel = new Model(database, queries);
+  const DonorModel = new Model(database, queries);
 
   const getAllDonors = () => {
     return new Promise((resolve, reject) => {
-      DonorsModel.execute_query('get_all')
+      DonorModel.execute_query('get_all')
       .then(
         function(donors) {
           resolve(donors)

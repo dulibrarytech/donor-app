@@ -118,7 +118,6 @@ export const Donations = writable([
   {
     id: 4,
     donorId: 1,
-    anonymous: 1,
     lastName: "Anonymous",
     organization: "",
     dateOfGift: "2022-05-01T12:15:10",
@@ -132,7 +131,6 @@ export const Donations = writable([
   {
     id: 5,
     donorId: 1,
-    anonymous: 1,
     lastName: "Anonymous",
     organization: "",
     dateOfGift: "2022-03-01T12:15:10",
