@@ -1,19 +1,25 @@
 'use strict'
 
+const mysql = require('mysql');
+
 class Model {
   constructor(database_handle=null, queries={}) {
     this.database_handle = database_handle;
     this.queries = queries;
   }
 
-  get_query(query_key="") {
-    let query = this.queries[query_key];
-    return typeof query == 'undefined' ? "" : query;
-  }
+  execute_query(query_key="", params=[]) {
+    let query = this.queries[query_key] || "";
+    // let response = {
+    //   flags: {},
+    //   data: []
+    // };
 
-  execute_query(query_key="") {
-    let query = this.get_query(query_key);
-    let items = [];
+    if(params.length > 0) {
+      query = mysql.format(query, params);
+    }
+
+    console.log("Model gets query request: query data:", query)
 
     return new Promise((resolve, reject) => {
       this.database_handle.getConnection((error, connection) => {
@@ -25,8 +31,15 @@ class Model {
               reject(error)
             }
             else {
-              items = results;
-              resolve(items);
+              console.log("Model Results", results)
+
+              // TODO process response fields. InsertId, affectedRows, serverStatus (check on npm docs). Throw error if server status not ok.
+              // TODO If no fields, it is a get response array.
+              // Only get requests will return data[]
+              // Other requests, data is [], fields are present.
+              // Module model gets this response object
+
+              resolve(results);
             }
             connection.release();
           });

@@ -48,8 +48,6 @@ module.exports = (() => {
       ON Gifts.donorID=Donors.donorID;`
   }
 
-  console.log(queries.get_all)
-
   const DonationModel = new Model(database, queries);
 
   const getAllDonations = () => {
