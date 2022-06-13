@@ -10,10 +10,10 @@ class Model {
 
   execute_query(query_key="", params=[]) {
     let query = this.queries[query_key] || "";
-    // let response = {
-    //   flags: {},
-    //   data: []
-    // };
+    let response = {
+      flags: {},
+      data: []
+    };
 
     if(params.length > 0) {
       query = mysql.format(query, params);
@@ -31,15 +31,16 @@ class Model {
               reject(error)
             }
             else {
-              console.log("Model Results", results)
-
-              // TODO process response fields. InsertId, affectedRows, serverStatus (check on npm docs). Throw error if server status not ok.
-              // TODO If no fields, it is a get response array.
-              // Only get requests will return data[]
-              // Other requests, data is [], fields are present.
-              // Module model gets this response object
-
-              resolve(results);
+              if(typeof results.insertId != 'undefined') {
+                response.flags["insertId"] = results.insertId;
+              }
+              if(typeof results.affectedRows != 'undefined') {
+                response.flags["affectedRows"] = results.affectedRows;
+              }
+              if(typeof results.length != 'undefined') {
+                response.data = results;
+              }
+              resolve(response);
             }
             connection.release();
           });

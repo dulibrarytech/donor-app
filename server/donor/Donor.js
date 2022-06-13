@@ -152,7 +152,6 @@ module.exports = (() => {
       DonorModel.execute_query('put_donor', [...sqlFields, id])
       .then(
         (response) => {
-          console.log("Put Response", response)
           // Check if affected rows is 1
           resolve(response)
         },
