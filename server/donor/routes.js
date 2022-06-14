@@ -20,8 +20,9 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    console.log("POST /donor")
-    donorController.donorPost(req, res);
+    console.log("POST /donor", req)
+    //donorController.donorPost(req, res);
+    res.send("ok");
 });
 
 router.put('/:id', async (req, res) => {

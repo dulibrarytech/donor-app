@@ -20,8 +20,8 @@ exports.donationGet = (req, res) => {
   let id = req.params.id ?? "";
   Donation.getDonation(id)
   .then(
-    function(response) {
-      res.send(JSON.stringify(response))
+    function(data) {
+      res.send(JSON.stringify(data))
     },
     function(error) {
       console.error(error)
@@ -38,8 +38,8 @@ exports.donationPut = (req, res) => {
 
   Donation.putDonation(id, data)
   .then(
-    function(response) {
-      res.send(JSON.stringify(response))
+    function(data) {
+      res.send(JSON.stringify(data))
     },
     function(error) {
       console.error(error)
@@ -55,8 +55,8 @@ exports.donationPost = (req, res) => {
 
   Donation.postDonation(data)
   .then(
-    function(response) {
-      res.send(JSON.stringify(response))
+    function(data) {
+      res.send(JSON.stringify(data))
     },
     function(error) {
       console.error(error)

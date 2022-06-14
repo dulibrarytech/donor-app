@@ -111,7 +111,7 @@ module.exports = (() => {
       DonorModel.execute_query('get_all')
       .then(
         (response) => {
-          resolve(response)
+          resolve(response.data)
         },
         (error) => reject(error)
       );
@@ -123,7 +123,7 @@ module.exports = (() => {
       DonorModel.execute_query('get_donor', [id])
       .then(
         (response) => {
-          resolve(response)
+          resolve(response.data)
         },
         (error) => reject(error)
       );
@@ -152,8 +152,8 @@ module.exports = (() => {
       DonorModel.execute_query('put_donor', [...sqlFields, id])
       .then(
         (response) => {
-          // Check if affected rows is 1
-          resolve(response)
+          // Check if affected rows is 1. Return the ID
+          resolve(response.data)
         },
         (error) => reject(error)
       );
@@ -183,7 +183,7 @@ module.exports = (() => {
       .then(
         (response) => {
           // TODO check for insert id
-          resolve(response)
+          resolve(response.data)
         },
         (error) => reject(error)
       );
@@ -196,7 +196,7 @@ module.exports = (() => {
       .then(
         (response) => {
           // TODO check if affected rows is 1. First test array/object?
-          resolve(response)
+          resolve(response.data)
         },
         (error) => reject(error)
       );

@@ -5,8 +5,8 @@ const Donor = require("./Donor");
 exports.donors = (req, res) => {
   Donor.getAllDonors()
   .then(
-    function(response) {
-      res.send(JSON.stringify(response))
+    function(data) {
+      res.send(JSON.stringify(data))
     },
     function(error) {
       console.error(error)
@@ -19,8 +19,8 @@ exports.donorGet = (req, res) => {
   let id = req.params.id ?? "";
   Donor.getDonor(id)
   .then(
-    function(response) {
-      res.send(JSON.stringify(response))
+    function(data) {
+      res.send(JSON.stringify(data))
     },
     function(error) {
       console.error(error)
@@ -37,8 +37,8 @@ exports.donorPut = (req, res) => {
 
   Donor.putDonor(id, data)
   .then(
-    function(response) {
-      res.send(JSON.stringify(response))
+    function(data) {
+      res.send(JSON.stringify(data))
     },
     function(error) {
       console.error(error)
@@ -54,8 +54,8 @@ exports.donorPost = (req, res) => {
 
   Donor.postDonor(data)
   .then(
-    function(response) {
-      res.send(JSON.stringify(response))
+    function(data) {
+      res.send(JSON.stringify(data))
     },
     function(error) {
       console.error(error)

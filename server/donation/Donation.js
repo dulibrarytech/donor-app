@@ -101,7 +101,7 @@ module.exports = (() => {
             bypassLetter
           )
           VALUES (?,?,?,?,?,?,?);
-          
+
           INSERT INTO tbl_donorgiftdescriptions (
             giftsID,
             giftDescription1,
@@ -124,7 +124,7 @@ module.exports = (() => {
           console.log("all Donations:", response)
           // TODO: Updates for Model response objecr
           //resolve(response.data)
-          resolve(donations)
+          resolve(response.data)
         },
         (error) => {
           reject(error);
@@ -139,7 +139,7 @@ module.exports = (() => {
       .then(
         (response) => {
           console.log("get Donation:", response)
-          resolve(response)
+          resolve(response.data)
         },
         (error) => reject(error)
       );
@@ -169,7 +169,7 @@ module.exports = (() => {
         (response) => {
           // Check if affected rows is 1
           console.log("put Donation:", response)
-          resolve(response)
+          resolve(response.data)
         },
         (error) => reject(error)
       );
@@ -202,7 +202,7 @@ module.exports = (() => {
         (response) => {
           // TODO check for insert id
           console.log("post Donation:", response)
-          resolve(response)
+          resolve(response.data)
         },
         (error) => reject(error)
       );
@@ -216,7 +216,7 @@ module.exports = (() => {
         (response) => {
           // TODO check if affected rows is 1. First test array/object?
           console.log("delete Donation:", response)
-          resolve(response)
+          resolve(response.data)
         },
         (error) => reject(error)
       );
