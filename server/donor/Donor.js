@@ -62,7 +62,7 @@ module.exports = (() => {
         Donors.Country AS       ${map.Country}
       FROM tbl_donorinfo Donors
       INNER JOIN tbl_donortitle_lkup Titles ON Donors.titleID=Titles.titleID
-      WHERE Donors.donorID = ?`,
+      WHERE Donors.donorID = ?;`,
 
     'put_donor': `
       UPDATE tbl_donorinfo Donors

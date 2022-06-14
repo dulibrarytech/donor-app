@@ -25,12 +25,12 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-    console.log("PUT /donor")
+    console.log("PUT /donor/:id")
     donorController.donorPut(req, res);
 });
 
 router.delete('/:id', async (req, res) => {
-    console.log("DELETE /donor")
+    console.log("DELETE /donor/:id")
     donorController.donorDelete(req, res);
 });
 
