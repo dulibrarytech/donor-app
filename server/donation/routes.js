@@ -14,6 +14,11 @@ router.get('/', async (req, res) => {
   donationController.donations(req, res);
 });
 
+router.get('/donor/:donorId', async (req, res) => {
+  console.log("GET /donation/donor/:donorId")
+  donationController.donorDonations(req, res);
+});
+
 router.get('/:id', async (req, res) => {
   console.log("GET /donation/:id")
   donationController.donationGet(req, res);

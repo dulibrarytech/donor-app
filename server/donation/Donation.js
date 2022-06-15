@@ -49,8 +49,24 @@ module.exports = (() => {
       INNER JOIN tbl_donorinfo Donors
       ON Gifts.donorID=Donors.donorID;`,
 
-      'get_donation': `
+      'get_donor_donations': `
 
+        SELECT
+          Gifts.Cdate AS                    ${map.Cdate},
+          Gifts.dateOfGift AS               ${map.dateOfGift},
+          Gifts.numberOfGifts AS            ${map.numberOfGifts},
+          Gifts.important AS                ${map.important},
+          Gifts.letter AS                   ${map.letter},
+          Gifts.bypassLetter AS             ${map.bypassLetter},
+          Descriptions.giftDescription1 AS  ${map.giftDescription1},
+          Descriptions.giftDetails AS       ${map.giftDetails}
+
+          FROM tbl_donorgifts Gifts
+          LEFT JOIN tbl_donorgiftdescriptions Descriptions
+          ON Gifts.giftsID=Descriptions.giftsID
+          WHERE Gifts.donorID = ?;`,
+
+      'get_donation': `
         SELECT
           Gifts.giftsID AS                  ${map.giftsID},
           Gifts.donorID AS                  ${map.donorID},
@@ -73,45 +89,45 @@ module.exports = (() => {
         ON Gifts.donorID=Donors.donorID
         WHERE Gifts.giftsID = ?;`,
 
-        'put_donation': `
-          UPDATE tbl_donorgifts Gifts
-          SET
-            Cdate = ?,
-            dateOfGift = ?,
-            numberOfGifts = ?,
-            important = ?,
-            letter = ?,
-            bypassLetter = ?
-          WHERE Gifts.giftsId = ?;
+      'put_donation': `
+        UPDATE tbl_donorgifts Gifts
+        SET
+          Cdate = ?,
+          dateOfGift = ?,
+          numberOfGifts = ?,
+          important = ?,
+          letter = ?,
+          bypassLetter = ?
+        WHERE Gifts.giftsId = ?;
 
-          UPDATE tbl_donorgiftdescriptions Descriptions
-          SET
-            giftDescription1 = ?,
-            giftDetails = ?
-          WHERE Descriptions.giftsId = ?;`,
+        UPDATE tbl_donorgiftdescriptions Descriptions
+        SET
+          giftDescription1 = ?,
+          giftDetails = ?
+        WHERE Descriptions.giftsId = ?;`,
 
-        'post_donation': `
-          INSERT INTO tbl_donorgifts (
-            donorID,
-            Cdate,
-            dateOfGift,
-            numberOfGifts,
-            important,
-            letter,
-            bypassLetter
-          )
-          VALUES (?,?,?,?,?,?,?);
+      'post_donation': `
+        INSERT INTO tbl_donorgifts (
+          donorID,
+          Cdate,
+          dateOfGift,
+          numberOfGifts,
+          important,
+          letter,
+          bypassLetter
+        )
+        VALUES (?,?,?,?,?,?,?);
 
-          INSERT INTO tbl_donorgiftdescriptions (
-            giftsID,
-            giftDescription1,
-            giftDetails
-          )
-          VALUES ((SELECT MAX( giftsID ) FROM tbl_donorgifts),?,?);`,
+        INSERT INTO tbl_donorgiftdescriptions (
+          giftsID,
+          giftDescription1,
+          giftDetails
+        )
+        VALUES ((SELECT MAX( giftsID ) FROM tbl_donorgifts),?,?);`,
 
-        'delete_donation': `
-          DELETE FROM tbl_donorgifts WHERE giftsID = ?;
-          DELETE FROM tbl_donorgiftdescriptions WHERE giftsID = ?;`
+      'delete_donation': `
+        DELETE FROM tbl_donorgifts WHERE giftsID = ?;
+        DELETE FROM tbl_donorgiftdescriptions WHERE giftsID = ?;`
   }
 
   const DonationModel = new Model(database, queries);
@@ -124,10 +140,23 @@ module.exports = (() => {
           resolve(response.data)
         },
         (error) => {
-          {
-            console.log(`Error retrieving donations: ${error}`);
-            reject(error);
-          }
+          console.log(`Error retrieving donations: ${error}`);
+          reject(error);
+        }
+      );
+    });
+  }
+
+  const getDonorDonations = (donorId) => {
+    return new Promise((resolve, reject) => {
+      DonationModel.execute_query('get_donor_donations', [donorId])
+      .then(
+        (response) => {
+          resolve(response.data)
+        },
+        (error) => {
+          console.log(`Error retrieving donor donations: ${error}`);
+          reject(error);
         }
       );
     });
@@ -183,7 +212,7 @@ module.exports = (() => {
     data[map.bypassLetter] = 0;
 
     let giftFields = [
-      parseInt(data[map.donorID],
+      parseInt(data[map.donorID]),
       data[map.Cdate],
       data[map.dateOfGift],
       parseInt(data[map.numberOfGifts]),
@@ -227,6 +256,7 @@ module.exports = (() => {
 
   return {
     getAllDonations,
+    getDonorDonations,
     getDonation,
     putDonation,
     postDonation,

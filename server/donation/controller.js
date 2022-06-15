@@ -14,6 +14,19 @@ exports.donations = (req, res) => {
   );
 }
 
+exports.donorDonations = (req, res) => {
+  let donorId = req.params.donorId ?? "";
+  Donation.getDonorDonations(donorId)
+  .then(
+    function(data) {
+      res.send(JSON.stringify(data))
+    },
+    function(error) {
+      res.sendStatus(500)
+    }
+  );
+}
+
 exports.donationGet = (req, res) => {
   let id = req.params.id ?? "";
   Donation.getDonation(id)

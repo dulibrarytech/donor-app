@@ -8,27 +8,26 @@ class Model {
     this.queries = queries;
   }
 
-  // sanitize_data(data=[]) {
-  //   for(let value of data) {
-  //     // TODO: Sanitize fields, remove ;
-  //   }
-  // }
+  sanitize_data(data=[]) {
+    // for(let value of data) {
+    //   // TODO: Sanitize fields, remove ;
+    // }
+    return data;
+  }
 
   execute_query(query_key="", params=[]) {
-    let query = this.queries[query_key] || "";
-    let response = {
-      flags: {},
-      data: []
-    };
-
-    if(params.length > 0) {
-      params = this.sanitize_data(params);
-      query = mysql.format(query, params);
-    }
-
-    console.log("Model gets query request: query data:", query)
-
     return new Promise((resolve, reject) => {
+      let query = this.queries[query_key] || "";
+      let response = {
+        flags: {},
+        data: []
+      };
+
+      if(params.length > 0) {
+        params = this.sanitize_data(params);
+        query = mysql.format(query, params);
+      }
+
       this.database_handle.getConnection((error, connection) => {
         try {
           if(error) throw new Error(`Error connecting to database: ${error}`);
