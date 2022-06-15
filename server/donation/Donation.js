@@ -152,10 +152,10 @@ module.exports = (() => {
     let giftFields = [
       data[map.Cdate],
       data[map.dateOfGift],
-      data[map.numberOfGifts],
-      data[map.important],
-      data[map.letter],
-      data[map.bypassLetter]
+      parseInt(data[map.numberOfGifts]),
+      parseInt(data[map.important]),
+      parseInt(data[map.letter]),
+      parseInt(data[map.bypassLetter])
     ]
 
     let giftDescriptionsFields = [
@@ -177,20 +177,17 @@ module.exports = (() => {
   }
 
   const postDonation = (data) => {
-    console.log("Data in:", data)
     data[map.bypassLetter] = 0;
 
     let giftFields = [
-      data[map.donorID],
+      parseInt(data[map.donorID],
       data[map.Cdate],
       data[map.dateOfGift],
-      data[map.numberOfGifts],
-      data[map.important],
-      data[map.letter],
-      data[map.bypassLetter]
+      parseInt(data[map.numberOfGifts]),
+      parseInt(data[map.important]),
+      parseInt(data[map.letter]),
+      parseInt(data[map.bypassLetter])
     ]
-
-    console.log("giftFields:", giftFields)
 
     let giftDescriptionsFields = [
       data[map.giftDescription1],

@@ -8,6 +8,12 @@ class Model {
     this.queries = queries;
   }
 
+  // sanitize_data(data=[]) {
+  //   for(let value of data) {
+  //     // TODO: Sanitize fields, remove ;
+  //   }
+  // }
+
   execute_query(query_key="", params=[]) {
     let query = this.queries[query_key] || "";
     let response = {
@@ -16,6 +22,7 @@ class Model {
     };
 
     if(params.length > 0) {
+      params = this.sanitize_data(params);
       query = mysql.format(query, params);
     }
 

@@ -113,7 +113,10 @@ module.exports = (() => {
         (response) => {
           resolve(response.data)
         },
-        (error) => reject(error)
+        (error) => {
+          console.log(`Error retrieving donors: ${error}`);
+          reject(error);
+        }
       );
     });
   }
@@ -125,7 +128,10 @@ module.exports = (() => {
         (response) => {
           resolve(response.data)
         },
-        (error) => reject(error)
+        (error) => {
+          console.log(`Error retrieving donor: ${error}`);
+          reject(error);
+        }
       );
     });
   }
@@ -134,7 +140,7 @@ module.exports = (() => {
     data[map.anonymous] = 0;
 
     let sqlFields = [
-      data[map.titleID],
+      parseInt(data[map.titleID]),
       data[map.FirstName],
       data[map.LastName],
       data[map.Address1],
@@ -145,7 +151,7 @@ module.exports = (() => {
       data[map.phone],
       data[map.email],
       data[map.Organization],
-      data[map.anonymous],
+      parseInt(data[map.anonymous]),
       data[map.Country]
     ]
     return new Promise((resolve, reject) => {
@@ -155,7 +161,10 @@ module.exports = (() => {
           // Check if affected rows is 1. Return the ID
           resolve(response.data)
         },
-        (error) => reject(error)
+        (error) => {
+          console.log(`Error updating donor: ${error}`);
+          reject(error);
+        }
       );
     });
   }
@@ -185,7 +194,10 @@ module.exports = (() => {
           // TODO check for insert id
           resolve(response.data)
         },
-        (error) => reject(error)
+        (error) => {
+          console.log(`Error creating donor record: ${error}`);
+          reject(error);
+        }
       );
     });
   }
@@ -198,7 +210,10 @@ module.exports = (() => {
           // TODO check if affected rows is 1. First test array/object?
           resolve(response.data)
         },
-        (error) => reject(error)
+        (error) => {
+          console.log(`Error deleting donor: ${error}`);
+          reject(error);
+        }
       );
     });
   }
