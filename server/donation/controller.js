@@ -6,11 +6,9 @@ exports.donations = (req, res) => {
   Donation.getAllDonations()
   .then(
     function(data) {
-      console.log("C Rx data:", data)
       res.send(JSON.stringify(data))
     },
     function(error) {
-      console.error(error)
       res.sendStatus(500)
     }
   );
@@ -24,7 +22,6 @@ exports.donationGet = (req, res) => {
       res.send(JSON.stringify(data))
     },
     function(error) {
-      console.error(error)
       res.sendStatus(500)
     }
   );
@@ -42,7 +39,6 @@ exports.donationPut = (req, res) => {
       res.send(JSON.stringify(data))
     },
     function(error) {
-      console.error(error)
       res.sendStatus(500)
     }
   );
@@ -59,7 +55,6 @@ exports.donationPost = (req, res) => {
       res.send(JSON.stringify(data))
     },
     function(error) {
-      console.error(error)
       res.sendStatus(500)
     }
   );
@@ -73,7 +68,6 @@ exports.donationDelete = (req, res) => {
       res.send(JSON.stringify(response))
     },
     function(error) {
-      console.error(error)
       res.sendStatus(500)
     }
   );

@@ -121,13 +121,13 @@ module.exports = (() => {
       DonationModel.execute_query('get_all')
       .then(
         (response) => {
-          console.log("all Donations:", response)
-          // TODO: Updates for Model response objecr
-          //resolve(response.data)
           resolve(response.data)
         },
         (error) => {
-          reject(error);
+          {
+            console.log(`Error retrieving donations: ${error}`);
+            reject(error);
+          }
         }
       );
     });
@@ -138,10 +138,12 @@ module.exports = (() => {
       DonationModel.execute_query('get_donation', [id])
       .then(
         (response) => {
-          console.log("get Donation:", response)
           resolve(response.data)
         },
-        (error) => reject(error)
+        (error) => {
+          console.log(`Error retrieving donation: ${error}`);
+          reject(error);
+        }
       );
     });
   }
@@ -167,11 +169,12 @@ module.exports = (() => {
       DonationModel.execute_query('put_donation', [...giftFields, id, ...giftDescriptionsFields, id])
       .then(
         (response) => {
-          // Check if affected rows is 1
-          console.log("put Donation:", response)
           resolve(response.data)
         },
-        (error) => reject(error)
+        (error) => {
+          console.log(`Error updating donation: ${error}`);
+          reject(error);
+        }
       );
     });
   }
@@ -197,11 +200,12 @@ module.exports = (() => {
       DonationModel.execute_query('post_donation', [...giftFields, ...giftDescriptionsFields])
       .then(
         (response) => {
-          // TODO check for insert id
-          console.log("post Donation:", response)
           resolve(response.data)
         },
-        (error) => reject(error)
+        (error) => {
+          console.log(`Error creating donation record: ${error}`);
+          reject(error);
+        }
       );
     });
   }
@@ -211,11 +215,12 @@ module.exports = (() => {
       DonationModel.execute_query('delete_donation', [id])
       .then(
         (response) => {
-          // TODO check if affected rows is 1. First test array/object?
-          console.log("delete Donation:", response)
           resolve(response.data)
         },
-        (error) => reject(error)
+        (error) => {
+          console.log(`Error deleting donation: ${error}`);
+          reject(error);
+        }
       );
     });
   }

@@ -10,27 +10,28 @@ router.use((req, res, next) => {
 })
 
 router.get('/', async (req, res) => {
-    donationController.donations(req, res);
+  console.log("GET /donation")
+  donationController.donations(req, res);
 });
 
 router.get('/:id', async (req, res) => {
-    console.log("GET /donation/:id")
-    donationController.donationGet(req, res);
+  console.log("GET /donation/:id")
+  donationController.donationGet(req, res);
 });
 
 router.post('/', async (req, res) => {
-    console.log("POST /donation")
-    donationController.donationPost(req, res);
+  console.log("POST /donation")
+  donationController.donationPost(req, res);
 });
 
 router.put('/:id', async (req, res) => {
-    console.log("PUT /donation/:id")
-    donationController.donationPut(req, res);
+  console.log("PUT /donation/:id")
+  donationController.donationPut(req, res);
 });
 
 router.delete('/:id', async (req, res) => {
-    console.log("DELETE /donation/:id")
-    donationController.donationDelete(req, res);
+  console.log("DELETE /donation/:id")
+  donationController.donationDelete(req, res);
 });
 
 module.exports = router;

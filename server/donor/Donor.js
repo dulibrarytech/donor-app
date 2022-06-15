@@ -158,7 +158,6 @@ module.exports = (() => {
       DonorModel.execute_query('put_donor', [...sqlFields, id])
       .then(
         (response) => {
-          // Check if affected rows is 1. Return the ID
           resolve(response.data)
         },
         (error) => {
@@ -191,7 +190,6 @@ module.exports = (() => {
       DonorModel.execute_query('post_donor', sqlFields)
       .then(
         (response) => {
-          // TODO check for insert id
           resolve(response.data)
         },
         (error) => {
@@ -207,7 +205,6 @@ module.exports = (() => {
       DonorModel.execute_query('delete_donor', [id])
       .then(
         (response) => {
-          // TODO check if affected rows is 1. First test array/object?
           resolve(response.data)
         },
         (error) => {

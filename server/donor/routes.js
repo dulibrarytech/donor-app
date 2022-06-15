@@ -11,28 +11,27 @@ router.use((req, res, next) => {
 
 router.get('/', async (req, res) => {
   console.log("GET /donor")
-    donorController.donors(req, res);
+  donorController.donors(req, res);
 });
 
 router.get('/:id', async (req, res) => {
-    console.log("GET /donor/:id")
-    donorController.donorGet(req, res);
+  console.log("GET /donor/:id")
+  donorController.donorGet(req, res);
 });
 
 router.post('/', async (req, res) => {
-    console.log("POST /donor", req)
-    //donorController.donorPost(req, res);
-    res.send("ok");
+  console.log("POST /donor", req.body)
+  donorController.donorPost(req, res);
 });
 
 router.put('/:id', async (req, res) => {
-    console.log("PUT /donor/:id")
-    donorController.donorPut(req, res);
+  console.log("PUT /donor/:id")
+  donorController.donorPut(req, res);
 });
 
 router.delete('/:id', async (req, res) => {
-    console.log("DELETE /donor/:id")
-    donorController.donorDelete(req, res);
+  console.log("DELETE /donor/:id")
+  donorController.donorDelete(req, res);
 });
 
 module.exports = router;
