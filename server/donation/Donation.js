@@ -50,8 +50,8 @@ module.exports = (() => {
       ON Gifts.donorID=Donors.donorID;`,
 
       'get_donor_donations': `
-
         SELECT
+          Gifts.giftsID AS                  ${map.giftsID},
           Gifts.Cdate AS                    ${map.Cdate},
           Gifts.dateOfGift AS               ${map.dateOfGift},
           Gifts.numberOfGifts AS            ${map.numberOfGifts},
