@@ -1,12 +1,10 @@
 <script>
+  import { ajaxRequest } from '../libs/ajax.js';
+  import { Configuration } from '../config';
   import PageTitleLabel from "../components/PageTitleLabel.svelte";
   import DonorForm from "../components/DonorForm.svelte";
   import DataDisplay from "../components/DataDisplay.svelte";
   import DonationTable from "../components/DonationTable.svelte";
-
-  // Dev - test data
-  import { Donors } from '../stores';
-  import { Donations } from '../stores';
 
   export let params;
 
@@ -16,28 +14,33 @@
   var pageLabel = "";
 
   const fetchDonorData = (id) => {
-    let data = null;
+    return new Promise((resolve, reject) => {
+      let data = null;
+      let url = `${$Configuration.donorApiDomain}/donor/${id}`;
 
-    // Dev
-    let tmpArray = $Donors.filter(donor => {
-      return donor.id == id;
-    })
-    data = tmpArray[0] || null;
-
-    // Prod TODO: fetch data assn to data [] Server sends this data structure (crosswalk from db fields done on backend) GET donor/:id
-
-    return data;
+      ajaxRequest('GET', url, function(error, response) {
+        if(error) reject(error);
+        if(response) {
+          // TODO: Handle status != 200
+          resolve(response.json());
+        }
+      });
+    });
   }
 
   const fetchDonorDonations = (id) => {
-    let data = null;
+    return new Promise((resolve, reject) => {
+      let data = null;
+      let url = `${$Configuration.donorApiDomain}/donation/donor/${id}`;
 
-    // Dev
-    return $Donations;
-
-    // Prod TODO: fetch gift data from server GET /donor/:id/gifts
-
-    return data;
+      ajaxRequest('GET', url, function(error, response) {
+        if(error) reject(error);
+        if(response) {
+          // TODO: Handle status != 200
+          resolve(response.json());
+        }
+      });
+    });
   }
 
   const getPageLabel = ({firstName="", lastName="", organization=""}) => {
@@ -56,16 +59,14 @@
     return label;
   }
 
-  const init = () => {
+  const init = async () => {
     if(donorId) {
-      donorData = fetchDonorData(donorId);
+      donorData = await fetchDonorData(donorId);
 
       if(donorData) {
-        /* Set page label to donor name or organization */
         pageLabel = getPageLabel(donorData);
 
-        /* Get donations recieved from this donor, add to display */
-        let donationData = fetchDonorDonations(donorId);
+        let donationData = await fetchDonorDonations(donorId);
         if(donationData) donationDisplay = donationData;
       }
       else {
