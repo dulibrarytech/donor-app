@@ -1,4 +1,6 @@
 <script>
+  import { ajaxRequest } from '../libs/ajax.js';
+  import { Configuration } from '../config';
   import PageTitleLabel from "../components/PageTitleLabel.svelte";
   import DonationForm from "../components/DonationForm.svelte";
   import DataDisplay from "../components/DataDisplay.svelte";
@@ -8,22 +10,23 @@
 
   export let params;
 
-  const donationId = params.donationId ?? null;
+  const donationId = params.id ?? null;
   var donationData = {};
   var pageLabel = "";
 
   const fetchDonationData = (id) => {
-    let data = null;
+    return new Promise((resolve, reject) => {
+      let data = null;
+      let url = `${$Configuration.donorApiDomain}/donation/${id}`;
 
-    // Dev
-    let tmpArray = $Donations.filter(donation => {
-      return donation.id == id;
-    })
-    data = tmpArray[0] || null;
-
-    // Prod TODO: fetch data assn to data [] Server sends this data structure (crosswalk from db fields done on backend) GET donor/:id
-
-    return data;
+      ajaxRequest('GET', url, function(error, response) {
+        if(error) reject(error);
+        if(response) {
+          // TODO: Handle status != 200
+          resolve(response.json());
+        }
+      });
+    });
   }
 
   const getPageLabel = ({lastName="", firstName="", organization=""}) => {
@@ -42,15 +45,10 @@
     return label;
   }
 
-  const init = () => {
+  const init = async () => {
     if(donationId) {
-      donationData = fetchDonationData(donationId);
-      console.log("Donation data:", donationData)
-
-      if(donationData) {
-        //donorId = donationData.donorId ?? null;
-
-        /* Set page label to donor name or organization */
+      donationData = await fetchDonationData(donationId);
+      if(Object.keys(donationData).length > 0) {
         pageLabel = getPageLabel(donationData);
       }
       else {

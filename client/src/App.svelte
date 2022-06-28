@@ -37,7 +37,7 @@
 		next();
 	}, () => page = Donor); // <-- next()
 
-	router('/donor/:donorId', (ctx, next) => {
+	router('/donor/:id', (ctx, next) => {
 		params = ctx.params;
 			console.log("/donor/:id Params:", params)
 		next();
@@ -55,7 +55,7 @@
 		next();
 	}, () => page = Donation);
 
-	router('/donation/:donationId', (ctx, next) => {
+	router('/donation/:id', (ctx, next) => {
 		params = ctx.params;
 			console.log("/donation/:donationId Params:", params)
 		next();

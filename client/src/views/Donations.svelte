@@ -51,7 +51,7 @@ var filters = [
 ];
 
 const init = async () => {
-  // TODO: Feedback message "Retrieving donation..." in display window, then remove after getDonationList() returns
+  // TODO: Use ajaxRequest()
   donations = await getDonationList();
   console.log("Init donations page, donations:", donations)
   showAllDonations();

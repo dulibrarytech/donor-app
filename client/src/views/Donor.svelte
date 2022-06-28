@@ -8,7 +8,7 @@
 
   export let params;
 
-  const donorId = params.donorId ?? null;
+  const donorId = params.id ?? null;
   var donorData = {};
   var donationDisplay = [];
   var pageLabel = "";
@@ -62,8 +62,7 @@
   const init = async () => {
     if(donorId) {
       donorData = await fetchDonorData(donorId);
-
-      if(donorData) {
+      if(Object.keys(donorData).length > 0) {
         pageLabel = getPageLabel(donorData);
 
         let donationData = await fetchDonorDonations(donorId);

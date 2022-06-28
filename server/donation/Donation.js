@@ -167,7 +167,9 @@ module.exports = (() => {
       DonationModel.execute_query('get_donation', [id])
       .then(
         (response) => {
-          resolve(response.data)
+          console.log("Direct response from DB:", response)
+          if(response.data.length > 0) resolve(response.data[0])
+          else resolve({})
         },
         (error) => {
           console.log(`Error retrieving donation: ${error}`);

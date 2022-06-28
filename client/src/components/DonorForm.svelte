@@ -29,25 +29,27 @@
   }
 
   const sanitizeFormData = (data) => {
-    // TODO map array, perform sanitization on each value
+    // TODO: map array, perform sanitization on each value
     return data;
   }
 
   const onSubmitDonorForm = () => {
-    console.log("On submit: method/action:", method, action)
-    // TODO: Initiate feedback "Submitting..."
-    let formData = sanitizeFormData(data); // test
-    //let formData = sanitizeFormData({title, firstName, lastName, organization, address1, address2, city, state, postalCode, country, phone, email});
+    let message = "Submitting...";
     ajaxRequest(method, action, function(error, response, status) {
-      let message = "Error sending data";
-      if(error) console.error("Error:", error);
-      else if(status != 200) console.log("Response status: ", status);
+      if(error) {
+        console.error("Error:", error);
+        message = "Error";
+      }
+      else if(status != 200) {
+        console.log("Response status: ", status);
+        message = "Error";
+      }
       else {
         message = "New donor created";
       }
 
       // TODO: Initiate feedback (message)
-    }, formData);
+    }, sanitizeFormData(data));
   }
 </script>
 

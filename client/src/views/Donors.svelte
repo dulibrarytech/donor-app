@@ -25,8 +25,10 @@
     let list = [],
         url = `${$Configuration.donorApiDomain}/donor`;
 
+    // TODO: Use ajaxRequest()
     const response = await fetch(url);
     list = await response.json();
+    console.log("List", list)
     return list;
   }
 

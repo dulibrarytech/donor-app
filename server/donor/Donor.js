@@ -126,7 +126,8 @@ module.exports = (() => {
       DonorModel.execute_query('get_donor', [id])
       .then(
         (response) => {
-          resolve(response.data[0])
+          if(response.data.length > 0) resolve(response.data[0])
+          else resolve({})
         },
         (error) => {
           console.log(`Error retrieving donor: ${error}`);
