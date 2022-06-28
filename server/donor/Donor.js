@@ -155,10 +155,13 @@ module.exports = (() => {
       parseInt(data[map.anonymous]),
       data[map.Country]
     ]
+    console.log("Sql fields", sqlFields)
     return new Promise((resolve, reject) => {
       DonorModel.execute_query('put_donor', [...sqlFields, id])
       .then(
         (response) => {
+          console.log("DB Response", response)
+          console.log("DB Response body:", response.body)
           resolve(response.data)
         },
         (error) => {
