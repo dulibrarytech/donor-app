@@ -28,28 +28,31 @@
     buttonText = "Update";
   }
 
-  const sanitizeFormData = (data) => {
-    // TODO: map array, perform sanitization on each value
-    return data;
+  const validateFormFields = () => {
+    let isValid = false;
+    // TODO: Custom validation for each data field. If fail, set field input red and add feedback.
+    return true;
   }
 
-  const onSubmitDonorForm = () => {
-    let message = "Submitting...";
-    ajaxRequest(method, action, function(error, response, status) {
-      if(error) {
-        console.error("Error:", error);
-        message = "Error";
-      }
-      else if(status != 200) {
-        console.log("Response status: ", status);
-        message = "Error";
-      }
-      else {
-        message = "New donor created";
-      }
+  const onSubmitForm = () => {
+    if(validateFormFields()) {
+      let message = "Submitting...";
+      ajaxRequest(method, action, function(error, response, status) {
+        if(error) {
+          console.error("Error:", error);
+          message = "Error";
+        }
+        else if(status != 200) {
+          console.log("Response status: ", status);
+          message = "Error";
+        }
+        else {
+          message = "New donor created";
+        }
 
-      // TODO: Initiate feedback (message)
-    }, sanitizeFormData(data));
+        // TODO: Initiate feedback (message)
+      }, data);
+    }
   }
 </script>
 
@@ -96,7 +99,7 @@
     </div>
   </div>
 
-  <button class="btn btn-default" id="update-data-button" type="submit" on:click|preventDefault={onSubmitDonorForm}>{buttonText}</button> <!-- TODO: on:click|preventDefault={onSubmitDonorForm} to add validation -->
+  <button class="btn btn-default" id="update-data-button" type="submit" on:click|preventDefault={onSubmitForm}>{buttonText}</button> <!-- TODO: on:click|preventDefault={onSubmitDonorForm} to add validation -->
 </form>
 
 <style>

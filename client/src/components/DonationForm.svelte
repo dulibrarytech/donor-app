@@ -1,4 +1,7 @@
 <script>
+  import {Configuration} from '../config';
+  import {ajaxRequest} from '../libs/ajax.js';
+
   export let data = {
     donorId: null,
     firstName: "",
@@ -14,15 +17,46 @@
   export let donationId;
 
   let method = "post";
-  let action = "/donations";
+  let action = `${$Configuration.donorApiDomain}/donation`;
   let buttonText = "Add Donation";
   let statusDisplay = null;
+
+  // Form select controls
   let typeSelect = data.important && data.important == 1 ? "important" : "standard";
+  $: data.important = typeSelect == "important" ? 1 : 0;
 
   if(donationId) {
     method = "put";
+    action = `${$Configuration.donorApiDomain}/donation/${donationId}`;
     buttonText = "Update";
     statusDisplay = data.letter && data.letter == 1 ? "Pending" : "Complete";
+  }
+
+  const validateFormFields = (data) => {
+    let isValid = false;
+    // TODO: Custom validation for each data field. If fail, set field input red and add feedback.
+    return true;
+  }
+
+  const onSubmitForm = () => {
+    if(validateFormFields()) {
+      let message = "Submitting...";
+      ajaxRequest(method, action, function(error, response, status) {
+        if(error) {
+          console.error("Error:", error);
+          message = "Error";
+        }
+        else if(status != 200) {
+          console.log("Response status: ", status);
+          message = "Error";
+        }
+        else {
+          message = "New donation created";
+        }
+
+        // TODO: Initiate feedback (message)
+      }, data);
+    }
   }
 </script>
 
@@ -78,7 +112,7 @@
     </div>
   </div>
 
-  <button class="btn btn-default" type="submit">{buttonText}</button> <!-- on:click|preventDefault={onSubmitDonorForm} to add validation -->
+  <button class="btn btn-default" type="submit" on:click|preventDefault={onSubmitForm}>{buttonText}</button> <!-- on:click|preventDefault={onSubmitDonorForm} to add validation -->
   {#if donationId}
     <button class="btn btn-default" type="button">Letter</button>
     <button class="btn btn-default" type="button">View Donor Info</button>
