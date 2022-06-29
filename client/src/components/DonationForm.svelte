@@ -4,9 +4,6 @@
 
   export let data = {
     donorId: null,
-    firstName: "",
-    lastName: "",
-    organization: "",
     dateOfGift: "",
     numberOfGifts: "",
     important: 0,
@@ -66,19 +63,10 @@
       <div class="col-md-3">
         <label for="dateOfGift">Date</label>
         <input type="text" class="form-control" id="dateOfGift" bind:value={data.dateOfGift}>
-
-        <label for="lastName">Last Name</label>
-        <input type="text" class="form-control" id="lastName" bind:value={data.lastName}>
-
-        <label for="organization">Organization</label>
-        <input type="text" class="form-control" id="organization" bind:value={data.organization}>
       </div>
       <div class="col-md-6">
         <label for="numberOfGifts">Item Count</label>
         <input type="text" class="form-control" id="numberOfGifts" bind:value={data.numberOfGifts}>
-
-        <label for="firstName">First Name</label>
-        <input type="text" class="form-control" id="firstName" bind:value={data.firstName}>
       </div>
       <div class="col-md-3">
         {#if statusDisplay}
