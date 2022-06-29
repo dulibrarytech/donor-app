@@ -15,9 +15,7 @@
 
   const fetchDonorData = (id) => {
     return new Promise((resolve, reject) => {
-      let data = null;
       let url = `${$Configuration.donorApiDomain}/donor/${id}`;
-
       ajaxRequest('GET', url, function(error, response) {
         if(error) reject(error);
         if(response) {
@@ -32,7 +30,6 @@
     return new Promise((resolve, reject) => {
       let data = null;
       let url = `${$Configuration.donorApiDomain}/donation/donor/${id}`;
-
       ajaxRequest('GET', url, function(error, response) {
         if(error) reject(error);
         if(response) {

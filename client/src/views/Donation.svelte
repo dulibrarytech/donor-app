@@ -11,14 +11,27 @@
   export let params;
 
   const donationId = params.id ?? null;
+  const donorId = params.donorId ?? null;
   var donationData = {};
   var pageLabel = "";
+  var donorLabel = null;
 
   const fetchDonationData = (id) => {
     return new Promise((resolve, reject) => {
-      let data = null;
       let url = `${$Configuration.donorApiDomain}/donation/${id}`;
+      ajaxRequest('GET', url, function(error, response) {
+        if(error) reject(error);
+        if(response) {
+          // TODO: Handle status != 200
+          resolve(response.json());
+        }
+      });
+    });
+  }
 
+  const fetchDonorData = (id) => {
+    return new Promise((resolve, reject) => {
+      let url = `${$Configuration.donorApiDomain}/donor/${id}`;
       ajaxRequest('GET', url, function(error, response) {
         if(error) reject(error);
         if(response) {
@@ -55,8 +68,14 @@
         window.location.replace("/notfound");
       }
     }
-    else {
+    else if(donorId) {
       pageLabel = "New Donation";
+      let donorData = await fetchDonorData(donorId);
+      donorLabel = getPageLabel(donorData);
+      donationData.donorId = donorId;
+    }
+    else {
+      window.location.replace("/notfound"); // TODO: Error specific page. Need donorId
     }
   }
 
@@ -66,6 +85,9 @@
 <div class="page">
   <div class="donation-data-section">
     <h3>{pageLabel}</h3>
+    {#if donorLabel}
+      <h6>{donorLabel}</h6>
+    {/if}
     <svelte:component this={DonationForm} {donationId} data={donationData} />
   </div>
 </div>

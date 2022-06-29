@@ -19,8 +19,7 @@
 	let page;
 	let params;
 
-	/* Import Router.svelte, remove router defs below */
-
+	/* TODO: Import Router.svelte, remove router defs below */
 	router('/', () => {
 		window.location.replace("/donors");
 	});
@@ -49,9 +48,9 @@
 		next();
 	}, () => page = Donations);
 
-	router('/donation', (ctx, next) => {
+	router('/donation/donor/:donorId', (ctx, next) => {
 		params = ctx.params;
-			console.log("/donation Params:", params)
+			console.log("/donation/donor/:donorId Params:", params)
 		next();
 	}, () => page = Donation);
 

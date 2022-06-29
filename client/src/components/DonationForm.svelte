@@ -18,18 +18,26 @@
   let buttonText = "Add Donation";
   let statusDisplay = null;
 
-  // Form select controls
+  /* Set select/radio control state */
   let typeSelect = data.important && data.important == 1 ? "important" : "standard";
   $: data.important = typeSelect == "important" ? 1 : 0;
 
+  /* Display data for donation */
   if(donationId) {
     method = "put";
     action = `${$Configuration.donorApiDomain}/donation/${donationId}`;
     buttonText = "Update";
+
+    // Format field display TODO: Separate function?
     statusDisplay = data.letter && data.letter == 1 ? "Pending" : "Complete";
+    //data.
+  }
+  /* New donation */
+  else {
+    data.letter = 1; // TODO: Add 'bypass letter' checkbox to new donation form, sets data.letter value. Just default to 1 now for new donations
   }
 
-  const validateFormFields = (data) => {
+  const validateFormFields = () => {
     let isValid = false;
     // TODO: Custom validation for each data field. If fail, set field input red and add feedback.
     return true;

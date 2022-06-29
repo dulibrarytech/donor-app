@@ -92,7 +92,6 @@ module.exports = (() => {
       'put_donation': `
         UPDATE tbl_donorgifts Gifts
         SET
-          Cdate = ?,
           dateOfGift = ?,
           numberOfGifts = ?,
           important = ?,
@@ -180,10 +179,11 @@ module.exports = (() => {
   }
 
   const putDonation = (id, data) => {
+    // Default values
     data[map.bypassLetter] = 0;
 
+    // tbl_donorgifts fields
     let giftFields = [
-      data[map.Cdate],
       data[map.dateOfGift],
       parseInt(data[map.numberOfGifts]),
       parseInt(data[map.important]),
@@ -191,10 +191,14 @@ module.exports = (() => {
       parseInt(data[map.bypassLetter])
     ]
 
+    // tbl_donorgiftdescriptions fields
     let giftDescriptionsFields = [
       data[map.giftDescription1],
       data[map.giftDetails],
     ]
+
+    console.log("DB giftFields:", giftFields)
+    console.log("DB giftDescriptionsFields:", giftDescriptionsFields)
 
     return new Promise((resolve, reject) => {
       DonationModel.execute_query('put_donation', [...giftFields, id, ...giftDescriptionsFields, id])
@@ -211,22 +215,27 @@ module.exports = (() => {
   }
 
   const postDonation = (data) => {
+    // Default values
+    data[map.letter] = 1;
     data[map.bypassLetter] = 0;
 
+    // tbl_donorgifts field data
     let giftFields = [
       parseInt(data[map.donorID]),
-      data[map.Cdate],
+      new Date().toISOString().slice(0, 10), // TODO: New date assigned here
       data[map.dateOfGift],
       parseInt(data[map.numberOfGifts]),
       parseInt(data[map.important]),
       parseInt(data[map.letter]),
-      parseInt(data[map.bypassLetter])
+      0 // bypassLetter default value
     ]
 
+    // tbl_donorgiftdescriptions field data
     let giftDescriptionsFields = [
       data[map.giftDescription1],
       data[map.giftDetails],
     ]
+
     return new Promise((resolve, reject) => {
       DonationModel.execute_query('post_donation', [...giftFields, ...giftDescriptionsFields])
       .then(

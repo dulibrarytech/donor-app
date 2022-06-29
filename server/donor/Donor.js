@@ -5,6 +5,7 @@
 'use strict'
 
 const database = require('../libs/database.js');
+require('../libs/sanitize.js');
 const Model = require('../libs/Model.js');
 
 /* {database field} : {response data field} */
@@ -155,13 +156,26 @@ module.exports = (() => {
       parseInt(data[map.anonymous]),
       data[map.Country]
     ]
-    console.log("Sql fields", sqlFields)
+    // TODO: Data sanitization here - if not middleware function
+    // let sqlFields = sanitizeSqlFieldArray([
+    //   parseInt(data[map.titleID]),
+    //   data[map.FirstName],
+    //   data[map.LastName],
+    //   data[map.Address1],
+    //   data[map.Address2],
+    //   data[map.City],
+    //   data[map.State],
+    //   data[map.PostalCode],
+    //   data[map.phone],
+    //   data[map.email],
+    //   data[map.Organization],
+    //   parseInt(data[map.anonymous]),
+    //   data[map.Country]
+    // ]);
     return new Promise((resolve, reject) => {
       DonorModel.execute_query('put_donor', [...sqlFields, id])
       .then(
         (response) => {
-          console.log("DB Response", response)
-          console.log("DB Response body:", response.body)
           resolve(response.data)
         },
         (error) => {
