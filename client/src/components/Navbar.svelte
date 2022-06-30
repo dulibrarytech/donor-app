@@ -13,21 +13,21 @@
   }
 
   // Initialize the nav menu links, set the link to the current page as active
-  window.addEventListener('load', (event) => {
-    document.querySelectorAll(".active").forEach(link => {
-      let path = link.firstElementChild.href;
-      if(path != window.location.href) {
-        link.classList.remove("active");
-      }
-    });
-  });
+  // window.addEventListener('load', (event) => {
+  //   document.querySelectorAll(".active").forEach(link => {
+  //     let path = link.firstElementChild.href;
+  //     if(path != window.location.href) {
+  //       link.classList.remove("active");
+  //     }
+  //   });
+  // });
 </script>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       {#each routes as route}
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="{route.path}" on:click={onClickNavItem}>{route.label}</a>
         </li>
       {/each}
@@ -45,11 +45,12 @@
   a.nav-link {
     color: #383838;
   	text-decoration: none;
+    font-weight: bold;
   }
 
   .nav-item.active {
   	color: #383838;
-  	font-weight: bold;
+  	text-decoration: underline;
   	pointer-events: none;
   }
 </style>
