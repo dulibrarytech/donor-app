@@ -11,7 +11,7 @@
   export let params;
 
   const donationId = params.id ?? null;
-  const donorId = params.donorId ?? null;
+  var donorId = params.donorId ?? null;
   var donationData = {};
   var pageLabel = "";
   var donorLabel = null;
@@ -62,6 +62,7 @@
     if(donationId) {
       donationData = await fetchDonationData(donationId);
       if(Object.keys(donationData).length > 0) {
+        donorId = donationData.donorId ?? null;
         pageLabel = getPageLabel(donationData);
       }
       else {
@@ -88,7 +89,7 @@
     {#if donorLabel}
       <h6>{donorLabel}</h6>
     {/if}
-    <svelte:component this={DonationForm} {donationId} data={donationData} />
+    <svelte:component this={DonationForm} {donationId} {donorId} data={donationData} />
   </div>
 </div>
 

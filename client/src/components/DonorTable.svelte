@@ -18,8 +18,8 @@
         <td>{donor.lastName}</td>
         <td>{donor.firstName}</td>
         <td>{donor.organization ?? ""}</td>
-        <td>View</td>
-        <td>Add Gift</td>
+        <td><a href="/donor/{donor.id}">View</a></td>
+        <td><a href="/donation/donor/{donor.id}">Add Gift</a></td>
       </tr>
     {/each}
   {:else}

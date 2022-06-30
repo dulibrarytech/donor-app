@@ -4,7 +4,7 @@
   let donorId = args;
 
   const formatGiftTypeField = (value=false) => {
-    return value == true ? "Hand Typed" : "Standard";
+    return value == true ? "Important" : "Standard";
   }
 
   const formatStatusField = (value=false) => {
@@ -34,10 +34,10 @@
           <td>{donation.lastName || ""}</td>
           <td>{donation.firstName || ""}</td>
         {/if}
-        <td>{formatGiftTypeField(donation.type) || "Unknown"}</td>
-        <td>{formatStatusField(donation.status) || "Unknown"}</td>
+        <td>{formatGiftTypeField(donation.important) || "Unknown"}</td>
+        <td>{formatStatusField(donation.letter) || "Unknown"}</td>
         <td>{donation.giftDescription}</td>
-        <td>View</td>
+        <td><a href="/donation/{donation.id}">View</a></td>
       </tr>
     {/each}
   {:else}

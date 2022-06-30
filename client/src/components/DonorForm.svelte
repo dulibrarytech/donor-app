@@ -34,6 +34,10 @@
     return true;
   }
 
+  const formatFormFields = () => {
+
+  }
+
   const onSubmitForm = () => {
     if(validateFormFields()) {
       let message = "Submitting...";

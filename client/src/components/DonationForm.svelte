@@ -12,6 +12,7 @@
     giftDetails: ""
   };
   export let donationId;
+  export let donorId = null;
 
   let method = "post";
   let action = `${$Configuration.donorApiDomain}/donation`;
@@ -27,10 +28,7 @@
     method = "put";
     action = `${$Configuration.donorApiDomain}/donation/${donationId}`;
     buttonText = "Update";
-
-    // Format field display TODO: Separate function?
-    statusDisplay = data.letter && data.letter == 1 ? "Pending" : "Complete";
-    //data.
+    formatFormFields();
   }
   /* New donation */
   else {
@@ -41,6 +39,10 @@
     let isValid = false;
     // TODO: Custom validation for each data field. If fail, set field input red and add feedback.
     return true;
+  }
+
+  const formatFormFields = () => {
+    statusDisplay = data.letter && data.letter == 1 ? "Pending" : "Complete";
   }
 
   const onSubmitForm = () => {
@@ -62,6 +64,16 @@
         // TODO: Initiate feedback (message)
       }, data);
     }
+  }
+
+  const onViewDonorInfo = () => {
+    if(donorId) {
+      window.location.replace(`/donor/${donorId}`)
+    }
+  }
+
+  const onClickLetter = () => {
+    console.log("Click letter")
   }
 </script>
 
@@ -111,7 +123,7 @@
   <button class="btn btn-default" type="submit" on:click|preventDefault={onSubmitForm}>{buttonText}</button> <!-- on:click|preventDefault={onSubmitDonorForm} to add validation -->
   {#if donationId}
     <button class="btn btn-default" type="button">Letter</button>
-    <button class="btn btn-default" type="button">View Donor Info</button>
+    <button class="btn btn-default" type="button" on:click|preventDefault={onViewDonorInfo}>View Donor Info</button>
   {/if}
 </form>
 

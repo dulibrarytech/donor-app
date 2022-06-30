@@ -66,16 +66,13 @@ const getDonationList = async () => {
 
   const response = await fetch(url);
   list = await response.json();
+  console.log("Donation list", list)
   return list;
 }
 
 const showAllDonations = () => {
   // TODO: use dataFilter.resetFilters();
   donationDisplay = donations;
-}
-
-const onClickAddNewDonation = () => {
-  window.location.replace("/donation");
 }
 
 const onClickEditDonation = (event) => {
@@ -125,6 +122,10 @@ const sortDataDisplay = () => {
   }
 }
 
+const onClickAddNewDonor = () => {
+  window.location.replace("/donor");
+}
+
 init();
 </script>
 
@@ -147,7 +148,7 @@ init();
       </div>
     </div>
   </div>
-
+  
   <div style="display:{donationListDisplay}">
     <DataDisplay items={donationDisplay} Table={DonationTable} />
   </div>

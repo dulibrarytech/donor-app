@@ -5,6 +5,7 @@
   import DonorForm from "../components/DonorForm.svelte";
   import DataDisplay from "../components/DataDisplay.svelte";
   import DonationTable from "../components/DonationTable.svelte";
+  import NewItemLink from "../components/NewItemLink.svelte";
 
   export let params;
 
@@ -56,6 +57,12 @@
     return label;
   }
 
+  const onClickAddNewDonation = () => {
+    if(donorId) {
+      window.location.replace(`/donation/donor/${donorId}`);
+    }
+  }
+
   const init = async () => {
     if(donorId) {
       donorData = await fetchDonorData(donorId);
@@ -83,6 +90,7 @@
     <svelte:component this={DonorForm} {donorId} data={donorData} />
   </div>
   {#if donorId}
+    <NewItemLink text="Add new donation" on:click-new-item-link={onClickAddNewDonation} />
     <div class="donor-donations-section">
       <h5>Donations</h5>
       <svelte:component this={DataDisplay} items={donationDisplay} Table={DonationTable} args={donorId}/>
