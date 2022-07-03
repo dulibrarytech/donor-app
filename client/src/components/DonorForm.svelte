@@ -22,7 +22,7 @@
   let method = "post";
   let action = `${$Configuration.donorApiDomain}/donor`;
   let buttonText = "Add Donor";
-  let message = "";
+  let messageDisplay;
 
   if(donorId) {
     method = "put";
@@ -44,20 +44,19 @@
   const onSubmitForm = () => {
     if(validateFormFields()) {
       // TODO dispatch event: form-submit (message only, still going to submit data here). This will show message
-      message = "Submitting...";
+      messageDisplay.displayMessage("Submitting");
       ajaxRequest(method, action, function(error, response, status) {
         if(error) {
           console.error("Error:", error);
-          message = "Error";
+          messageDisplay.displayMessage("Error");
         }
         else if(status != 200) {
           console.log("Response status: ", status);
-          message = "Error";
+          messageDisplay.displayMessage("Error");
         }
         else {
           // TODO Dispatch event: submit-success. (Timeout is in parent)
-          message = "New donor created";
-          setTimeout(() => {message = ""}, 3000);
+          messageDisplay.displayTimeoutMessage("New donor created");
         }
       }, data);
     }
@@ -109,7 +108,7 @@
 
   <button class="btn btn-default" id="update-data-button" type="submit" on:click|preventDefault={onSubmitForm}>{buttonText}</button> <!-- TODO: on:click|preventDefault={onSubmitDonorForm} to add validation -->
 </form>
-<MessageDisplay messageText={message} />
+<MessageDisplay bind:this={messageDisplay} />
 
 <style>
   form .form-fields {

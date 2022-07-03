@@ -18,7 +18,7 @@
   let method = "post";
   let action = `${$Configuration.donorApiDomain}/donation`;
   let buttonText = "Add Donation";
-  let message = "";
+  let messageDisplay;
 
   /* Formatted fields */
   let statusDisplay = null;
@@ -51,19 +51,18 @@
 
   const onSubmitForm = () => {
     if(validateFormFields()) {
-      let message = "Submitting...";
+      messageDisplay.displayMessage("Submitting");
       ajaxRequest(method, action, function(error, response, status) {
         if(error) {
           console.error("Error:", error);
-          message = "Error";
+          messageDisplay.displayMessage("Error");
         }
         else if(status != 200) {
           console.log("Response status: ", status);
-          message = "Error";
+          messageDisplay.displayMessage("Error");
         }
         else {
-          message = "New donation created";
-          setTimeout(() => {message = ""}, 3000);
+          messageDisplay.displayTimeoutMessage("New donation created");
         }
       }, data);
     }
@@ -129,7 +128,7 @@
     <button class="btn btn-default" type="button" on:click|preventDefault={onViewDonorInfo}>View Donor Info</button>
   {/if}
 </form>
-<MessageDisplay messageText={message} />
+<MessageDisplay bind:this={messageDisplay} />
 
 <style>
 

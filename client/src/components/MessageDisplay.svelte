@@ -1,11 +1,14 @@
 <script>
-  //export let messageText="";
+  const timeout = 3000;
   let messageText = "";
 
-  //$: setTimeout(() => {message = ""}, 3000);
-  export function displayMessage(message) {
+  export const displayMessage = (message) => {
     messageText = message;
-    setTimeout(() => {messageText = ""}, 3000);
+  }
+
+  export const displayTimeoutMessage = (message) => {
+    messageText = message;
+    setTimeout(() => {messageText = ""}, timeout);
   }
 </script>
 
