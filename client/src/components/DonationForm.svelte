@@ -1,6 +1,7 @@
 <script>
   import {Configuration} from '../config';
   import {ajaxRequest} from '../libs/ajax.js';
+  import MessageDisplay from "../components/MessageDisplay.svelte";
 
   export let data = {
     donorId: null,
@@ -17,6 +18,9 @@
   let method = "post";
   let action = `${$Configuration.donorApiDomain}/donation`;
   let buttonText = "Add Donation";
+  let message = "";
+
+  /* Formatted fields */
   let statusDisplay = null;
 
   /* Set select/radio control state */
@@ -59,9 +63,8 @@
         }
         else {
           message = "New donation created";
+          setTimeout(() => {message = ""}, 3000);
         }
-
-        // TODO: Initiate feedback (message)
       }, data);
     }
   }
@@ -126,6 +129,7 @@
     <button class="btn btn-default" type="button" on:click|preventDefault={onViewDonorInfo}>View Donor Info</button>
   {/if}
 </form>
+<MessageDisplay messageText={message} />
 
 <style>
 

@@ -1,6 +1,7 @@
 <script>
   import {Configuration} from '../config';
   import {ajaxRequest} from '../libs/ajax.js';
+  import MessageDisplay from "../components/MessageDisplay.svelte";
 
   export let data = {
     title: "",
@@ -21,6 +22,7 @@
   let method = "post";
   let action = `${$Configuration.donorApiDomain}/donor`;
   let buttonText = "Add Donor";
+  let message = "";
 
   if(donorId) {
     method = "put";
@@ -38,9 +40,11 @@
 
   }
 
+  // TODO Move out to Donor page, dispatch event here
   const onSubmitForm = () => {
     if(validateFormFields()) {
-      let message = "Submitting...";
+      // TODO dispatch event: form-submit (message only, still going to submit data here). This will show message
+      message = "Submitting...";
       ajaxRequest(method, action, function(error, response, status) {
         if(error) {
           console.error("Error:", error);
@@ -51,10 +55,10 @@
           message = "Error";
         }
         else {
+          // TODO Dispatch event: submit-success. (Timeout is in parent)
           message = "New donor created";
+          setTimeout(() => {message = ""}, 3000);
         }
-
-        // TODO: Initiate feedback (message)
       }, data);
     }
   }
@@ -105,6 +109,7 @@
 
   <button class="btn btn-default" id="update-data-button" type="submit" on:click|preventDefault={onSubmitForm}>{buttonText}</button> <!-- TODO: on:click|preventDefault={onSubmitDonorForm} to add validation -->
 </form>
+<MessageDisplay messageText={message} />
 
 <style>
   form .form-fields {
