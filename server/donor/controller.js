@@ -9,7 +9,7 @@ exports.donors = (req, res) => {
       res.send(JSON.stringify(data));
     },
     function(error) {
-      res.sendStatus(500)
+      res.status(500).send(error);
     }
   );
 }
@@ -22,7 +22,7 @@ exports.donorGet = (req, res) => {
       res.send(JSON.stringify(data))
     },
     function(error) {
-      res.sendStatus(500)
+      res.status(500).send(error);
     }
   );
 }
@@ -31,15 +31,13 @@ exports.donorPut = (req, res) => {
   let id = req.params.id ?? "";
   let data = req.body;
 
-  console.log("Put Donor C: id: body:", id, data)
-
   Donor.putDonor(id, data)
   .then(
     function(data) {
       res.send(JSON.stringify(data))
     },
     function(error) {
-      res.sendStatus(500)
+      res.status(500).send(error);
     }
   );
 }
@@ -47,18 +45,15 @@ exports.donorPut = (req, res) => {
 exports.donorPost = (req, res) => {
   let data = req.body;
 
-  console.log("Post Donor C: body:", data)
-  res.send(JSON.stringify("ok"))
-
-  // Donor.postDonor(data)
-  // .then(
-  //   function(data) {
-  //     res.send(JSON.stringify(data))
-  //   },
-  //   function(error) {
-  //     res.sendStatus(500)
-  //   }
-  // );
+  Donor.postDonor(data)
+  .then(
+    function(data) {
+      res.send(JSON.stringify(data))
+    },
+    function(error) {
+      res.status(500).send(error);
+    }
+  );
 }
 
 exports.donorDelete = (req, res) => {
@@ -69,7 +64,7 @@ exports.donorDelete = (req, res) => {
       res.send(JSON.stringify(response))
     },
     function(error) {
-      res.sendStatus(500)
+      res.status(500).send(error);
     }
   );
 }

@@ -9,7 +9,7 @@ exports.donations = (req, res) => {
       res.send(JSON.stringify(data))
     },
     function(error) {
-      res.sendStatus(500)
+      res.status(500).send(error);
     }
   );
 }
@@ -22,7 +22,7 @@ exports.donorDonations = (req, res) => {
       res.send(JSON.stringify(data))
     },
     function(error) {
-      res.sendStatus(500)
+      res.status(500).send(error);
     }
   );
 }
@@ -35,7 +35,7 @@ exports.donationGet = (req, res) => {
       res.send(JSON.stringify(data))
     },
     function(error) {
-      res.sendStatus(500)
+      res.status(500).send(error);
     }
   );
 }
@@ -44,31 +44,26 @@ exports.donationPut = (req, res) => {
   let id = req.params.id ?? "";
   let data = req.body;
 
-  console.log("Put Donor C: id: body:", id, data)
-
   Donation.putDonation(id, data)
   .then(
     function(data) {
       res.send(JSON.stringify(data))
     },
     function(error) {
-      res.sendStatus(500)
+      res.status(500).send(error);
     }
   );
 }
 
 exports.donationPost = (req, res) => {
   let data = req.body;
-
-  console.log("Post Donor C: body:", data)
-
   Donation.postDonation(data)
   .then(
     function(data) {
       res.send(JSON.stringify(data))
     },
     function(error) {
-      res.sendStatus(500)
+      res.status(500).send(error);
     }
   );
 }
@@ -81,7 +76,7 @@ exports.donationDelete = (req, res) => {
       res.send(JSON.stringify(response))
     },
     function(error) {
-      res.sendStatus(500)
+      res.status(500).send(error);
     }
   );
 }
