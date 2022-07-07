@@ -37,7 +37,7 @@ export const filterDaterange = (currentData) => {
     filteredData = [];
     // TODO: Validate date format, AND to date > from date
 
-    // Dev Remove after date selector implemented
+    // DEV: Remove after date selector implemented
     let from = new Date(fromDate + "T00:00:00");
     let to = new Date(toDate + "T23:59:59");
 

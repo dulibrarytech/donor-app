@@ -14,13 +14,15 @@
 <tbody>
   {#if items.length > 0}
     {#each items as donor (donor.id)}
-      <tr>
-        <td>{donor.lastName}</td>
-        <td>{donor.firstName}</td>
-        <td>{donor.organization ?? ""}</td>
-        <td><a href="/donor/{donor.id}">View</a></td>
-        <td><a href="/donation/donor/{donor.id}">Add Gift</a></td>
-      </tr>
+      {#if donor.id > 1} <!-- donor id 1 is reserved for anonymous donations -->
+        <tr>
+          <td>{donor.lastName}</td>
+          <td>{donor.firstName}</td>
+          <td>{donor.organization ?? ""}</td>
+          <td><a href="/donor/{donor.id}">View</a></td>
+          <td><a href="/donation/donor/{donor.id}">Add Gift</a></td>
+        </tr>
+      {/if}
     {/each}
   {:else}
     <h6>No donors found.</h6> <!-- TODO: Abstract this in DataDisplay -->

@@ -64,17 +64,19 @@
   }
 
   const init = async () => {
-    if(donorId) {
+    if(donorId && donorId > 1) {
       donorData = await fetchDonorData(donorId);
       if(Object.keys(donorData).length > 0) {
         pageLabel = getPageLabel(donorData);
-
         let donationData = await fetchDonorDonations(donorId);
         if(donationData) donationDisplay = donationData;
       }
       else {
         window.location.replace("/notfound");
       }
+    }
+    else if(donorId == 1) {
+      window.location.replace("/notfound");
     }
     else {
       pageLabel = "New Donor";

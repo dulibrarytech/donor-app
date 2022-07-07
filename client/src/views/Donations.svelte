@@ -53,7 +53,6 @@ var filters = [
 const init = async () => {
   // TODO: Use ajaxRequest()
   donations = await getDonationList();
-  console.log("Init donations page, donations:", donations)
   showAllDonations();
 }
 
@@ -66,7 +65,6 @@ const getDonationList = async () => {
 
   const response = await fetch(url);
   list = await response.json();
-  console.log("Donation list", list)
   return list;
 }
 
@@ -80,7 +78,6 @@ const onClickEditDonation = (event) => {
 }
 
 const onKeywordSearch = (event) => {
-  console.log("On search data rx:", event.detail)
   searchResults = event.detail.results;
   searchField = event.detail.field;
   showSearchResults();
@@ -122,8 +119,8 @@ const sortDataDisplay = () => {
   }
 }
 
-const onClickAddNewDonor = () => {
-  window.location.replace("/donor");
+const onClickAddAnonymousDonation = () => {
+  window.location.replace("/donation/donor/1");
 }
 
 init();
@@ -148,7 +145,8 @@ init();
       </div>
     </div>
   </div>
-  
+
+  <NewItemLink text="Add anonymous donation" on:click-new-item-link={onClickAddAnonymousDonation} />
   <div style="display:{donationListDisplay}">
     <DataDisplay items={donationDisplay} Table={DonationTable} />
   </div>
