@@ -11,6 +11,7 @@
 	import Donor from "./views/Donor.svelte";
 	import Donations from "./views/Donations.svelte";
 	import Donation from "./views/Donation.svelte";
+	import LetterView from "./views/LetterView.svelte";
 	import NotFound from "./views/NotFound.svelte";
 
   // View Components
@@ -60,12 +61,17 @@
 		next();
 	}, () => page = Donation);
 
+	router('/letter/:donationId', (ctx, next) => {
+		params = ctx.params;
+			console.log("/letter/:donationId Params:", params)
+		next();
+	}, () => page = LetterView);
+
 	router('/*', () => {
 		page = NotFound;
 	});
 
 	router.start();
-
 	/* End Router.svelte */
 
 </script>
