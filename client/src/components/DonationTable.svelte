@@ -23,6 +23,9 @@
     <th scope="col">Status</th>
     <th scope="col">Description</th>
     <th scope="col"></th>
+    {#if donorId}
+      <th scope="col"></th>
+    {/if}
   </tr>
 </thead>
 <tbody>
@@ -38,6 +41,9 @@
         <td>{formatStatusField(donation.letter) || "Unknown"}</td>
         <td>{donation.giftDescription}</td>
         <td><a href="/donation/{donation.id}">View</a></td>
+        {#if donorId}
+          <td><a href="/letter/{donation.id}">Letter</a></td>
+        {/if}
       </tr>
     {/each}
   {:else}
