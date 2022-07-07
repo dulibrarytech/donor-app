@@ -24,12 +24,6 @@
   let buttonText = "Add Donor";
   let messageDisplay;
 
-  if(donorId) {
-    method = "put";
-    action = `${$Configuration.donorApiDomain}/donor/${donorId}`;
-    buttonText = "Update";
-  }
-
   const validateFormFields = () => {
     let isValid = false;
     // TODO: Custom validation for each data field. If fail, set field input red and add feedback.
@@ -61,6 +55,16 @@
       }, data);
     }
   }
+
+  const init = () => {
+    if(donorId) {
+      method = "put";
+      action = `${$Configuration.donorApiDomain}/donor/${donorId}`;
+      buttonText = "Update";
+    }
+  }
+
+  init();
 </script>
 
 <form id="donor-form" class="form" method="{method}" action="{action}">

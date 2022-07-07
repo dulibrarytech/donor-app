@@ -27,18 +27,6 @@
   let typeSelect = data.important && data.important == 1 ? "important" : "standard";
   $: data.important = typeSelect == "important" ? 1 : 0;
 
-  /* Display data for donation */
-  if(donationId) {
-    method = "put";
-    action = `${$Configuration.donorApiDomain}/donation/${donationId}`;
-    buttonText = "Update";
-    formatFormFields();
-  }
-  /* New donation */
-  else {
-    data.letter = 1; // TODO: Add 'bypass letter' checkbox to new donation form, sets data.letter value. Just default to 1 now for new donations
-  }
-
   const validateFormFields = () => {
     let isValid = false;
     // TODO: Custom validation for each data field. If fail, set field input red and add feedback.
@@ -77,6 +65,22 @@
   const onClickLetter = () => {
     console.log("Click letter")
   }
+
+  const init = () => {
+    /* Display data for donation */
+    if(donationId) {
+      method = "put";
+      action = `${$Configuration.donorApiDomain}/donation/${donationId}`;
+      buttonText = "Update";
+      formatFormFields();
+    }
+    /* New donation */
+    else {
+      data.letter = 1; // TODO: Add 'bypass letter' checkbox to new donation form, sets data.letter value. Just default to 1 now for new donations
+    }
+  }
+
+  init();
 </script>
 
 <form id="donor-form" class="form" method="{method}" action="{action}">
