@@ -63,7 +63,7 @@
   }
 
   const onClickLetter = () => {
-    console.log("Click letter")
+    window.location.replace(`/letter/${donationId}`)
   }
 
   const init = () => {
@@ -128,8 +128,8 @@
 
   <button class="btn btn-default" type="submit" on:click|preventDefault={onSubmitForm}>{buttonText}</button> <!-- on:click|preventDefault={onSubmitDonorForm} to add validation -->
   {#if donationId}
-    <button class="btn btn-default" type="button">Letter</button>
-    <button class="btn btn-default" type="button" on:click|preventDefault={onViewDonorInfo}>View Donor Info</button>
+    <button class="btn btn-default" type="button" on:click={onClickLetter}>Letter</button>
+    <button class="btn btn-default" type="button" on:click={onViewDonorInfo}>View Donor Info</button>
   {/if}
 </form>
 <MessageDisplay bind:this={messageDisplay} />

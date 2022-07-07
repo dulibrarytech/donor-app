@@ -4,9 +4,9 @@ import { ajaxRequest } from '../libs/ajax.js';
 import Letter from "./partials/Letter.svelte";
 
 export let params;
-let data = {};
-let donorId;
-let donationId = params.donationId;
+var data={};
+var donorId;
+var donationId = params.donationId;
 
 console.log("LetterView component data:", data)
 
@@ -51,6 +51,7 @@ const init = async () => {
 
   if(donationData && donorData) {
     data = {...donationData, ...donorData};
+    console.log("Set data object", data)
   }
 }
 
@@ -59,5 +60,6 @@ init();
 
 <div id="letter-view">
   <!-- TODO: Letter partial. Pass in data variable -->
-  <Letter {data} />
+  <!-- <Letter {data} /> -->
+  <svelte:component this={Letter} data={data}/>
 </div>
