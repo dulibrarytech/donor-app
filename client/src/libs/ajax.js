@@ -1,8 +1,6 @@
 /*
- * Wrapper for Javascript fetch api funcitons
+ * Wrapper for Javascript fetch api functions
  */
-
-'use-strict'
 
 export const ajaxRequest = (type, url, callback, data=null) => {
   let options = {
