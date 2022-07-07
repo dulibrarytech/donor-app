@@ -44,7 +44,7 @@ module.exports = (() => {
         Donors.Organization AS  ${map.Organization},
         Donors.Country AS       ${map.Country}
       FROM tbl_donorinfo Donors
-      INNER JOIN tbl_donortitle_lkup Titles ON Donors.titleID=Titles.titleID;`,
+      LEFT JOIN tbl_donortitle_lkup Titles ON Donors.titleID=Titles.titleID`,
 
     'get_donor': `
       SELECT
@@ -62,7 +62,7 @@ module.exports = (() => {
         Donors.Organization AS  ${map.Organization},
         Donors.Country AS       ${map.Country}
       FROM tbl_donorinfo Donors
-      INNER JOIN tbl_donortitle_lkup Titles ON Donors.titleID=Titles.titleID
+      LEFT JOIN tbl_donortitle_lkup Titles ON Donors.titleID=Titles.titleID
       WHERE Donors.donorID = ?;`,
 
     'put_donor': `
