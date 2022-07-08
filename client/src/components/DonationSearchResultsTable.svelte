@@ -34,8 +34,8 @@
         <td>{donation.organization || donation.lastName || ""}</td>
         <td>{donation.firstName || ""}</td>
         <td>{donation[args]}</td>
-        <td>View Donor</td>
-        <td>View Donation</td>
+        <td>{#if donation.donorId > 1}<a href="/donor/{donation.donorId}">View Donor</a>{/if}</td>
+        <td><a href="/donation/{donation.id}">View Donation</a></td>
       </tr>
     {/each}
   {:else}
