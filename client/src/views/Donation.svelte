@@ -44,8 +44,10 @@
 
   const getPageLabel = ({lastName="", firstName="", organization=""}) => {
     let label = "Donation";
-
-    if(lastName.length > 0) {
+    if(donorId && donorId == 1) {
+      label = "Anonymous Donation";
+    }
+    else if(lastName.length > 0) {
       label = `${lastName}`;
       if(firstName.length > 0) {
         label += `, ${firstName}`;
