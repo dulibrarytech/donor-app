@@ -3,7 +3,9 @@
   import {ajaxRequest} from '../libs/ajax.js';
   import MessageDisplay from "../components/MessageDisplay.svelte";
 
-  export let data = {
+  export let donationId;
+  export let data;
+  let defaultFields = {
     donorId: null,
     dateOfGift: "",
     numberOfGifts: "",
@@ -12,7 +14,6 @@
     giftDescription: "",
     giftDetails: ""
   };
-  export let donationId;
   export let donorId = null;
 
   let method = "post";
@@ -76,6 +77,7 @@
     }
     /* New donation */
     else {
+      data = defaultFields;
       data.letter = 1; // TODO: Add 'bypass letter' checkbox to new donation form, sets data.letter value. Just default to 1 now for new donations
     }
   }
