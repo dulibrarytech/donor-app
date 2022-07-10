@@ -142,36 +142,21 @@ module.exports = (() => {
     data[map.anonymous] = 0;
 
     let sqlFields = [
-      parseInt(data[map.titleID]),
-      data[map.FirstName],
-      data[map.LastName],
-      data[map.Address1],
-      data[map.Address2],
-      data[map.City],
-      data[map.State],
-      data[map.PostalCode],
-      data[map.phone],
-      data[map.email],
-      data[map.Organization],
-      parseInt(data[map.anonymous]),
-      data[map.Country]
-    ]
-    // TODO: Data sanitization here - if not middleware function
-    // let sqlFields = sanitizeSqlFieldArray([
-    //   parseInt(data[map.titleID]),
-    //   data[map.FirstName],
-    //   data[map.LastName],
-    //   data[map.Address1],
-    //   data[map.Address2],
-    //   data[map.City],
-    //   data[map.State],
-    //   data[map.PostalCode],
-    //   data[map.phone],
-    //   data[map.email],
-    //   data[map.Organization],
-    //   parseInt(data[map.anonymous]),
-    //   data[map.Country]
-    // ]);
+      parseInt(data[map.titleID]) ?? null,
+      data[map.FirstName] ?? null,
+      data[map.LastName] ?? null,
+      data[map.Address1] ?? null,
+      data[map.Address2] ?? null,
+      data[map.City] ?? null,
+      data[map.State] ?? null,
+      data[map.PostalCode] ?? null,
+      data[map.phone] ?? null,
+      data[map.email] ?? null,
+      data[map.Organization] ?? "None specified",
+      parseInt(data[map.anonymous]) ?? 0,
+      data[map.Country] ?? "USA"
+    ];
+
     return new Promise((resolve, reject) => {
       DonorModel.execute_query('put_donor', [...sqlFields, id])
       .then(
@@ -190,24 +175,26 @@ module.exports = (() => {
     data[map.anonymous] = 0;
 
     let sqlFields = [
-      data[map.titleID],
-      data[map.FirstName],
-      data[map.LastName],
-      data[map.Address1],
-      data[map.Address2],
-      data[map.City],
-      data[map.State],
-      data[map.PostalCode],
-      data[map.phone],
-      data[map.email],
-      data[map.Organization],
-      data[map.anonymous],
-      data[map.Country]
-    ]
+      data[map.titleID] ?? null,
+      data[map.FirstName] ?? null,
+      data[map.LastName] ?? null,
+      data[map.Address1] ?? null,
+      data[map.Address2] ?? null,
+      data[map.City] ?? null,
+      data[map.State] ?? null,
+      data[map.PostalCode] ?? null,
+      data[map.phone] ?? null,
+      data[map.email] ?? null,
+      data[map.Organization] ?? "None specified", // Enforce not null
+      data[map.anonymous] ?? 0,
+      data[map.Country] ?? "USA"
+    ];
+
     return new Promise((resolve, reject) => {
       DonorModel.execute_query('post_donor', sqlFields)
       .then(
         (response) => {
+          console.log("Response data, fields", response.data, sqlFields)
           resolve(response.data)
         },
         (error) => {

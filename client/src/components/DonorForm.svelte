@@ -4,21 +4,7 @@
   import MessageDisplay from "../components/MessageDisplay.svelte";
 
   export let donorId;
-  export let data;
-  let defaultFields = {
-    title: "",
-    firstName: "",
-    lastName: "",
-    organization: "",
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    postalCode: "",
-    country: "",
-    phone: "",
-    email: ""
-  };
+  export let data = {};
 
   let method = "post";
   let action = `${$Configuration.donorApiDomain}/donor`;
@@ -38,7 +24,6 @@
   // TODO Move out to Donor page, dispatch event here
   const onSubmitForm = () => {
     if(validateFormFields()) {
-      console.log("Submit form, data is", data)
       // TODO dispatch event: form-submit (message only, still going to submit data here). This will show message
       messageDisplay.displayMessage("Adding donor...");
       ajaxRequest(method, action, function(error, response, status) {
@@ -63,9 +48,6 @@
       method = "put";
       action = `${$Configuration.donorApiDomain}/donor/${donorId}`;
       buttonText = "Update";
-    }
-    else {
-      data = defaultFields;
     }
   }
 
@@ -102,7 +84,7 @@
     </div>
     <div class="form-group">
       <label for="postalCode">Postal Code</label>
-      <input type="number" class="form-control" id="postalCode" name="postalCode" bind:value={data.postalCode}>
+      <input type="text" class="form-control" id="postalCode" name="postalCode" bind:value={data.postalCode}>
 
       <label for="country">Country</label>
       <input type="text" class="form-control" id="country" name="country" bind:value={data.country}>

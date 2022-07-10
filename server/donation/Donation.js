@@ -188,17 +188,17 @@ module.exports = (() => {
 
     // tbl_donorgifts fields
     let giftFields = [
-      data[map.dateOfGift],
-      parseInt(data[map.numberOfGifts]),
-      parseInt(data[map.important]),
-      parseInt(data[map.letter]),
-      parseInt(data[map.bypassLetter])
+      data[map.dateOfGift] ?? "None specified",
+      parseInt(data[map.numberOfGifts]) ?? null,
+      parseInt(data[map.important]) ?? 0,
+      parseInt(data[map.letter]) ?? 0,
+      parseInt(data[map.bypassLetter]) ?? 0
     ]
 
     // tbl_donorgiftdescriptions fields
     let giftDescriptionsFields = [
-      data[map.giftDescription1],
-      data[map.giftDetails],
+      data[map.giftDescription1] ?? null,
+      data[map.giftDetails] ?? "",
     ]
 
     return new Promise((resolve, reject) => {
@@ -222,19 +222,19 @@ module.exports = (() => {
 
     // tbl_donorgifts field data
     let giftFields = [
-      parseInt(data[map.donorID]),            // donorID
-      new Date().toISOString().slice(0, 10),  // CDate
-      data[map.dateOfGift],                   // dateOfGift
-      parseInt(data[map.numberOfGifts]),      // numberOfGifts
-      parseInt(data[map.important]),          // important
-      parseInt(data[map.letter]),             // letter
-      0                                       // bypassLetter
+      parseInt(data[map.donorID]) ?? 1,           // donorID
+      new Date().toISOString().slice(0, 10),      // CDate
+      data[map.dateOfGift] ?? "None specified",   // dateOfGift
+      parseInt(data[map.numberOfGifts]) ?? null,  // numberOfGifts
+      parseInt(data[map.important]) ?? 0,         // important
+      parseInt(data[map.letter]),                 // letter
+      0                                           // bypassLetter
     ]
 
     // tbl_donorgiftdescriptions field data
     let giftDescriptionsFields = [
-      data[map.giftDescription1],             // giftDescription1
-      data[map.giftDetails],                  // giftDetails
+      data[map.giftDescription1] ?? null,         // giftDescription1
+      data[map.giftDetails] ?? "",                // giftDetails
     ]
 
     return new Promise((resolve, reject) => {

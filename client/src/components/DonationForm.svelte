@@ -4,16 +4,7 @@
   import MessageDisplay from "../components/MessageDisplay.svelte";
 
   export let donationId;
-  export let data;
-  let defaultFields = {
-    donorId: null,
-    dateOfGift: "",
-    numberOfGifts: "",
-    important: 0,
-    letter: 0,
-    giftDescription: "",
-    giftDetails: ""
-  };
+  export let data = {};
   export let donorId = null;
 
   let method = "post";
@@ -77,7 +68,6 @@
     }
     /* New donation */
     else {
-      data = defaultFields;
       data.letter = 1; // TODO: Add 'bypass letter' checkbox to new donation form, sets data.letter value. Just default to 1 now for new donations
     }
   }

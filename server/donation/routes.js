@@ -1,8 +1,10 @@
 'use strict'
 
 const { Router } = require("express");
-const router = Router();
+const { sanitizeData } = require('../libs/sanitize.js');
 const donationController = require("./controller");
+
+const router = Router();
 
 router.use((req, res, next) => {
   console.log('/donation router: Time: ', Date.now())
@@ -24,12 +26,12 @@ router.get('/:id', async (req, res) => {
   donationController.donationGet(req, res);
 });
 
-router.post('/', async (req, res) => {
+router.post('/', sanitizeData, async (req, res) => {
   console.log("POST /donation")
   donationController.donationPost(req, res);
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', sanitizeData, async (req, res) => {
   console.log("PUT /donation/:id")
   donationController.donationPut(req, res);
 });
