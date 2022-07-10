@@ -49,84 +49,89 @@ module.exports = (() => {
       INNER JOIN tbl_donorinfo Donors
       ON Gifts.donorID=Donors.donorID;`,
 
-      'get_donor_donations': `
-        SELECT
-          Gifts.giftsID AS                  ${map.giftsID},
-          Gifts.Cdate AS                    ${map.Cdate},
-          Gifts.dateOfGift AS               ${map.dateOfGift},
-          Gifts.numberOfGifts AS            ${map.numberOfGifts},
-          Gifts.important AS                ${map.important},
-          Gifts.letter AS                   ${map.letter},
-          Gifts.bypassLetter AS             ${map.bypassLetter},
-          Descriptions.giftDescription1 AS  ${map.giftDescription1},
-          Descriptions.giftDetails AS       ${map.giftDetails}
+    'get_donor_donations': `
+      SELECT
+        Gifts.giftsID AS                  ${map.giftsID},
+        Gifts.Cdate AS                    ${map.Cdate},
+        Gifts.dateOfGift AS               ${map.dateOfGift},
+        Gifts.numberOfGifts AS            ${map.numberOfGifts},
+        Gifts.important AS                ${map.important},
+        Gifts.letter AS                   ${map.letter},
+        Gifts.bypassLetter AS             ${map.bypassLetter},
+        Descriptions.giftDescription1 AS  ${map.giftDescription1},
+        Descriptions.giftDetails AS       ${map.giftDetails}
 
-          FROM tbl_donorgifts Gifts
-          LEFT JOIN tbl_donorgiftdescriptions Descriptions
-          ON Gifts.giftsID=Descriptions.giftsID
-          WHERE Gifts.donorID = ?;`,
+      FROM tbl_donorgifts Gifts
+      LEFT JOIN tbl_donorgiftdescriptions Descriptions
+      ON Gifts.giftsID=Descriptions.giftsID
+      WHERE Gifts.donorID = ?;`,
 
-      'get_donation': `
-        SELECT
-          Gifts.giftsID AS                  ${map.giftsID},
-          Gifts.donorID AS                  ${map.donorID},
-          Donors.FirstName AS               ${map.FirstName},
-          Donors.LastName AS                ${map.LastName},
-          Donors.Organization AS            ${map.Organization},
-          Gifts.Cdate AS                    ${map.Cdate},
-          Gifts.dateOfGift AS               ${map.dateOfGift},
-          Gifts.numberOfGifts AS            ${map.numberOfGifts},
-          Gifts.important AS                ${map.important},
-          Gifts.letter AS                   ${map.letter},
-          Gifts.bypassLetter AS             ${map.bypassLetter},
-          Descriptions.giftDescription1 AS  ${map.giftDescription1},
-          Descriptions.giftDetails AS       ${map.giftDetails}
+    'get_donation': `
+      SELECT
+        Gifts.giftsID AS                  ${map.giftsID},
+        Gifts.donorID AS                  ${map.donorID},
+        Donors.FirstName AS               ${map.FirstName},
+        Donors.LastName AS                ${map.LastName},
+        Donors.Organization AS            ${map.Organization},
+        Gifts.Cdate AS                    ${map.Cdate},
+        Gifts.dateOfGift AS               ${map.dateOfGift},
+        Gifts.numberOfGifts AS            ${map.numberOfGifts},
+        Gifts.important AS                ${map.important},
+        Gifts.letter AS                   ${map.letter},
+        Gifts.bypassLetter AS             ${map.bypassLetter},
+        Descriptions.giftDescription1 AS  ${map.giftDescription1},
+        Descriptions.giftDetails AS       ${map.giftDetails}
 
-        FROM tbl_donorgifts Gifts
-        LEFT JOIN tbl_donorgiftdescriptions Descriptions
-        ON Gifts.giftsID=Descriptions.giftsID
-        INNER JOIN tbl_donorinfo Donors
-        ON Gifts.donorID=Donors.donorID
-        WHERE Gifts.giftsID = ?;`,
+      FROM tbl_donorgifts Gifts
+      LEFT JOIN tbl_donorgiftdescriptions Descriptions
+      ON Gifts.giftsID=Descriptions.giftsID
+      INNER JOIN tbl_donorinfo Donors
+      ON Gifts.donorID=Donors.donorID
+      WHERE Gifts.giftsID = ?;`,
 
-      'put_donation': `
-        UPDATE tbl_donorgifts Gifts
-        SET
-          dateOfGift = ?,
-          numberOfGifts = ?,
-          important = ?,
-          letter = ?,
-          bypassLetter = ?
-        WHERE Gifts.giftsId = ?;
+    'put_donation': `
+      UPDATE tbl_donorgifts Gifts
+      SET
+        dateOfGift = ?,
+        numberOfGifts = ?,
+        important = ?,
+        letter = ?,
+        bypassLetter = ?
+      WHERE Gifts.giftsId = ?;
 
-        UPDATE tbl_donorgiftdescriptions Descriptions
-        SET
-          giftDescription1 = ?,
-          giftDetails = ?
-        WHERE Descriptions.giftsId = ?;`,
+      UPDATE tbl_donorgiftdescriptions Descriptions
+      SET
+        giftDescription1 = ?,
+        giftDetails = ?
+      WHERE Descriptions.giftsId = ?;`,
 
-      'post_donation': `
-        INSERT INTO tbl_donorgifts (
-          donorID,
-          Cdate,
-          dateOfGift,
-          numberOfGifts,
-          important,
-          letter,
-          bypassLetter
-        )
-        VALUES (?,?,?,?,?,?,?);
+    'post_donation': `
+      INSERT INTO tbl_donorgifts (
+        donorID,
+        Cdate,
+        dateOfGift,
+        numberOfGifts,
+        important,
+        letter,
+        bypassLetter
+      )
+      VALUES (?,?,?,?,?,?,?);
 
-        INSERT INTO tbl_donorgiftdescriptions (
-          giftsID,
-          giftDescription1,
-          giftDetails
-        )
-        VALUES ((SELECT MAX( giftsID ) FROM tbl_donorgifts),?,?);`,
+      INSERT INTO tbl_donorgiftdescriptions (
+        giftsID,
+        giftDescription1,
+        giftDetails
+      )
+      VALUES ((SELECT MAX( giftsID ) FROM tbl_donorgifts),?,?);`,
 
-      'delete_donation': `
-        DELETE FROM tbl_donorgifts WHERE giftsID = ?;
-        DELETE FROM tbl_donorgiftdescriptions WHERE giftsID = ?;`
+    'delete_donation': `
+      DELETE FROM tbl_donorgifts WHERE giftsID = ?;
+      DELETE FROM tbl_donorgiftdescriptions WHERE giftsID = ?;`,
+
+    'complete_letter': `
+      UPDATE tbl_donorgifts
+      SET letter=0
+      WHERE giftsId=?`
   }
 
   const DonationModel = new Model(database, queries);
@@ -166,7 +171,6 @@ module.exports = (() => {
       DonationModel.execute_query('get_donation', [id])
       .then(
         (response) => {
-          console.log("Direct response from DB:", response)
           if(response.data.length > 0) resolve(response.data[0])
           else resolve({})
         },
@@ -262,12 +266,28 @@ module.exports = (() => {
     });
   }
 
+  const completeLetter = (donationId) => {
+    return new Promise((resolve, reject) => {
+      DonationModel.execute_query('complete_letter', [donationId])
+      .then(
+        (response) => {
+          resolve(response.data)
+        },
+        (error) => {
+          console.log(`Error updating donation letter status: ${error}`);
+          reject(error);
+        }
+      );
+    });
+  }
+
   return {
     getAllDonations,
     getDonorDonations,
     getDonation,
     putDonation,
     postDonation,
-    deleteDonation
+    deleteDonation,
+    completeLetter
   }
 })()

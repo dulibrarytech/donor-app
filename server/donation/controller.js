@@ -80,3 +80,16 @@ exports.donationDelete = (req, res) => {
     }
   );
 }
+
+exports.donationLetter = (req, res) => {
+  let id = req.params.id ?? "";
+  Donation.completeLetter(id)
+  .then(
+    function(response) {
+      res.send(JSON.stringify(response))
+    },
+    function(error) {
+      res.status(500).send(error);
+    }
+  );
+}

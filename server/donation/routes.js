@@ -39,4 +39,9 @@ router.delete('/:id', async (req, res) => {
   donationController.donationDelete(req, res);
 });
 
+router.post('/:id/letter', async (req, res) => {
+  console.log("POST /donation/:id/letter")
+  donationController.donationLetter(req, res);
+});
+
 module.exports = router;
