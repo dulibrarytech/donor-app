@@ -25,7 +25,7 @@
   const onSubmitForm = () => {
     if(validateFormFields()) {
       // TODO dispatch event: form-submit (message only, still going to submit data here). This will show message
-      messageDisplay.displayMessage("Adding donor...");
+      messageDisplay.displayMessage("Submitting data...");
       ajaxRequest(method, action, function(error, response, status) {
         if(error) {
           console.error("Error:", error);
@@ -36,8 +36,8 @@
           messageDisplay.displayMessage("Error");
         }
         else {
-          // TODO Dispatch event: submit-success. (Timeout is in parent)
-          messageDisplay.displayTimeoutMessage("New donor created");
+          let message = method == "post" ? "New donor created" : "Donor record updated";
+          messageDisplay.displayTimeoutMessage(message);
         }
       }, data);
     }

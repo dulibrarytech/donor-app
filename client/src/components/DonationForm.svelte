@@ -31,7 +31,7 @@
 
   const onSubmitForm = () => {
     if(validateFormFields()) {
-      messageDisplay.displayMessage("Submitting");
+      messageDisplay.displayMessage("Submitting data...");
       ajaxRequest(method, action, function(error, response, status) {
         if(error) {
           console.error("Error:", error);
@@ -42,7 +42,8 @@
           messageDisplay.displayMessage("Error");
         }
         else {
-          messageDisplay.displayTimeoutMessage("New donation created");
+          let message = method == "post" ? "New donation created" : "Donation record updated";
+          messageDisplay.displayTimeoutMessage(message);
         }
       }, data);
     }
