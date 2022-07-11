@@ -5,16 +5,13 @@
   import DonationForm from "../components/DonationForm.svelte";
   import DataDisplay from "../components/DataDisplay.svelte";
 
-  // Dev - test data
-  import { Donations } from '../stores';
-
   export let params;
 
-  const donationId = params.id ?? null;
+  var donationId = params.id ?? null;
   var donorId = params.donorId ?? null;
   var donationData = {};
   var pageLabel = "";
-  var donorLabel = null;
+  var donorInfoLabel = null;
 
   const fetchDonationData = (id) => {
     return new Promise((resolve, reject) => {
@@ -62,20 +59,18 @@
 
   const init = async () => {
     if(donationId) {
-      donationData = await fetchDonationData(donationId);
-      if(Object.keys(donationData).length > 0) {
-        donorId = donationData.donorId ?? null;
-        pageLabel = getPageLabel(donationData);
-      }
-      else {
-        window.location.replace("/notfound");
-      }
+      /* Do not await the promise, the unresolved promise must be assigned to donationData here in order for the {#await donationData} blocks to function properly */
+      donationData = fetchDonationData(donationId)
     }
     else if(donorId) {
       pageLabel = "New Donation";
-      let donorData = await fetchDonorData(donorId);
-      donorLabel = getPageLabel(donorData);
       donationData.donorId = donorId;
+
+      /* Set the donor info label if the donor is not anonymous */
+      if(donorId != 1) {
+        let donorData = await fetchDonorData(donorId);
+        donorInfoLabel = getPageLabel(donorData);
+      }
     }
     else {
       window.location.replace("/notfound"); // TODO: Error specific page. Need donorId
@@ -87,11 +82,21 @@
 
 <div class="page">
   <div class="donation-data-section">
-    <h3>{pageLabel}</h3>
-    {#if donorLabel}
-      <h6>{donorLabel}</h6>
+    {#await donationData}
+      <h3>{pageLabel}</h3>
+    {:then donationData}
+      <h3>{getPageLabel(donationData)}</h3>
+    {/await}
+
+    {#if donorInfoLabel}
+      <h6>{donorInfoLabel}</h6>
     {/if}
-    <svelte:component this={DonationForm} {donationId} {donorId} data={donationData} />
+
+    {#await donationData}
+      <h6>Loading data...</h6>
+    {:then donationData}
+      <svelte:component this={DonationForm} {donationId} {donorId} data={donationData} />
+    {/await}
   </div>
 </div>
 

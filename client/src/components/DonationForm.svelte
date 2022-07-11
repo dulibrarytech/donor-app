@@ -4,16 +4,19 @@
   import MessageDisplay from "../components/MessageDisplay.svelte";
 
   export let donationId;
-  export let data = {};
-  export let donorId = null;
+  export let data={};
+  export let donorId=null;
 
   let method = "post";
   let action = `${$Configuration.donorApiDomain}/donation`;
   let buttonText = "Add Donation";
   let messageDisplay;
 
-  /* Formatted fields */
+  /* Formatted fields: default values */
   let statusDisplay = null;
+
+  /* Toggle visibility of controls */
+  let displayGiftTypeSelect = true;
 
   /* Set select/radio control state */
   let typeSelect = data.important && data.important == 1 ? "important" : "standard";
@@ -26,7 +29,11 @@
   }
 
   const formatFormFields = () => {
+    /* Convert status to text */
     statusDisplay = data.letter && data.letter == 1 ? "Pending" : "Complete";
+
+    /* Format to yyyy-mm-dd */
+    data.dateOfGift = data.dateOfGift.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g)[0];
   }
 
   const onSubmitForm = () => {
@@ -59,6 +66,9 @@
     window.location.replace(`/letter/${donationId}`)
   }
 
+  /*
+   * Initialization
+   */
   const init = () => {
     /* Display data for donation */
     if(donationId) {
@@ -70,6 +80,12 @@
     /* New donation */
     else {
       data.letter = 1; // TODO: Add 'bypass letter' checkbox to new donation form, sets data.letter value. Just default to 1 now for new donations
+    }
+
+    /* Anonymous donation: hide the 'Status' and 'Gift Type' fields */
+    if(data.donorId == 1) {
+      statusDisplay = false;
+      displayGiftTypeSelect = false;
     }
   }
 
@@ -102,19 +118,21 @@
         <input type="text" class="form-control" id="giftDetails" bind:value={data.giftDetails}>
       </div>
       <div class="col-md-3">
-        <label class="form-check-label">Gift Type</label>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" bind:group={typeSelect} value="standard" id="type-standard" checked={typeSelect=='standard'}>
-          <label class="form-check-label" for="type-standard">
-            Standard
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" bind:group={typeSelect} value="important" id="type-important" checked={typeSelect=='important'}>
-          <label class="form-check-label" for="type-important">
-            Important
-          </label>
-        </div>
+        {#if displayGiftTypeSelect}
+          <label class="form-check-label">Gift Type</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" bind:group={typeSelect} value="standard" id="type-standard" checked={typeSelect=='standard'}>
+            <label class="form-check-label" for="type-standard">
+              Standard
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" bind:group={typeSelect} value="important" id="type-important" checked={typeSelect=='important'}>
+            <label class="form-check-label" for="type-important">
+              Important
+            </label>
+          </div>
+        {/if}
       </div>
     </div>
   </div>

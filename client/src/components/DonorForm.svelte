@@ -43,6 +43,9 @@
     }
   }
 
+  /*
+   * Initialization
+   */
   const init = () => {
     if(donorId) {
       method = "put";
