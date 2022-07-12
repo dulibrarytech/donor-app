@@ -41,12 +41,10 @@
       messageDisplay.displayMessage("Submitting data...");
       ajaxRequest(method, action, function(error, response, status) {
         if(error) {
-          console.error("Error:", error);
-          messageDisplay.displayMessage("Error");
+          messageDisplay.displayMessage("Error", `Ajax error: ${error}`);
         }
         else if(status != 200) {
-          console.log("Response status: ", status);
-          messageDisplay.displayMessage("Error");
+          messageDisplay.displayMessage("Error", `Response status: ${status}`);
         }
         else {
           let message = method == "post" ? "New donation created" : "Donation record updated";

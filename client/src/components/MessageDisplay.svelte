@@ -2,8 +2,9 @@
   const timeout = 3000;
   let messageText = "";
 
-  export const displayMessage = (message) => {
+  export const displayMessage = (message, consoleMessage=null) => {
     messageText = message;
+    if(consoleMessage) console.log(consoleMessage);
   }
 
   export const displayTimeoutMessage = (message) => {
