@@ -11,6 +11,7 @@
 
   const donorId = params.id ?? null;
   var donorData = {};
+  var donorTitles = [];
   var donationDisplay = [];
   var pageLabel = "";
 
@@ -29,8 +30,20 @@
 
   const fetchDonorDonations = (id) => {
     return new Promise((resolve, reject) => {
-      let data = null;
       let url = `${$Configuration.donorApiDomain}/donation/donor/${id}`;
+      ajaxRequest('GET', url, function(error, response) {
+        if(error) reject(error);
+        if(response) {
+          // TODO: Handle status != 200
+          resolve(response.json());
+        }
+      });
+    });
+  }
+
+  const fetchDonorTitles = (id) => {
+    return new Promise((resolve, reject) => {
+      let url = `${$Configuration.donorApiDomain}/donor/titles/list`;
       ajaxRequest('GET', url, function(error, response) {
         if(error) reject(error);
         if(response) {
@@ -43,7 +56,6 @@
 
   const getPageLabel = ({firstName="", lastName="", organization=""}) => {
     let label = "Donor";
-
     if(lastName.length > 0) {
       label = `${lastName}`;
       if(firstName.length > 0) {
@@ -53,7 +65,6 @@
     else if(organization.length > 0) {
       label = `${organization}`;
     }
-
     return label;
   }
 
@@ -66,6 +77,8 @@
   const init = async () => {
     if(donorId && donorId > 1) {
       donorData = await fetchDonorData(donorId);
+      donorTitles = await fetchDonorTitles();
+
       if(Object.keys(donorData).length > 0) {
         pageLabel = getPageLabel(donorData);
         let donationData = await fetchDonorDonations(donorId);
@@ -80,6 +93,7 @@
     }
     else {
       pageLabel = "New Donor";
+      donorTitles = await fetchDonorTitles();
     }
   }
 
@@ -89,7 +103,7 @@
 <div class="page">
   <div class="donor-data-section">
     <h3>{pageLabel}</h3>
-    <svelte:component this={DonorForm} {donorId} data={donorData} />
+    <svelte:component this={DonorForm} {donorId} data={donorData} titles={donorTitles}/>
   </div>
   {#if donorId}
     <NewItemLink text="Add new donation" on:click-new-item-link={onClickAddNewDonation} />

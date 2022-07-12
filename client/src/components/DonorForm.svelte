@@ -5,6 +5,7 @@
 
   export let donorId;
   export let data = {};
+  export let titles = [];
 
   let method = "post";
   let action = `${$Configuration.donorApiDomain}/donor`;
@@ -56,8 +57,13 @@
 <form id="donor-form" class="form" method="{method}" action="{action}">
   <div class="form-fields">
     <div class="form-group">
-      <label for="title">Title</label>
-      <input type="text" class="form-control" id="title" name="title" bind:value={data.title}>
+
+      <label for="titleSelect">Title</label>
+      <select class="form-select" name="title" id="titleSelect" bind:value={data.title}>
+        {#each titles as title}
+          <option value="{title.titleId}">{title.titleString}</option>
+        {/each}
+      </select>
 
       <label for="lastName">Last Name</label>
       <input type="text" class="form-control" id="lastName" name="lastName" bind:value={data.lastName}>
