@@ -81,7 +81,8 @@
     }
     /* New donation */
     else {
-      data.letter = 1; // TODO: Add 'bypass letter' checkbox to new donation form, sets data.letter value. Just default to 1 now for new donations
+      /* Set letter flag on all new donations, except for anonymous donations */
+      data.letter = donorId == 1 ? 0 : 1;
     }
 
     /* Anonymous donation: hide the 'Status' and 'Gift Type' fields */
