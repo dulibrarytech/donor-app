@@ -49,7 +49,7 @@ module.exports = (() => {
     'get_donor': `
       SELECT
         Donors.donorID AS       ${map.donorID},
-        Titles.title AS         ${map.titleID},
+        Titles.titleID AS         ${map.titleID},
         Donors.FirstName AS     ${map.FirstName},
         Donors.LastName AS      ${map.LastName},
         Donors.Address1 AS      ${map.Address1},
@@ -228,10 +228,13 @@ module.exports = (() => {
       DonorModel.execute_query('get_titles')
       .then(
         (response) => {
-          let titles = {}, item;
+          let titles = [], item;
           for(let index in response.data) {
             item = response.data[index];
-            titles[item.titleID] = item.title;
+            titles.push({
+              titleId: item.titleID,
+              titleString: item.title
+            });
           }
           resolve(titles)
         },
