@@ -32,15 +32,29 @@
   {#if items.length > 0}
     {#each items as donation (donation.id)}
       <tr>
-        <td>{donation.dateOfGift?.match(/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/) ?? "No date"}</td>
+        <td>{donation.dateOfGift?.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/) ?? "No date"}</td>
+
         {#if !donorId}
           <td>{donation.lastName || ""}</td>
           <td>{donation.firstName || ""}</td>
         {/if}
-        <td>{formatGiftTypeField(donation.important) || "Unknown"}</td>
-        <td>{formatStatusField(donation.letter) || "Unknown"}</td>
+
+        {#if donation.donorId != 1}
+          <td>{formatGiftTypeField(donation.important) || "Unknown"}</td>
+        {:else}
+          <td>n/a</td>
+        {/if}
+
+        {#if donation.donorId != 1}
+          <td>{formatStatusField(donation.letter) || "Unknown"}</td>
+        {:else}
+          <td>n/a</td>
+        {/if}
+
         <td>{donation.giftDescription}</td>
+
         <td><a href="/donation/{donation.id}">View</a></td>
+
         {#if donorId}
           <td><a href="/letter/{donation.id}">Letter</a></td>
         {/if}
