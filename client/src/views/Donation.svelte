@@ -10,7 +10,7 @@
   var donationId = params.id ?? null;
   var donorId = params.donorId ?? null;
   var donationData = {};
-  var pageLabel = "";
+  var pageLabel;
   var donorInfoLabel = null;
 
   const fetchDonationData = (id) => {
@@ -39,10 +39,10 @@
     });
   }
 
-  const getPageLabel = ({lastName="", firstName="", organization=""}) => {
-    let label = "Donation";
+  const getDonorInfoLabel = ({lastName="", firstName="", organization=""}) => {
+    let label = "No donor data available";
     if(donorId && donorId == 1) {
-      label = "Anonymous Donation";
+      label = "Anonymous Donor";
     }
     else if(lastName.length > 0) {
       label = `${lastName}`;
@@ -53,27 +53,21 @@
     else if(organization.length > 0) {
       label = `${organization}`;
     }
-
     return label;
   }
 
   const init = async () => {
     if(donationId) {
-      /* Do not await the promise, the unresolved promise must be assigned to donationData here in order for the {#await donationData} blocks to function properly */
-      donationData = fetchDonationData(donationId)
+      pageLabel = "Donation";
+      donationData = fetchDonationData(donationId);
     }
     else if(donorId) {
       pageLabel = "New Donation";
-      donationData.donorId = donorId;
-
-      /* Set the donor info label if the donor is not anonymous */
-      if(donorId != 1) {
-        let donorData = await fetchDonorData(donorId);
-        donorInfoLabel = getPageLabel(donorData);
-      }
+      let donorData = await fetchDonorData(donorId);
+      donationData = {donorId, ...donorData}
     }
     else {
-      window.location.replace("/notfound"); // TODO: Error specific page. Need donorId
+      window.location.replace("/notfound");
     }
   }
 
@@ -82,20 +76,13 @@
 
 <div class="page">
   <div class="donation-data-section">
-    {#await donationData}
-      <h3>{pageLabel}</h3>
-    {:then donationData}
-      <h3>{getPageLabel(donationData)}</h3>
-    {/await}
-
-    {#if donorInfoLabel}
-      <h6>{donorInfoLabel}</h6>
-    {/if}
+    <h3>{pageLabel}</h3>
 
     {#await donationData}
       <h6>Loading data...</h6>
     {:then donationData}
-      <svelte:component this={DonationForm} {donationId} {donorId} data={donationData} />
+      <h6>{getDonorInfoLabel(donationData)}</h6>
+      <svelte:component this={DonationForm} {donationId} data={donationData} />
     {/await}
   </div>
 </div>

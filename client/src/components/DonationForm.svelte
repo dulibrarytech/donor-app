@@ -5,8 +5,8 @@
 
   export let donationId;
   export let data={};
-  export let donorId=null;
 
+  let donorId;
   let method = "post";
   let action = `${$Configuration.donorApiDomain}/donation`;
   let buttonText = "Add Donation";
@@ -32,7 +32,7 @@
     /* Convert status to text */
     statusDisplay = data.letter && data.letter == 1 ? "Pending" : "Complete";
 
-    /* Format to yyyy-mm-dd */
+    /* Format to yyyy-mm-dd. Formatted value should be submitted with the form. */
     data.dateOfGift = data.dateOfGift.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g)[0];
   }
 
@@ -70,6 +70,8 @@
    * Initialization
    */
   const init = () => {
+    donorId = data.donorId || null;
+
     /* Display data for donation */
     if(donationId) {
       method = "put";
@@ -137,11 +139,11 @@
     </div>
   </div>
 
-  <button class="btn btn-default" type="submit" on:click|preventDefault={onSubmitForm}>{buttonText}</button> <!-- TODO: on:click|preventDefault={onSubmitDonorForm} to add validation -->
-  {#if donationId && donorId > 1}
-    <button class="btn btn-default" type="button" on:click={onClickLetter}>Letter</button>
-    <button class="btn btn-default" type="button" on:click={onViewDonorInfo}>View Donor Info</button>
-  {/if}
+  <button class="btn btn-default" type="submit" on:click|preventDefault={onSubmitForm}>{buttonText}</button>
+    {#if donationId && donorId > 1}
+      <button class="btn btn-default" type="button" on:click={onClickLetter}>Letter</button>
+      <button class="btn btn-default" type="button" on:click={onViewDonorInfo}>View Donor Info</button>
+    {/if}
 </form>
 <MessageDisplay bind:this={messageDisplay} />
 
