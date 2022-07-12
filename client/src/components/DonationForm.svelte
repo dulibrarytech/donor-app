@@ -11,16 +11,13 @@
   let action = `${$Configuration.donorApiDomain}/donation`;
   let buttonText = "Add Donation";
   let messageDisplay;
+  let typeSelect;
 
   /* Formatted fields: default values */
   let statusDisplay = null;
 
   /* Toggle visibility of controls */
   let displayGiftTypeSelect = true;
-
-  /* Set select/radio control state */
-  let typeSelect = data.important && data.important == 1 ? "important" : "standard";
-  $: data.important = typeSelect == "important" ? 1 : 0;
 
   const validateFormFields = () => {
     let isValid = false;
@@ -37,6 +34,8 @@
   }
 
   const onSubmitForm = () => {
+    $: data.important = typeSelect == "important" ? 1 : 0;
+
     if(validateFormFields()) {
       messageDisplay.displayMessage("Submitting data...");
       ajaxRequest(method, action, function(error, response, status) {
@@ -68,7 +67,10 @@
    * Initialization
    */
   const init = () => {
-    donorId = data.donorId || null;
+    $: donorId = data.donorId || data.id;
+
+    /* Set select/radio control state */
+    typeSelect = data.important && data.important == 1 ? "important" : "standard";
 
     /* Display data for donation */
     if(donationId) {
@@ -83,7 +85,7 @@
     }
 
     /* Anonymous donation: hide the 'Status' and 'Gift Type' fields */
-    if(data.donorId == 1) {
+    if(donorId == 1) {
       statusDisplay = false;
       displayGiftTypeSelect = false;
     }

@@ -63,8 +63,9 @@
     }
     else if(donorId) {
       pageLabel = "New Donation";
-      let donorData = await fetchDonorData(donorId);
-      donationData = {donorId, ...donorData}
+      donationData = fetchDonorData(donorId);
+      // donationData = {donorId, ...donorData}
+      // console.log("Donation data", donationData)
     }
     else {
       window.location.replace("/notfound");
