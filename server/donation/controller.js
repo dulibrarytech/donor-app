@@ -43,7 +43,6 @@ exports.donationGet = (req, res) => {
 exports.donationPut = (req, res) => {
   let id = req.params.id ?? "";
   let data = req.body;
-
   Donation.putDonation(id, data)
   .then(
     function(data) {

@@ -30,7 +30,6 @@ exports.donorGet = (req, res) => {
 exports.donorPut = (req, res) => {
   let id = req.params.id ?? "";
   let data = req.body;
-
   Donor.putDonor(id, data)
   .then(
     function(data) {
@@ -44,7 +43,6 @@ exports.donorPut = (req, res) => {
 
 exports.donorPost = (req, res) => {
   let data = req.body;
-
   Donor.postDonor(data)
   .then(
     function(data) {
@@ -59,6 +57,18 @@ exports.donorPost = (req, res) => {
 exports.donorDelete = (req, res) => {
   let id = req.params.id ?? "";
   Donor.deleteDonor(id)
+  .then(
+    function(response) {
+      res.send(JSON.stringify(response))
+    },
+    function(error) {
+      res.status(500).send(error);
+    }
+  );
+}
+
+exports.donorTitlesList = (req, res) => {
+  Donor.getTitles()
   .then(
     function(response) {
       res.send(JSON.stringify(response))

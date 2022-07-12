@@ -102,7 +102,10 @@ module.exports = (() => {
       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);`,
 
     'delete_donor': `
-      DELETE FROM tbl_donorinfo WHERE donorID = ?;`
+      DELETE FROM tbl_donorinfo WHERE donorID = ?;`,
+
+    'get_titles': `
+      SELECT * FROM tbl_donortitle_lkup;`
   }
 
   const DonorModel = new Model(database, queries);
@@ -156,7 +159,7 @@ module.exports = (() => {
       parseInt(data[map.anonymous]) ?? 0,
       data[map.Country] ?? "USA"
     ];
-    
+
     return new Promise((resolve, reject) => {
       DonorModel.execute_query('put_donor', [...sqlFields, id])
       .then(
@@ -220,11 +223,32 @@ module.exports = (() => {
     });
   }
 
+  const getTitles = () => {
+    return new Promise((resolve, reject) => {
+      DonorModel.execute_query('get_titles')
+      .then(
+        (response) => {
+          let titles = {}, item;
+          for(let index in response.data) {
+            item = response.data[index];
+            titles[item.titleID] = item.title;
+          }
+          resolve(titles)
+        },
+        (error) => {
+          console.log(`Error retrieving donor title list: ${error}`);
+          reject(error);
+        }
+      );
+    });
+  }
+
   return {
     getAllDonors,
     getDonor,
     putDonor,
     postDonor,
-    deleteDonor
+    deleteDonor,
+    getTitles
   }
 })()
