@@ -7,6 +7,7 @@ const { baseUrl } = require(`./${process.env.CONFIGURATION_FILE}`);
 
 const donorRoutes = require("../server/donor/routes");
 const donationRoutes = require("../server/donation/routes");
+const userRoutes = require("../server/user/routes");
 
 module.exports = function () {
 
@@ -17,6 +18,7 @@ module.exports = function () {
 
   app.use('/donor', donorRoutes);
   app.use('/donation', donationRoutes);
+  app.use('/user', userRoutes);
 
   app.route('/')
     .get(function(req, res) {
