@@ -39,7 +39,8 @@ module.exports = (() => {
       .then(
         (response) => {
           if(response.data[0]) {
-            resolve({isAuthorized: true, data: response.data[0]});
+            let data = {...response.data[0]};
+            resolve({isAuthorized: true, data});
           }
           else {
             resolve({isAuthorized: false, data: null});

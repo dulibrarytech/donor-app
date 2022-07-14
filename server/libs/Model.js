@@ -9,9 +9,6 @@ class Model {
   }
 
   sanitize_data(data=[]) {
-    // for(let value of data) {
-    //   // TODO: Sanitize fields, remove ;
-    // }
     return data;
   }
 
