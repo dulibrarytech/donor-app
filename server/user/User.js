@@ -38,10 +38,12 @@ module.exports = (() => {
       UserModel.execute_query('get_user_by_username', [username])
       .then(
         (response) => {
-
-          console.log("User data is:", response.data[0])
-
-          resolve({isAuthorized: true, data: response.data[0]});
+          if(response.data[0]) {
+            resolve({isAuthorized: true, data: response.data[0]});
+          }
+          else {
+            resolve({isAuthorized: false, data: null});
+          }
         },
         (error) => {
           console.log(`Error retrieving user data: ${error}`);

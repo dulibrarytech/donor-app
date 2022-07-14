@@ -19,13 +19,16 @@ exports.userAuthenticate = async (req, res) => {
 
       if(response.isAuthorized === true) {
         let token = Service.createToken(response.data);
+        console.log("User service response token:", token)
+
         let data = {"token": token, "userData": response.data};
         console.log("Data payload to client:", data)
+        
         res.send(JSON.stringify(data))
       }
-      else res.status(403).send();
+      else res.status(401).send();
     }
-    else res.status(403).send();
+    else res.status(401).send();
   }
   catch(error) {
     res.status(500).send(error);
