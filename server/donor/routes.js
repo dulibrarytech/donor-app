@@ -1,15 +1,13 @@
 'use strict'
 
 const { Router } = require("express");
+const { runtimeEnv } = require(`../../config/${process.env.CONFIGURATION_FILE}`);
 const { sanitizeData } = require('../libs/sanitize.js');
+const { validateToken } = require('../libs/validateToken');
 const donorController = require("./controller");
 
 const router = Router();
-
-router.use((req, res, next) => {
-  console.log('/donor router: Time: ', Date.now())
-  next();
-})
+if(runtimeEnv == "production") router.use(validateToken);
 
 router.get('/', async (req, res) => {
   donorController.donors(req, res);
