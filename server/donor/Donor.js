@@ -5,7 +5,6 @@
 'use strict'
 
 const database = require('../libs/database.js');
-require('../libs/sanitize.js');
 const Model = require('../libs/Model.js');
 
 /* {database field} : {response data field} */

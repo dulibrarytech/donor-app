@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken');
 module.exports = (() => {
   const authServiceUrl = config.authServiceUrl;
   const tokenKey = config.tokenKey;
-  const jwtExpirySeconds = 300;
+  const jwtExpirySeconds = config.sessionTokenDuration;
 
   const authenticateUser = (username, password) => {
     return new Promise((resolve, reject) => {
@@ -43,10 +43,6 @@ module.exports = (() => {
   	});
     return token;
   }
-
-  // const validateToken = (token) => {
-  //
-  // }
 
   return {
     authenticateUser,

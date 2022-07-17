@@ -9,5 +9,6 @@ module.exports = {
     databasePassword: process.env.DATABASE_PWD,
     databaseName: process.env.DATABASE_NAME,
     authServiceUrl: process.env.AUTH_SERVICE_URL,
-    tokenKey: process.env.AUTH_TOKEN_SECRET_KEY
+    tokenKey: process.env.AUTH_TOKEN_SECRET_KEY,
+    sessionTokenDuration: process.env.SESSION_TOKEN_DURATION
 }
