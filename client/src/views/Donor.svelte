@@ -75,6 +75,7 @@
   }
 
   const init = async () => {
+    /* If there is a donor ID, get the data for that donor in the form and get the donation list */
     if(donorId && donorId > 1) {
       donorData = await fetchDonorData(donorId);
       donorTitles = await fetchDonorTitles();
@@ -84,13 +85,19 @@
         let donationData = await fetchDonorDonations(donorId);
         if(donationData) donationDisplay = donationData;
       }
+
+      /* No data for this donor was found */
       else {
         window.location.replace("/notfound");
       }
     }
+
+    /* Do not load anonymous donor */
     else if(donorId == 1) {
       window.location.replace("/notfound");
     }
+
+    /* If no ID, show the new donor form */
     else {
       pageLabel = "New Donor";
       donorTitles = await fetchDonorTitles();

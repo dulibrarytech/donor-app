@@ -5,6 +5,7 @@ const {tokenKey} = require(`../../config/${process.env.CONFIGURATION_FILE}`);
 
 exports.validateToken = (req, res, next) => {
   let token = req.headers["authorization"];
+  //let data = req.headers["set-cookie"];
   if(token) {
     jwt.verify(token, tokenKey, function(err, decoded) {
       if(err) {
@@ -12,12 +13,10 @@ exports.validateToken = (req, res, next) => {
         res.status(401).send("Unauthorized")
       }
       else {
+        // TODO: If refresh, extract data and create new token here. Attach to 'authorization' header in response here
         next();
       }
     });
-
-    // TODO: If refreshed, use data = await verify(), then create new token with data and current stamp. Config->timeToExpire
-    // OR create token with current data in nested callback
   }
   else {
     res.status(401).send("Unauthorized");

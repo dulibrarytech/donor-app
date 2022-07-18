@@ -111,6 +111,7 @@ module.exports = (() => {
 
   const getAllDonors = () => {
     return new Promise((resolve, reject) => {
+      console.log("Get all donors")
       DonorModel.execute_query('get_all')
       .then(
         (response) => {

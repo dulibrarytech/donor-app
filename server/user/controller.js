@@ -17,6 +17,9 @@ exports.userAuthenticate = async (req, res) => {
         let token = Service.createToken(response.data);
         // TODO: if (token == null) throw "Error generating session token";
 
+        // res.cookie('token', token);
+        // res.cookie('userData', response.data);
+        
         let data = {"token": token, "userData": response.data};
         res.send(JSON.stringify(data))
       }
