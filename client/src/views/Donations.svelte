@@ -3,6 +3,7 @@
 
 import { onMount } from 'svelte';
 import { Configuration } from '../config';
+import { ajaxRequest } from '../libs/ajax.js';
 import DataDisplay from "../components/DataDisplay.svelte";
 import DonationTable from "../components/DonationTable.svelte";
 import DonationSearchResultsTable from "../components/DonationSearchResultsTable.svelte";
@@ -10,9 +11,6 @@ import NewItemLink from "../components/NewItemLink.svelte";
 import DataFilter from "../components/DataFilter.svelte";
 import DaterangeFilter from "../components/DaterangeFilter.svelte";
 import SearchBox from "../components/SearchBox.svelte";
-
-// Dev
-import {Donations} from '../stores';
 
 var donations = [];
 var donationDisplay = [];
@@ -51,21 +49,24 @@ var filters = [
 ];
 
 const init = async () => {
-  // TODO: Use ajaxRequest()
+  // TODO: Feedback message "Retrieving donations..." in display window, then remove after getDonationList() returns
   donations = await getDonationList();
   showAllDonations();
 }
 
 const getDonationList = async () => {
-  // Dev: Fetch donor list from store
-  //return $Donations;
-
   let list = [],
       url = `${$Configuration.donorApiDomain}/donation`;
 
-  const response = await fetch(url);
-  list = await response.json();
-  return list;
+  return new Promise((resolve, reject) => {
+    ajaxRequest('GET', url, function(error, response) {
+      if(error) {
+        console.error(error);
+        resolve([]);
+      }
+      if(response) resolve(response.json());
+    });
+  });
 }
 
 const showAllDonations = () => {
@@ -104,12 +105,10 @@ const onFilter = (event) => {
 }
 
 const onDaterangeSelect = (event) => {
-  console.log("Donations on DaterangeSelect event: data from event:", console.dir(event.detail))
   donationDisplay = event.detail;
 }
 
 const onClearDaterange = () => {
-  console.log("On clear:", dataFilter)
   donationDisplay = dataFilter.filterData(donations);
 }
 

@@ -1,13 +1,11 @@
 <script>
   import { onMount } from 'svelte';
   import { Configuration } from '../config';
+  import { ajaxRequest } from '../libs/ajax.js';
   import DataDisplay from "../components/DataDisplay.svelte";
   import DonorTable from "../components/DonorTable.svelte";
   import TextFilter from "../components/TextFilter.svelte";
   import NewItemLink from "../components/NewItemLink.svelte";
-
-  // Dev
-  import { Donors } from '../stores';
 
   var donors = [];
   var donorDisplay = [];
@@ -16,19 +14,22 @@
   const init = async () => {
     // TODO: Feedback message "Retrieving donors..." in display window, then remove after getDonorList() returns
     donors = await getDonorList();
-    console.log("Init donors page, donors:", donors)
     showAllDonors();
   }
 
-  /* Fetches an array containing all donors from the backend api */
   const getDonorList = async () => {
     let list = [],
         url = `${$Configuration.donorApiDomain}/donor`;
 
-    // TODO: Use ajaxRequest()
-    const response = await fetch(url);
-    list = await response.json();
-    return list;
+    return new Promise((resolve, reject) => {
+      ajaxRequest('GET', url, function(error, response) {
+        if(error) {
+          console.error(error);
+          resolve([]);
+        }
+        if(response) resolve(response.json());
+      });
+    });
   }
 
   const onFilter = (event) => {
@@ -42,10 +43,6 @@
 
   const onClickAddNewDonor = () => {
     window.location.replace("/donor");
-  }
-
-  const onClickEditDonor = (event) => {
-    // TODO: Get id from clicked item, redirect to url "/donor/{id}"
   }
 
   init();
