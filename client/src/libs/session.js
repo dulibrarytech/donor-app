@@ -25,7 +25,7 @@
 
    const getDataItem = (key) => {
      let sessionData = JSON.parse(sessionStorage.getItem(sessionName)).data || {};
-     return data[key] || null;
+     return sessionData[key] || null;
    }
 
    const isSession = () => {
