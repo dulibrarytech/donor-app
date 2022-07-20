@@ -6,11 +6,10 @@ const User = require("./User");
 exports.userAuthenticate = async (req, res) => {
   let username = req.body.username || "";
   let password = req.body.password || "";
-  console.log(`Authenticating user: ${username}, ${password}`)
+  console.log(`Authenticating user: ${username}`)
 
   try {
     let response = await Service.authenticateUser(username, password);
-
     if(response.isAuthenticated === true) {
       response = await User.authorize(username);
 
@@ -22,7 +21,7 @@ exports.userAuthenticate = async (req, res) => {
         // res.cookie('userData', response.data);
 
         let data = {"token": token, "userData": userData};
-        console.log("Authentication successful: ", userdata);
+        console.log("Authentication successful: ", userData);
         res.send(JSON.stringify(data))
       }
       else res.status(401).send();
