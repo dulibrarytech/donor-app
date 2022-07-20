@@ -5,7 +5,7 @@ const {tokenKey} = require(`../../config/${process.env.CONFIGURATION_FILE}`);
 
 exports.validateToken = (req, res, next) => {
   let token = req.headers["authorization"];
-  //let data = req.headers["set-cookie"];
+
   if(token) {
     jwt.verify(token, tokenKey, function(err, decoded) {
       if(err) {
