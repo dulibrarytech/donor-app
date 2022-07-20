@@ -1,15 +1,34 @@
 <script>
-  // TODO Add to app config file
-  const routes = [
-    {"label": "Donors", "path": "/donors", "default": true},
-    {"label": "Donations", "path": "/donations"}
-  ]
+  import UserDisplay from "./UserDisplay.svelte";
+  import { Session } from '../libs/session.js';
+
+  export let userData;
+  if(Session.isSession()) {
+    userData = Session.getData();
+  }
+  else {
+    userData = null;
+  }
+
+  var routes = [];
+
+  if(userData) {
+    routes = [
+      {"label": "Donors", "path": "/donors", "default": true},
+      {"label": "Donations", "path": "/donations"},
+      {"label": "Logout", "path": "/logout"}
+    ]
+  }
 
   // Set the clicked nav link to active, remove active state from previously active link
-  let onClickNavItem = function(event) {
+  const onClickNavItem = function(event) {
     let activeLink = document.querySelector(".nav-item.active");
     if(activeLink) { activeLink.classList.remove("active") }
     event.srcElement.parentElement.classList.add("active");
+  }
+
+  const onLogout = () => {
+    dispatch('logout-user', {})
   }
 
   // Initialize the nav menu links, set the link to the current page as active
@@ -32,6 +51,12 @@
         </li>
       {/each}
     </ul>
+
+    {#if userData}
+      <div class="user-display-wrapper">
+        <UserDisplay {userData} on:logout-user={onLogout} />
+      </div>
+    {/if}
   </div>
 </nav>
 
@@ -39,7 +64,7 @@
   nav.navbar {
       background-color: #e5e3e1;
   		height: 50px;
-  		padding-left: 0.7em;
+  		padding: 0 0.7em;
   }
 
   a.nav-link {
@@ -52,5 +77,13 @@
   	color: #383838;
   	text-decoration: underline;
   	pointer-events: none;
+  }
+
+  .logout-nav-item {
+    display: none;
+  }
+
+  .user-display-wrapper {
+    width: 100%;
   }
 </style>
