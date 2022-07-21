@@ -145,9 +145,9 @@ module.exports = (() => {
     data[map.anonymous] = 0;
 
     let sqlFields = [
-      parseInt(data[map.titleID]) ?? null,
-      data[map.FirstName] ?? null,
-      data[map.LastName] ?? null,
+      parseInt(data[map.titleID]) ?? 0,
+      data[map.FirstName] ?? "",
+      data[map.LastName] ?? "",
       data[map.Address1] ?? null,
       data[map.Address2] ?? null,
       data[map.City] ?? null,
@@ -155,7 +155,7 @@ module.exports = (() => {
       data[map.PostalCode] ?? null,
       data[map.phone] ?? null,
       data[map.email] ?? null,
-      data[map.Organization] ?? "None specified",
+      data[map.Organization] ?? "",
       parseInt(data[map.anonymous]) ?? 0,
       data[map.Country] ?? "USA"
     ];
@@ -178,9 +178,9 @@ module.exports = (() => {
     data[map.anonymous] = 0;
 
     let sqlFields = [
-      data[map.titleID] ?? null,
-      data[map.FirstName] ?? null,
-      data[map.LastName] ?? null,
+      data[map.titleID] ?? 0,
+      data[map.FirstName] ?? "",
+      data[map.LastName] ?? "",
       data[map.Address1] ?? null,
       data[map.Address2] ?? null,
       data[map.City] ?? null,
@@ -188,7 +188,7 @@ module.exports = (() => {
       data[map.PostalCode] ?? null,
       data[map.phone] ?? null,
       data[map.email] ?? null,
-      data[map.Organization] ?? "None specified", // Enforce not null
+      data[map.Organization] ?? "",
       data[map.anonymous] ?? 0,
       data[map.Country] ?? "USA"
     ];
