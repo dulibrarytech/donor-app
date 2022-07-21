@@ -1,12 +1,16 @@
 <script>
+  import {createEventDispatcher} from 'svelte';
+
   export let items={items};
   export let Table={Table};
   export let args;
+
+  const dispatch = createEventDispatcher();
 </script>
 
 <div class="data-display">
   <table class="table">
-    <svelte:component this={Table} items={items} {args}/>
+    <svelte:component this={Table} items={items} {args} on:message={(event) => dispatch('message', event.detail)}/>
   </table>
 </div>
 

@@ -131,7 +131,24 @@ module.exports = (() => {
     'complete_letter': `
       UPDATE tbl_donorgifts
       SET letter=0
-      WHERE giftsId=?`
+      WHERE giftsId=?`,
+
+    'get_pending': `
+      SELECT
+        Donors.FirstName AS               ${map.FirstName},
+        Donors.LastName AS                ${map.LastName},
+        Donors.Organization AS            ${map.Organization},
+        Gifts.giftsID AS                  ${map.giftsID},
+        Gifts.donorID AS                  ${map.donorID},
+        Gifts.Cdate AS                    ${map.Cdate},
+        Gifts.dateOfGift AS               ${map.dateOfGift},
+        Gifts.numberOfGifts AS            ${map.numberOfGifts},
+        Gifts.important AS                ${map.important},
+        Gifts.letter AS                   ${map.letter},
+        Gifts.bypassLetter AS             ${map.bypassLetter}
+      FROM tbl_donorgifts Gifts
+      NATURAL JOIN tbl_donorinfo Donors
+      WHERE letter=1`
   }
 
   const DonationModel = new Model(database, queries);
@@ -281,6 +298,21 @@ module.exports = (() => {
     });
   }
 
+  const getPendingDonations = () => {
+    return new Promise((resolve, reject) => {
+      DonationModel.execute_query('get_pending')
+      .then(
+        (response) => {
+          resolve(response.data)
+        },
+        (error) => {
+          console.log(`Error retrieving donations: ${error}`);
+          reject(error);
+        }
+      );
+    });
+  }
+
   return {
     getAllDonations,
     getDonorDonations,
@@ -288,6 +320,7 @@ module.exports = (() => {
     putDonation,
     postDonation,
     deleteDonation,
-    completeLetter
+    completeLetter,
+    getPendingDonations
   }
 })()

@@ -15,6 +15,7 @@
 	import Donations from "./views/Donations.svelte";
 	import Donation from "./views/Donation.svelte";
 	import LetterView from "./views/LetterView.svelte";
+	import Inbox from "./views/Inbox.svelte";
 	import NotFound from "./views/NotFound.svelte";
 
   // View Components
@@ -25,7 +26,9 @@
 
 	const login = (data) => {
 		Session.create(data.token, data.userData);
-		window.location.replace("/");
+		let {roleId} = data.userData;
+		if(roleId == 2 || roleId == 3) window.location.replace("/inbox");
+		else window.location.replace("/");
 	}
 
 	const logout = () => {
@@ -42,7 +45,6 @@
 	}
 
 	const validateSession = async (ctx, next) => {
-		console.log("Validating session...", $Configuration.runtimeEnv)
 		if($Configuration.runtimeEnv == "production") {
 			if(Session.isSession()) {
 				let data = {
@@ -108,6 +110,11 @@
 		params = ctx.params;
 		next();
 	}, () => page = LetterView);
+
+	router('/inbox', validateSession, (ctx, next) => {
+		params = ctx.params;
+		next();
+	}, () => page = Inbox);
 
 	router('/*', () => {
 		page = NotFound;

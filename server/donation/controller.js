@@ -92,3 +92,15 @@ exports.donationLetter = (req, res) => {
     }
   );
 }
+
+exports.donationPending = (req, res) => {
+  Donation.getPendingDonations()
+  .then(
+    function(response) {
+      res.send(JSON.stringify(response))
+    },
+    function(error) {
+      res.status(500).send(error);
+    }
+  );
+}

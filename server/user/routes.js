@@ -1,6 +1,7 @@
 'use strict'
 
 const { Router } = require("express");
+const { runtimeEnv } = require(`../../config/${process.env.CONFIGURATION_FILE}`);
 const { sanitizeData } = require('../libs/sanitize.js');
 const { validateToken } = require('../libs/validateToken');
 const userController = require("./controller");
@@ -11,7 +12,9 @@ router.post('/authenticate', sanitizeData, async (req, res) => {
   userController.userAuthenticate(req, res);
 });
 
-router.get('/validate', validateToken, async (req, res) => {
+if(runtimeEnv == "production") router.use(validateToken);
+router.get('/validate', async (req, res) => {
+  console.log("/validate returning res:", res.headers)
   res.send();
 });
 

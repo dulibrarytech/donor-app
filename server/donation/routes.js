@@ -37,4 +37,8 @@ router.post('/:id/letter', async (req, res) => {
   donationController.donationLetter(req, res);
 });
 
+router.get('/pending/all', async (req, res) => {
+  donationController.donationPending(req, res);
+});
+
 module.exports = router;

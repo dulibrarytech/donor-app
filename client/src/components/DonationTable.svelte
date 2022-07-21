@@ -35,7 +35,7 @@
         <td>{donation.dateOfGift?.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/) ?? "No date"}</td>
 
         {#if !donorId}
-          <td>{donation.lastName || ""}</td>
+          <td>{donation.lastName || donation.organization || ""}</td>
           <td>{donation.firstName || ""}</td>
         {/if}
 

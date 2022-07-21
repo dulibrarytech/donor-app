@@ -21,6 +21,7 @@
     ajaxRequest('POST', url, async function(error, response) {
       if(error) {
         console.log(`Authentication error: ${error}`);
+        messageDisplay.displayTimeoutMessage("Error");
       }
       else if(response.status == 200) {
         console.log("Login successful");
@@ -33,6 +34,7 @@
       }
       else {
         console.log("Authentication response status ", response.status);
+        messageDisplay.displayTimeoutMessage("Error");
       }
 
       dispatch('login', sessionData);

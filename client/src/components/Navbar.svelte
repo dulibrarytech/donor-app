@@ -11,14 +11,17 @@
   }
 
   var routes = [];
-
   if(userData) {
     routes = [
       {"label": "Donors", "path": "/donors", "default": true},
-      {"label": "Donations", "path": "/donations"},
-      {"label": "Logout", "path": "/logout"}
+      {"label": "Donations", "path": "/donations"}
     ]
+    if(userData.roleId == 2 || userData.roleId == 3) {
+        routes.push({"label": "Inbox", "path": "/inbox"})
+    }
+    routes.push({"label": "Logout", "path": "/logout"})
   }
+  //TODO: push Inbox route if roleid is 2 (admin) or 3 (ext rel)
 
   // Set the clicked nav link to active, remove active state from previously active link
   const onClickNavItem = function(event) {
