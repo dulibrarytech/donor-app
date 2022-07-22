@@ -15,6 +15,7 @@
     // TODO: Feedback message "Retrieving donors..." in display window, then remove after getDonorList() returns
     donors = await getDonorList();
     showAllDonors();
+    sortDataDisplay();
   }
 
   const getDonorList = async () => {
@@ -36,9 +37,35 @@
     donorDisplay = event.detail;
   }
 
-  /* Removes any filters from the donor display */
+  /* Removes any filters from the donor display, sorts by lastname or organization */
   const showAllDonors = () => {
     donorDisplay = donors;
+  }
+
+  const sortDataDisplay = () => {
+    /* If last name has a value, sort descending on that value. If not, use the organization value */
+    donorDisplay = donorDisplay.sort(function(a, b) {
+      let aVal = a.lastName.length > 1 ? a.lastName : a.organization;
+      let bVal = b.lastName.length > 1 ? b.lastName : b.organization;
+      if (aVal < bVal) return -1;
+      if (aVal > bVal) return 1;
+      return 0;
+    });
+  }
+
+  const filterDataDisplay = (data, filter = "", option = 1) => {
+    filter = filter.toLowerCase();
+    if(option == "1") filter = '^' + filter;
+
+    let filtered = data.filter((item) => {
+      let re = new RegExp(filter, "gi"), values="";
+      if(item.lastName.length > 1) values = item.lastName?.toLowerCase().match(re)
+      else if(item.organization.length > 1) values = item.organization?.toLowerCase().match(re)
+
+      return values;
+    });
+
+    return filtered;
   }
 
   const onClickAddNewDonor = () => {
@@ -52,7 +79,7 @@
   <h1>Donors</h1>
 
   <div class="data-display-form">
-    <TextFilter data={donors} on:filter={onFilter} placeholderText="Search by any part of name or organization" />
+    <TextFilter data={donors} on:filter={onFilter} filterFunction={filterDataDisplay} placeholderText="Search by any part of last name or organization" />
   </div>
 
   <NewItemLink text="Add new donor" on:click-new-item-link={onClickAddNewDonor} />

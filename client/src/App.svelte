@@ -24,6 +24,9 @@
 	let page;
 	let params;
 
+	/*
+	 * Session control functions
+	 */
 	const login = (data) => {
 		Session.create(data.token, data.userData);
 		let {roleId} = data.userData;
@@ -43,7 +46,13 @@
 	const onLogout = () => {
 		logout();
 	}
+	/*
+	 * End Session control functions
+	 */
 
+	/*
+	 * Session validation middleware
+	 */
 	const validateSession = async (ctx, next) => {
 		if($Configuration.runtimeEnv == "production") {
 			if(Session.isSession()) {
@@ -61,7 +70,13 @@
 		}
 		else next()
 	}
+	/*
+	 * End Session validation middleware
+	 */
 
+  /*
+ 	 * Router
+ 	 */
 	router('/', () => {
 		window.location.replace("/donors");
 	});
@@ -121,7 +136,9 @@
 	});
 
 	router.start();
-	/* End Router.svelte */
+	/*
+ 	 * End Router
+ 	 */
 </script>
 
 <Header />
