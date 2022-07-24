@@ -26,6 +26,7 @@ var daterangeFilter;
 var donationListDisplay = "block";
 var donationFilterFormDisplay = "block";
 var donationSearchResultsDisplay = "none";
+var sortType = "dateOfGift";
 
 const searchFields = [
   {fieldName: "giftDescription", fieldLabel: "Description"},
@@ -95,6 +96,7 @@ filters.push({
 const init = async () => {
   donations = await getDonationList();
   showAllDonations();
+  sortDataDisplay();
 }
 
 const getDonationList = async () => {
@@ -115,10 +117,6 @@ const getDonationList = async () => {
 const showAllDonations = () => {
   // TODO: use dataFilter.resetFilters();
   donationDisplay = donations;
-}
-
-const onClickEditDonation = (event) => {
-  // TODO: Get id from clicked item, redirect to url "/donor/{id}"
 }
 
 const onKeywordSearch = (event) => {
@@ -156,8 +154,11 @@ const onClearDaterange = () => {
 }
 
 const sortDataDisplay = () => {
-  if(sortType.field == "dateOfRecord") {
-
+  if(sortType == "dateOfGift") {
+    donationDisplay = donationDisplay.sort(function(a, b) {
+      return a[sortType].localeCompare(b[sortType]);
+    });
+    console.log(donationDisplay)
   }
 }
 
