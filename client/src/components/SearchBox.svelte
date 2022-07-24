@@ -60,21 +60,23 @@ init();
 </script>
 
 <form>
-  <div class="form-group search-form">
-    <label for="searchbox">Keyword Search:</label>
-    <input id="searchbox" type="search" bind:value={keywords} placeholder={placeholder}/>
-    <button type="button" on:click|preventDefault={search}>Search</button>
-  </div>
+  <div class="form-group">
+    <div class="search-form">
+      <label for="searchbox">Keyword Search:</label>
+      <input id="searchbox" type="search" bind:value={keywords} placeholder={placeholder}/>
+      <button type="button" on:click|preventDefault={search}>Search</button>
+    </div>
 
-  <div class="form-group radio-group">
-    {#each searchFields as {fieldName, fieldLabel}, index}
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="searchField" value="{fieldName}" data-index={index} bind:group={searchField} on:change={onSelectSearchField} data-label id="search-{fieldName}" checked={searchField==fieldName}>
-        <label class="form-check-label" for="search-{fieldName}">
-          {fieldLabel}
-        </label>
-      </div>
-    {/each}
+    <div class="radio-group">
+      {#each searchFields as {fieldName, fieldLabel}, index}
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="searchField" value="{fieldName}" data-index={index} bind:group={searchField} on:change={onSelectSearchField} data-label id="search-{fieldName}" checked={searchField==fieldName}>
+          <label class="form-check-label" for="search-{fieldName}">
+            {fieldLabel}
+          </label>
+        </div>
+      {/each}
+    </div>
   </div>
 </form>
 
@@ -87,7 +89,10 @@ init();
     margin-left: 2em;
   }
 
-  input#searchbox {
-    min-width: 21em;
+  .form-group {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #e5e3e1;
+    border-radius: 3px;
   }
 </style>

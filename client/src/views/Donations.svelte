@@ -174,29 +174,29 @@ init();
 
   <div class="container data-display-form">
     <div class="row">
-      <div class="col-md">
+      <div class="col-md-3">
         <div style="display:{donationFilterFormDisplay}">
           <h6>Filter:</h6>
-          <!-- <DataFilter data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/> -->
           <DataFilterMultiField data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/>
 
           <DaterangeFilter data={donationDisplay} on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
+
+          <SearchBox index={donationDisplay} searchFields={searchFields} on:search={onKeywordSearch} bind:this={searchBox} />
         </div>
       </div>
-      <div class="col-md">
-        <SearchBox index={donationDisplay} searchFields={searchFields} on:search={onKeywordSearch} bind:this={searchBox} />
+
+      <div class="col-md-9">
+        <NewItemLink text="Add anonymous donation" on:click-new-item-link={onClickAddAnonymousDonation} />
+        <div style="display:{donationListDisplay}">
+          <DataDisplay items={donationDisplay} Table={DonationTable} />
+        </div>
+
+        <div style="display:{donationSearchResultsDisplay}">
+          <button on:click={clearSearchResults}>Exit Search</button>
+          <DataDisplay items={searchResults} Table={DonationSearchResultsTable} args={searchField} />
+        </div>
       </div>
     </div>
-  </div>
-
-  <NewItemLink text="Add anonymous donation" on:click-new-item-link={onClickAddAnonymousDonation} />
-  <div style="display:{donationListDisplay}">
-    <DataDisplay items={donationDisplay} Table={DonationTable} />
-  </div>
-
-  <div style="display:{donationSearchResultsDisplay}">
-    <button on:click={clearSearchResults}>Exit Search</button>
-    <DataDisplay items={searchResults} Table={DonationSearchResultsTable} args={searchField} />
   </div>
 </div>
 

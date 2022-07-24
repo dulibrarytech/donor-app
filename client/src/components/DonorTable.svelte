@@ -2,7 +2,7 @@
   export let items;
 </script>
 
-<thead>
+<thead class="header">
   <tr>
     <th scope="col">Last Name/Organization</th>
     <th scope="col">First Name</th>

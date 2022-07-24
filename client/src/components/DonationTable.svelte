@@ -12,7 +12,7 @@
   }
 </script>
 
-<thead>
+<thead class="header">
   <tr>
     <th scope="col">Date of Gift</th>
     {#if !donorId}

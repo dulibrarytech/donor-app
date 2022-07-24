@@ -148,3 +148,16 @@
 	<svelte:component this={page} {params} on:login={onLogin}/>
 </main>
 <Footer />
+
+<style>
+@media (min-width: 1600px) {
+	:global(.container) {
+	    max-width: 1500px;
+	}
+}
+@media (min-width: 1500px) {
+	:global(.container) {
+	    max-width: 1400px;
+	}
+}
+</style>
