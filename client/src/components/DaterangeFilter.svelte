@@ -62,6 +62,7 @@ export const filterDaterange = (currentData) => {
 
 <form>
   <div class="form-group">
+    <h6>Daterange:</h6>
     <!-- TODO Date selector inputs, output standardized datestring 'yyyy-mm-ddTnn:nn:nn' -->
     <input type="text" placeholder="From" bind:value={fromDate}/>
     <input type="text" placeholder="To" bind:value={toDate}/>
@@ -71,7 +72,13 @@ export const filterDaterange = (currentData) => {
 </form>
 
 <style>
-input {
-  max-width: 30%;
-}
+  input {
+    max-width: 30%;
+  }
+  .form-group {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #e5e3e1;
+    border-radius: 3px;
+  }
 </style>

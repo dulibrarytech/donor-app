@@ -8,7 +8,11 @@ import DataDisplay from "../components/DataDisplay.svelte";
 import DonationTable from "../components/DonationTable.svelte";
 import DonationSearchResultsTable from "../components/DonationSearchResultsTable.svelte";
 import NewItemLink from "../components/NewItemLink.svelte";
+
+// DEV
 import DataFilter from "../components/DataFilter.svelte";
+import DataFilterMultiField from "../components/DataFilterMultiField.svelte";
+
 import DaterangeFilter from "../components/DaterangeFilter.svelte";
 import SearchBox from "../components/SearchBox.svelte";
 
@@ -28,28 +32,67 @@ const searchFields = [
   {fieldName: "giftDetails", fieldLabel: "Details"}
 ]
 
-// TODO: filter function defs. Remove other filter object
-var filters = [
+var filters = [];
+filters.push({
+  "groupLabel": "Donor Type:",
+  "options": [
   {
     "field": "donorType",
-    "value": "anonymous",
+    "value": "0",
+    "label": "Show All",
+    "function": (item) => {
+      return true;
+    },
+    "isDefault": true
+  },
+  {
+    "field": "donorType",
+    "value": "1",
+    "label": "Known",
+    "function": (item) => {
+      return item.donorId != 1;
+    }
+  },
+  {
+    "field": "donorType",
+    "value": "2",
     "label": "Anonymous",
     "function": (item) => {
       return item.donorId == 1;
     }
+  }
+]});
+filters.push({
+  "groupLabel": "Donation Type:",
+  "options": [
+  {
+    "field": "donationType",
+    "value": "0",
+    "label": "Show All",
+    "function": (item) => {
+      return true;
+    },
+    "isDefault": true
   },
   {
     "field": "donationType",
-    "value": "important",
+    "value": "1",
+    "label": "Standard",
+    "function": (item) => {
+      return item.important == 0;
+    }
+  },
+  {
+    "field": "donationType",
+    "value": "2",
     "label": "Important",
     "function": (item) => {
-      return item.important == 1; // If this filter code is default, set null here
+      return item.important == 1;
     }
   }
-];
+]});
 
 const init = async () => {
-  // TODO: Feedback message "Retrieving donations..." in display window, then remove after getDonationList() returns
   donations = await getDonationList();
   showAllDonations();
 }
@@ -132,10 +175,10 @@ init();
     <div class="row">
       <div class="col-md">
         <div style="display:{donationFilterFormDisplay}">
-          <label>Filter:</label>
-          <DataFilter data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/>
+          <h6>Filter:</h6>
+          <!-- <DataFilter data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/> -->
+          <DataFilterMultiField data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/>
 
-          <label>Daterange:</label>
           <DaterangeFilter data={donationDisplay} on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
         </div>
       </div>
