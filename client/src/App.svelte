@@ -150,6 +150,9 @@
 <Footer />
 
 <style>
+/*
+ * Move the global styles to external stylesheet
+ */
 @media (min-width: 1600px) {
 	:global(.container) {
 	    max-width: 1500px;
@@ -160,4 +163,20 @@
 	    max-width: 1400px;
 	}
 }
+
+:global(.filter-form label.group-label) {
+	font-weight: 500;
+}
+
+:global(.form-group) {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #e5e3e1;
+	border-radius: 3px;
+	margin-bottom: 10px;
+	padding: 7px 12px;
+}
+/*
+ * End global styles
+ */
 </style>

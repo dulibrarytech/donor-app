@@ -62,7 +62,7 @@ init();
 <form>
   <div class="form-group">
     <div class="search-form">
-      <label for="searchbox">Keyword Search:</label>
+      <label class="group-label" for="searchbox">Keyword Search:</label>
       <input id="searchbox" type="search" bind:value={keywords} placeholder={placeholder}/>
       <button type="button" on:click|preventDefault={search}>Search</button>
     </div>

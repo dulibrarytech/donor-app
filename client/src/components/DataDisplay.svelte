@@ -17,7 +17,7 @@
 <style>
   .data-display {
     margin-top: 25px;
-    max-height: 700px;
+    max-height: 498px;
     overflow-y: auto;
     width: 100%;
   }

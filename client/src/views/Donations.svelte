@@ -175,7 +175,7 @@ init();
   <div class="container data-display-form">
     <div class="row">
       <div class="col-md-3">
-        <div style="display:{donationFilterFormDisplay}">
+        <div class="filter-form" style="display:{donationFilterFormDisplay}">
           <h6>Filter:</h6>
           <DataFilterMultiField data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/>
 
