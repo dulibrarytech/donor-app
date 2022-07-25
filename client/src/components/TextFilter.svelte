@@ -53,7 +53,5 @@ const onFilterInput = (event) => {
 </form>
 
 <style>
-  div.search-form input#text-filter{
-    width: 360px;
-  }
+
 </style>

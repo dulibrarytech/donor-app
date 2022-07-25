@@ -78,18 +78,20 @@
 <div class="page">
   <h1>Donors</h1>
 
-  <div class="data-display-form">
-    <TextFilter data={donors} on:filter={onFilter} filterFunction={filterDataDisplay} placeholderText="Search by any part of last name or organization" />
-  </div>
+  <div class="container data-display-form">
+    <div class="row">
+      <div class="col-md-3">
+        <TextFilter data={donors} on:filter={onFilter} filterFunction={filterDataDisplay} placeholderText="Last name or organization" />
+      </div>
 
-  <NewItemLink text="Add new donor" on:click-new-item-link={onClickAddNewDonor} />
-  <div class="data-display">
-    <svelte:component this={DataDisplay} items={donorDisplay} Table={DonorTable}/>
+      <div class="col-md-9">
+        <NewItemLink text="Add new donor" on:click-new-item-link={onClickAddNewDonor} />
+        <svelte:component this={DataDisplay} items={donorDisplay} Table={DonorTable}/>
+      </div>
+    </div>
   </div>
 </div>
 
 <style>
-  input#donor-searchbox {
-    min-width: 21em;
-  }
+
 </style>
