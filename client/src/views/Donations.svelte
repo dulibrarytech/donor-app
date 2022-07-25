@@ -8,16 +8,14 @@ import DataDisplay from "../components/DataDisplay.svelte";
 import DonationTable from "../components/DonationTable.svelte";
 import DonationSearchResultsTable from "../components/DonationSearchResultsTable.svelte";
 import NewItemLink from "../components/NewItemLink.svelte";
-
-// DEV
-import DataFilter from "../components/DataFilter.svelte";
 import DataFilterMultiField from "../components/DataFilterMultiField.svelte";
-
 import DaterangeFilter from "../components/DaterangeFilter.svelte";
 import SearchBox from "../components/SearchBox.svelte";
 
 var donations = [];
 var donationDisplay = [];
+var donationCount = 0;
+var donationItemCount = 0;
 var searchBox;
 var searchResults = [];
 var searchField = "";
@@ -63,6 +61,7 @@ filters.push({
     }
   }
 ]});
+
 filters.push({
   "groupLabel": "Donation Type:",
   "options": [
@@ -115,8 +114,8 @@ const getDonationList = async () => {
 }
 
 const showAllDonations = () => {
-  // TODO: use dataFilter.resetFilters();
-  donationDisplay = donations;
+  // TODO: Use dataFilter.resetFilters();
+  setDataDisplay(donations);
 }
 
 const onKeywordSearch = (event) => {
@@ -142,15 +141,15 @@ const clearSearchResults = () => {
 
 const onFilter = (event) => {
   donationDisplay = event.detail;
-  donationDisplay = daterangeFilter.filterDaterange(donationDisplay);
+  setDataDisplay(daterangeFilter.filterDaterange(donationDisplay));
 }
 
 const onDaterangeSelect = (event) => {
-  donationDisplay = event.detail;
+  setDataDisplay(event.detail);
 }
 
 const onClearDaterange = () => {
-  donationDisplay = dataFilter.filterData(donations);
+  setDataDisplay(dataFilter.filterData(donations));
 }
 
 const sortDataDisplay = () => {
@@ -158,8 +157,18 @@ const sortDataDisplay = () => {
     donationDisplay = donationDisplay.sort(function(a, b) {
       return a[sortType].localeCompare(b[sortType]);
     });
-    console.log(donationDisplay)
   }
+}
+
+const setDataDisplay = (data) => {
+  donationDisplay = data;
+  donationCount = donationDisplay.length;
+
+  let totalItems = 0;
+  donationDisplay.forEach((donationItem) => {
+    totalItems += donationItem.numberOfGifts ?? 0;
+  })
+  donationItemCount = totalItems;
 }
 
 const onClickAddAnonymousDonation = () => {
@@ -178,14 +187,16 @@ init();
         <div class="filter-form" style="display:{donationFilterFormDisplay}">
           <h6>Filter:</h6>
           <DataFilterMultiField data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/>
-
           <DaterangeFilter data={donationDisplay} on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
-
           <SearchBox index={donationDisplay} searchFields={searchFields} on:search={onKeywordSearch} bind:this={searchBox} />
         </div>
       </div>
 
       <div class="col-md-9">
+        <span class="statistics-display">
+          <label>Donations:</label><span>{donationCount}</span><label>Total Items:</label><span>{donationItemCount}</span>
+        </span>
+
         <NewItemLink text="Add anonymous donation" on:click-new-item-link={onClickAddAnonymousDonation} />
         <div style="display:{donationListDisplay}">
           <DataDisplay items={donationDisplay} Table={DonationTable} />
@@ -201,5 +212,25 @@ init();
 </div>
 
 <style>
+  .statistics-display {
+    float: left;
+    margin-bottom: 10px;
+  }
 
+  .statistics-display * {
+    display: inline-flex;
+    flex-direction: row;
+  }
+
+  .statistics-display > span {
+    margin: 0 8px;
+  }
+
+  .statistics-display label {
+    font-weight: 500;
+  }
+
+  .statistics-display label:not(:first-child) {
+    margin-left: 30px
+  }
 </style>

@@ -23,17 +23,7 @@ const onSet = () => {
 }
 
 export const filterDaterange = (currentData) => {
-  if(fromDate?.length == 0) {
-    // TODO: Give Feedback
-    console.log("No from date")
-    return currentData;
-  }
-  else if(toDate?.length == 0) {
-    // TODO: Give Feedback
-    console.log("No to date")
-    return currentData;
-  }
-  else {
+  if(fromDate?.length > 0 && toDate?.length > 0) {
     filteredData = [];
     // TODO: Validate date format, AND to date > from date
 
@@ -55,6 +45,10 @@ export const filterDaterange = (currentData) => {
     });
 
     return filteredData;
+  }
+  else {
+    /* Bypass the date filter if one or both values are not present */
+    return currentData;
   }
 }
 
