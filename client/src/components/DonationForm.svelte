@@ -19,11 +19,55 @@
   /* Toggle visibility of controls */
   let displayGiftTypeSelect = true;
 
+  /*
+   * Validator lib
+   */
   const validateFormFields = () => {
-    let isValid = false;
-    // TODO: Custom validation for each data field. If fail, set field input red and add feedback.
-    return true;
+    let isValid = true;
+
+    document.querySelectorAll(".fail-message").forEach((label) => {
+      label.remove();
+    });
+
+    document.querySelectorAll("#donor-form input").forEach((input) => {
+      input.style.borderColor = "#ced4da";
+    });
+
+    if(!data.dateOfGift) isValid = fail('dateOfGift', "Date of gift required");
+    if(data.dateOfGift) {
+      if(data.dateOfGift.length > 10) isValid = fail('dateOfGift', "Exceeds max length of 10 characters");
+      if(data.dateOfGift.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/, "gi") == null) isValid = fail('dateOfGift', "Must be of format 'yyyy-mm-dd'");
+    }
+
+    if(!data.numberOfGifts) isValid = fail('numberOfGifts', "Number of gift items required");
+    if(!data.giftDescription) isValid = fail('giftDescription', "Gift description required");
+
+    if(data.numberOfGifts?.length > 10) isValid = fail('numberOfGifts', "Exceeds max length of 10 characters");
+    if(data.giftDescription?.length > 255) isValid = fail('giftDescription', "Exceeds max length of 255 characters");
+
+    return isValid;
   }
+
+  const fail = (id, message) => {
+    // Get the input that failed validation
+    let input = document.getElementById(id);
+    input.style.borderColor = "red";
+
+    // Create message label, append after the input
+    let label = document.createElement("span");
+    label.classList.add("fail-message");
+    label.innerHTML = message;
+    label.style.color = "red";
+
+    // Insert the message label
+    let formGroup = input.parentNode;
+    formGroup.insertBefore(label, input);
+
+    return false;
+  }
+  /*
+   * End Validator lib
+   */
 
   const formatFormFields = () => {
     /* Convert status to text */
