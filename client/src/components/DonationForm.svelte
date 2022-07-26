@@ -1,6 +1,7 @@
 <script>
   import {Configuration} from '../config';
   import {ajaxRequest} from '../libs/ajax.js';
+  import FormValidator from '../libs/FormValidator.js';
   import MessageDisplay from "../components/MessageDisplay.svelte";
 
   export let donationId;
@@ -19,55 +20,23 @@
   /* Toggle visibility of controls */
   let displayGiftTypeSelect = true;
 
-  /*
-   * Validator lib
-   */
-  const validateFormFields = () => {
-    let isValid = true;
-
-    document.querySelectorAll(".fail-message").forEach((label) => {
-      label.remove();
-    });
-
-    document.querySelectorAll("#donor-form input").forEach((input) => {
-      input.style.borderColor = "#ced4da";
-    });
-
-    if(!data.dateOfGift) isValid = fail('dateOfGift', "Date of gift required");
-    if(data.dateOfGift) {
-      if(data.dateOfGift.length > 10) isValid = fail('dateOfGift', "Exceeds max length of 10 characters");
-      if(data.dateOfGift.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/, "gi") == null) isValid = fail('dateOfGift', "Must be of format 'yyyy-mm-dd'");
+  let validationRules = {
+    dateOfGift: {
+      required: true,
+      maxlength: 10,
+      pattern: /[0-9]{4}-[0-9]{2}-[0-9]{2}/,
+      patternFormat: "yyyy-mm-dd"
+    },
+    numberOfGifts: {
+      required: true,
+      maxlength: 10
+    },
+    giftDescription: {
+      required: true,
+      maxlength: 255
     }
-
-    if(!data.numberOfGifts) isValid = fail('numberOfGifts', "Number of gift items required");
-    if(!data.giftDescription) isValid = fail('giftDescription', "Gift description required");
-
-    if(data.numberOfGifts?.length > 10) isValid = fail('numberOfGifts', "Exceeds max length of 10 characters");
-    if(data.giftDescription?.length > 255) isValid = fail('giftDescription', "Exceeds max length of 255 characters");
-
-    return isValid;
   }
-
-  const fail = (id, message) => {
-    // Get the input that failed validation
-    let input = document.getElementById(id);
-    input.style.borderColor = "red";
-
-    // Create message label, append after the input
-    let label = document.createElement("span");
-    label.classList.add("fail-message");
-    label.innerHTML = message;
-    label.style.color = "red";
-
-    // Insert the message label
-    let formGroup = input.parentNode;
-    formGroup.insertBefore(label, input);
-
-    return false;
-  }
-  /*
-   * End Validator lib
-   */
+  let formValidator = new FormValidator('#donation-form', validationRules, "#ced4da");
 
   const formatFormFields = () => {
     /* Convert status to text */
@@ -80,7 +49,7 @@
   const onSubmitForm = () => {
     $: data.important = typeSelect == "important" ? 1 : 0;
 
-    if(validateFormFields()) {
+    if(formValidator.validate(data)) {
       messageDisplay.displayMessage("Submitting data...");
       ajaxRequest(method, action, function(error, response, status) {
         if(error) {

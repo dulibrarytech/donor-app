@@ -1,6 +1,7 @@
 <script>
   import {Configuration} from '../config';
   import {ajaxRequest} from '../libs/ajax.js';
+  import FormValidator from '../libs/FormValidator.js';
   import MessageDisplay from "../components/MessageDisplay.svelte";
 
   export let donorId;
@@ -12,61 +13,75 @@
   let buttonText = "Add Donor";
   let messageDisplay;
 
-  const validateFormFields = () => {
-    let isValid = true;
-
-    document.querySelectorAll(".fail-message").forEach((label) => {
-      label.remove();
-    });
-
-    document.querySelectorAll("#donor-form input").forEach((input) => {
-      input.style.borderColor = "#ced4da";
-    });
-
-    if(!data.lastName && !data.organization) {
-      isValid = false;
-      fail('lastName', "Must specify either a last name or an organization");
-      fail('organization', "Must specify either a last name or an organization");
+  let validationRules = {
+    firstName: {
+      maxlength: 20
+    },
+    address1: {
+      maxlength: 70
+    },
+    address2: {
+      maxlength: 70
+    },
+    city: {
+      maxlength: 20
+    },
+    state: {
+      maxlength: 20
+    },
+    postalCode: {
+      maxlength: 10
+    },
+    country: {
+      maxlength: 20
+    },
+    phone: {
+      maxlength: 20
+    },
+    email: {
+      maxlength: 50,
+      pattern: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
+      patternFormat: "test@example.com"
     }
-
-    if(data.lastName?.length > 20) isValid = fail('lastName', "Exceeds max length of 20 characters");
-    if(data.firstName?.length > 20) isValid = fail('firstName', "Exceeds max length of 20 characters");
-    if(data.address1?.length > 50) isValid = fail('address1', "Exceeds max length of 50 characters");
-    if(data.address2?.length > 50) isValid = fail('address2', "Exceeds max length of 50 characters");
-    if(data.city?.length > 20) isValid = fail('city', "Exceeds max length of 20 characters");
-    if(data.state?.length > 20) isValid = fail('state', "Exceeds max length of 20 characters");
-    if(data.postalCode?.length > 10) isValid = fail('postalCode', "Exceeds max length of 10 characters");
-    if(data.country?.length > 20) isValid = fail('country', "Exceeds max length of 20 characters");
-    if(data.phone?.length > 20) isValid = fail('phone', "Exceeds max length of 20 characters");
-
-    if(data.email) {
-      if(data.email.length > 50) isValid = fail('phone', "Exceeds max length of 50 characters");
-      if(data.email.match(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/, "gi") == null) isValid = fail('email', "Must be of format 'test@example.com'");
-    }
-
-    return isValid;
   }
-
-  const fail = (id, message) => {
-    // Get the input that failed validation
-    let input = document.getElementById(id);
-    input.style.borderColor = "red";
-
-    // Create message label, append after the input
-    let label = document.createElement("span");
-    label.classList.add("fail-message");
-    label.innerHTML = message;
-    label.style.color = "red";
-
-    // Insert the message label
-    let formGroup = input.parentNode;
-    formGroup.insertBefore(label, input);
-
-    return false;
-  }
+  let formValidator = new FormValidator('#donor-form', validationRules, "#ced4da");
 
   const onSubmitForm = () => {
-    if(validateFormFields()) {
+    /*
+     * Need this code to adjust the validation rules based on the presence of either lastName or organization values
+     * Either a last name or an organization is required. If there is an organization, last name is not required, and vice versa
+     */
+    if(!data.lastName && !data.organization) {
+      validationRules['lastName'] = {
+        required: true,
+        fail: "Must specify a last name or an organization"
+      };
+      validationRules['organization'] = {
+        required: true,
+        fail: "Must specify a last name or an organization"
+      };
+    }
+    else if(data.lastName) {
+      validationRules['lastName'] = {
+        maxlength: 20
+      };
+      validationRules['organization'] = {
+        required: false,
+        maxlength: 20
+      };
+    }
+    else if(data.organization) {
+      validationRules['organization'] = {
+        maxlength: 20
+      };
+      validationRules['lastName'] = {
+        required: false,
+        maxlength: 20
+      };
+    }
+    //formValidator.setRules(validationRules);
+
+    if(formValidator.validate(data)) {
       messageDisplay.displayMessage("Submitting data...");
       ajaxRequest(method, action, function(error, response, status) {
         if(error) {
