@@ -68,10 +68,6 @@
     return filtered;
   }
 
-  const onClickAddNewDonor = () => {
-    window.location.replace("/donor");
-  }
-
   init();
 </script>
 
@@ -85,7 +81,7 @@
       </div>
 
       <div class="col-md-9">
-        <NewItemLink text="Add new donor" on:click-new-item-link={onClickAddNewDonor} />
+        <NewItemLink text="Add new donor" href="/donor"/>
         <svelte:component this={DataDisplay} items={donorDisplay} Table={DonorTable}/>
       </div>
     </div>

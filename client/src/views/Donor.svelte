@@ -12,6 +12,7 @@
 
   const donorId = params.id ?? null;
   const roleId = Session.getDataItem('roleId');
+  const addDonationPath = `/donation/donor/${donorId}`;
   var donorData = {};
   var donorTitles = [];
   var donationDisplay = [];
@@ -70,12 +71,6 @@
     return label;
   }
 
-  const onClickAddNewDonation = () => {
-    if(donorId) {
-      window.location.replace(`/donation/donor/${donorId}`);
-    }
-  }
-
   const init = async () => {
     /* If there is a donor ID, get the data for that donor in the form and get the donation list */
     if(donorId && donorId > 1) {
@@ -116,7 +111,7 @@
     <svelte:component this={DonorForm} {donorId} data={donorData} titles={donorTitles}/>
   </div>
   {#if donorId}
-    <NewItemLink text="Add new donation" on:click-new-item-link={onClickAddNewDonation} />
+    <NewItemLink text="Add new donation" href={addDonationPath} />
     <div class="donor-donations-section">
       <h5>Donations</h5>
       <svelte:component this={DataDisplay} items={donationDisplay} Table={DonationTable} args={{donorId, roleId}}/>

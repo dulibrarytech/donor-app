@@ -173,10 +173,6 @@ const setDataDisplay = (data) => {
   donationItemCount = totalItems;
 }
 
-const onClickAddAnonymousDonation = () => {
-  window.location.replace("/donation/donor/1");
-}
-
 init();
 </script>
 
@@ -200,7 +196,7 @@ init();
           <span class="statistics-display">
             <label>Donations:</label><span>{donationCount}</span><label>Total Items:</label><span>{donationItemCount}</span>
           </span>
-          <NewItemLink text="Add anonymous donation" on:click-new-item-link={onClickAddAnonymousDonation} />
+          <NewItemLink text="Add anonymous donation" href="/donation/donor/1" />
           <DataDisplay items={donationDisplay} Table={DonationTable} args={{roleId}}/>
           <!-- <DataDisplay items={donationDisplay} Table={DonationTable} args={{searchResultsDisplay: searchResultsDisplay}}/> -->
         </div>

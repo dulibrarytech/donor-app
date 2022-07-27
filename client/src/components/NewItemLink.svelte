@@ -7,15 +7,17 @@
   const dispatch = createEventDispatcher();
 
   export let text;
+  export let href;
 
   const onClick = (e) => {
+    if(!href) e.preventDefault();
     dispatch('click-new-item-link', e.currentTarget);
   }
 </script>
 
 <div class="add-item-link float-right">
   <ion-icon name="add-circle-outline"></ion-icon>
-  <a href="/" on:click|preventDefault={onClick}>{text}</a>
+  <a {href} on:click={onClick}>{text}</a>
 </div>
 
 <style>
