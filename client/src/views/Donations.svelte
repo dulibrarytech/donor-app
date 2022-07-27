@@ -4,6 +4,7 @@
 import { onMount } from 'svelte';
 import { Configuration } from '../config';
 import { ajaxRequest } from '../libs/ajax.js';
+import { Session } from '../libs/session.js';
 import DataDisplay from "../components/DataDisplay.svelte";
 import DonationTable from "../components/DonationTable.svelte";
 import DonationSearchResultsTable from "../components/DonationSearchResultsTable.svelte";
@@ -12,6 +13,7 @@ import DataFilterMultiField from "../components/DataFilterMultiField.svelte";
 import DaterangeFilter from "../components/DaterangeFilter.svelte";
 import SearchBox from "../components/SearchBox.svelte";
 
+const roleId = Session.getDataItem('roleId');
 var donations = [];
 var donationDisplay = [];
 var donationCount = 0;
@@ -199,7 +201,7 @@ init();
             <label>Donations:</label><span>{donationCount}</span><label>Total Items:</label><span>{donationItemCount}</span>
           </span>
           <NewItemLink text="Add anonymous donation" on:click-new-item-link={onClickAddAnonymousDonation} />
-          <DataDisplay items={donationDisplay} Table={DonationTable} />
+          <DataDisplay items={donationDisplay} Table={DonationTable} args={{roleId}}/>
           <!-- <DataDisplay items={donationDisplay} Table={DonationTable} args={{searchResultsDisplay: searchResultsDisplay}}/> -->
         </div>
 

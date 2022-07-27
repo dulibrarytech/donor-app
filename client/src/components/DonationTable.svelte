@@ -1,8 +1,11 @@
 <script>
   export let items;
   export let args;
-  let donorId = args?.donorId;
+  let donorId = args?.donorId || null;
+  let roleId = args?.roleId;
   //let searchResultsDisplay = args.searchResultsDisplay;
+
+  console.log("Donation table ARGS:", args)
 
   const formatGiftTypeField = (value=false) => {
     return value == true ? "Important" : "Standard";
@@ -57,7 +60,9 @@
         <td><a href="/donation/{donation.id}">View</a></td>
 
         {#if donorId}
-          <td><a href="/letter/{donation.id}">Letter</a></td>
+          {#if roleId == 2 || roleId == 3}
+            <td><a href="/letter/{donation.id}">Letter</a></td>
+          {/if}
         {/if}
       </tr>
     {/each}

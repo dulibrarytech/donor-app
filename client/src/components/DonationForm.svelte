@@ -4,10 +4,12 @@
   import FormValidator from '../libs/FormValidator.js';
   import MessageDisplay from "../components/MessageDisplay.svelte";
 
-  export let donationId;
+  export let args;
   export let data={};
 
   let donorId;
+  let donationId = args.donationId;
+  let roleId = args.roleId || 1;
   let method = "post";
   let action = `${$Configuration.donorApiDomain}/donation`;
   let buttonText = "Add Donation";
@@ -155,7 +157,9 @@
 
   <button class="btn btn-default" type="submit" on:click|preventDefault={onSubmitForm}>{buttonText}</button>
     {#if donationId && donorId > 1}
-      <button class="btn btn-default" type="button" on:click={onClickLetter}>Letter</button>
+      {#if roleId == 2 || roleId == 3}
+        <button class="btn btn-default" type="button" on:click={onClickLetter}>Letter</button>
+      {/if}
       <button class="btn btn-default" type="button" on:click={onViewDonorInfo}>View Donor Info</button>
     {/if}
 </form>

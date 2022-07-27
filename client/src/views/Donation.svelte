@@ -1,14 +1,17 @@
 <script>
   import { ajaxRequest } from '../libs/ajax.js';
   import { Configuration } from '../config';
+  import { Session } from '../libs/session.js';
   import PageTitleLabel from "../components/PageTitleLabel.svelte";
   import DonationForm from "../components/DonationForm.svelte";
   import DataDisplay from "../components/DataDisplay.svelte";
 
   export let params;
 
-  var donationId = params.id ?? null;
-  var donorId = params.donorId ?? null;
+  const donationId = params.id ?? null;
+  const donorId = params.donorId ?? null;
+  const roleId = Session.getDataItem('roleId');
+
   var donationData = {};
   var pageLabel;
   var donorInfoLabel = null;
@@ -83,7 +86,7 @@
       <h6>Loading data...</h6>
     {:then donationData}
       <h6>{getDonorInfoLabel(donationData)}</h6>
-      <svelte:component this={DonationForm} {donationId} data={donationData} />
+      <svelte:component this={DonationForm} args={{donationId, roleId}} data={donationData} />
     {/await}
   </div>
 </div>

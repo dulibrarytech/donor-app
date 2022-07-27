@@ -1,6 +1,7 @@
 <script>
   import { ajaxRequest } from '../libs/ajax.js';
   import { Configuration } from '../config';
+  import { Session } from '../libs/session.js';
   import PageTitleLabel from "../components/PageTitleLabel.svelte";
   import DonorForm from "../components/DonorForm.svelte";
   import DataDisplay from "../components/DataDisplay.svelte";
@@ -10,6 +11,7 @@
   export let params;
 
   const donorId = params.id ?? null;
+  const roleId = Session.getDataItem('roleId');
   var donorData = {};
   var donorTitles = [];
   var donationDisplay = [];
@@ -117,7 +119,7 @@
     <NewItemLink text="Add new donation" on:click-new-item-link={onClickAddNewDonation} />
     <div class="donor-donations-section">
       <h5>Donations</h5>
-      <svelte:component this={DataDisplay} items={donationDisplay} Table={DonationTable} args={{donorId: donorId}}/>
+      <svelte:component this={DataDisplay} items={donationDisplay} Table={DonationTable} args={{donorId, roleId}}/>
     </div>
   {/if}
 </div>
