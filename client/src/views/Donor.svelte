@@ -80,6 +80,7 @@
       donorData = await fetchDonorData(donorId);
       donorTitles = await fetchDonorTitles();
 
+      /* Create page label displaying donor name/info, and fetch the donations from the donor */
       if(Object.keys(donorData).length > 0) {
         pageLabel = getPageLabel(donorData);
         let donationData = await fetchDonorDonations(donorId);

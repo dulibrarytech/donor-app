@@ -14,7 +14,7 @@ class FormValidator {
       label.remove();
     });
 
-    document.querySelectorAll("#donor-form input").forEach((input) => {
+    document.querySelectorAll(`#${this.formId} input`).forEach((input) => {
       input.style.borderColor = this.borderColor || "inherit";
     });
 

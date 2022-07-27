@@ -44,7 +44,7 @@
       patternFormat: "test@example.com"
     }
   }
-  let formValidator = new FormValidator('#donor-form', validationRules, "#ced4da");
+  let formValidator = new FormValidator('donor-form', validationRules, "#ced4da");
 
   const onSubmitForm = () => {
     /*
