@@ -36,7 +36,7 @@
       maxlength: 255
     }
   }
-  let formValidator = new FormValidator('#donation-form', validationRules, "#ced4da");
+  let formValidator = new FormValidator('donation-form', validationRules, "#ced4da");
 
   const formatFormFields = () => {
     /* Convert status to text */

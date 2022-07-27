@@ -7,10 +7,11 @@ import {createEventDispatcher} from 'svelte';
 export let index = [];
 export let searchFields = [];
 export let resultFields = ['id'];
+export let multiFieldSearch=false;
 
 var keywords = "";
 var searchField = "";
-let placeholder = "";
+var placeholder = "";
 const dispatch = createEventDispatcher();
 
 const init = () => {
@@ -25,18 +26,30 @@ const init = () => {
 export const reset = () => {
   keywords = "";
   searchField = searchFields[0].fieldName || "";
-  placeholder = `Search ${searchFields[0].fieldLabel}`;
+  if(multiFieldSearch === false) placeholder = `Search ${searchFields[0].fieldLabel}`;
 }
 
 const onSelectSearchField = (event) => {
   let index = event.target.getAttribute("data-index");
-  placeholder = `Search ${searchFields[index].fieldLabel}`;
+  if(multiFieldSearch === false) placeholder = `Search ${searchFields[index].fieldLabel}`;
+}
+
+const getSearchFieldArray = (searchFields) => {
+  let fieldArray = [];
+  for(let {fieldName} of searchFields) {
+    fieldArray.push(fieldName);
+  }
+  console.log("Field array", fieldArray)
+  return fieldArray;
 }
 
 const search = () => {
+  console.log("search()", multiFieldSearch)
   try {
+    let fields = multiFieldSearch === true ? getSearchFieldArray(searchFields) : [searchField];
+    console.log("Fields", fields)
     let miniSearch = new MiniSearch({
-      fields: [searchField],
+      fields: fields,
       storeFields: [resultFields]
     })
     miniSearch.addAll(index)
@@ -68,14 +81,16 @@ init();
     </div>
 
     <div class="radio-group">
-      {#each searchFields as {fieldName, fieldLabel}, index}
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="searchField" value="{fieldName}" data-index={index} bind:group={searchField} on:change={onSelectSearchField} data-label id="search-{fieldName}" checked={searchField==fieldName}>
-          <label class="form-check-label" for="search-{fieldName}">
-            {fieldLabel}
-          </label>
-        </div>
-      {/each}
+      {#if multiFieldSearch === false && searchFields.length > 1}
+        {#each searchFields as {fieldName, fieldLabel}, index}
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="searchField" value="{fieldName}" data-index={index} bind:group={searchField} on:change={onSelectSearchField} data-label id="search-{fieldName}" checked={searchField==fieldName}>
+            <label class="form-check-label" for="search-{fieldName}">
+              {fieldLabel}
+            </label>
+          </div>
+        {/each}
+      {/if}
     </div>
   </div>
 </form>

@@ -1,7 +1,8 @@
 <script>
   export let items;
   export let args;
-  let donorId = args;
+  let donorId = args?.donorId;
+  //let searchResultsDisplay = args.searchResultsDisplay;
 
   const formatGiftTypeField = (value=false) => {
     return value == true ? "Important" : "Standard";
@@ -19,8 +20,8 @@
       <th scope="col">Last Name/Organization</th>
       <th scope="col">First Name</th>
     {/if}
-    <th scope="col">Gift Type</th>
-    <th scope="col">Status</th>
+    <th scope="col">Gift Type</th> <!-- TODO Don't show it IF anon don -->
+    <th scope="col">Status</th> <!-- TODO Don't show it IF anon don -->
     <th scope="col">Description</th>
     <th scope="col"></th>
     {#if donorId}
@@ -42,13 +43,13 @@
         {#if donation.donorId != 1}
           <td>{formatGiftTypeField(donation.important) || "Unknown"}</td>
         {:else}
-          <td>n/a</td>
+          <td>n/a</td> <!-- TODO Don't show it -->
         {/if}
 
         {#if donation.donorId != 1}
           <td>{formatStatusField(donation.letter) || "Unknown"}</td>
         {:else}
-          <td>n/a</td>
+          <td>n/a</td> <!-- TODO Don't show it -->
         {/if}
 
         <td>{donation.giftDescription}</td>

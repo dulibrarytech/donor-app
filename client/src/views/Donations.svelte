@@ -190,20 +190,21 @@ init();
           <DaterangeFilter data={donationDisplay} on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
           <SearchBox index={donationDisplay} searchFields={searchFields} on:search={onKeywordSearch} bind:this={searchBox} />
         </div>
+        <button id="exit-search" on:click={clearSearchResults} style="display:{donationSearchResultsDisplay}">Exit Search</button>
       </div>
 
       <div class="col-md-9">
-        <span class="statistics-display">
-          <label>Donations:</label><span>{donationCount}</span><label>Total Items:</label><span>{donationItemCount}</span>
-        </span>
-
-        <NewItemLink text="Add anonymous donation" on:click-new-item-link={onClickAddAnonymousDonation} />
         <div style="display:{donationListDisplay}">
+          <span class="statistics-display">
+            <label>Donations:</label><span>{donationCount}</span><label>Total Items:</label><span>{donationItemCount}</span>
+          </span>
+          <NewItemLink text="Add anonymous donation" on:click-new-item-link={onClickAddAnonymousDonation} />
           <DataDisplay items={donationDisplay} Table={DonationTable} />
+          <!-- <DataDisplay items={donationDisplay} Table={DonationTable} args={{searchResultsDisplay: searchResultsDisplay}}/> -->
         </div>
 
         <div style="display:{donationSearchResultsDisplay}">
-          <button on:click={clearSearchResults}>Exit Search</button>
+          <!-- <button on:click={clearSearchResults}>Exit Search</button> -->
           <DataDisplay items={searchResults} Table={DonationSearchResultsTable} args={searchField} />
         </div>
       </div>
@@ -232,5 +233,9 @@ init();
 
   .statistics-display label:not(:first-child) {
     margin-left: 30px
+  }
+
+  #exit-search {
+    margin-top: 25px;
   }
 </style>

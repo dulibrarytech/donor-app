@@ -117,7 +117,7 @@
     <NewItemLink text="Add new donation" on:click-new-item-link={onClickAddNewDonation} />
     <div class="donor-donations-section">
       <h5>Donations</h5>
-      <svelte:component this={DataDisplay} items={donationDisplay} Table={DonationTable} args={donorId}/>
+      <svelte:component this={DataDisplay} items={donationDisplay} Table={DonationTable} args={{donorId: donorId}}/>
     </div>
   {/if}
 </div>
