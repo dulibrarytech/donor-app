@@ -3,7 +3,7 @@
 
   const dispatch = createEventDispatcher();
 
-  var formData = {
+  let formData = {
     username: "",
     password: ""
   }

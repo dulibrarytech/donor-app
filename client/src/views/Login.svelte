@@ -44,11 +44,13 @@
   init();
 </script>
 
-<h1>Login</h1>
+<div class="page">
+  <h1>Login</h1>
 
-<div class="login-form-wrapper">
-  <LoginForm on:login-form-submit={onSubmitLogin} />
-  <MessageDisplay bind:this={messageDisplay} />
+  <div class="login-form-wrapper">
+    <LoginForm on:login-form-submit={onSubmitLogin} />
+    <MessageDisplay bind:this={messageDisplay} />
+  </div>
 </div>
 
 <style>

@@ -47,7 +47,7 @@
   const completeLetterAction = (event) => {
     let donationId = event.detail;
     let url = `${$Configuration.donorApiDomain}/donation/${donationId}/letter`;
-    
+
     messageDisplay.displayMessage("Updating status...");
     ajaxRequest("post", url, function(error, response, status) {
       if(error) {
@@ -69,10 +69,12 @@
   init()
 </script>
 
-<h1>Inbox</h1>
-<div>
-  <DataDisplay items={donationDisplay} Table={NewDonationTable} on:message={completeLetterAction}/>
-  <MessageDisplay bind:this={messageDisplay} />
+<div class="page">
+  <h1>Inbox</h1>
+  <div>
+    <DataDisplay items={donationDisplay} Table={NewDonationTable} on:message={completeLetterAction}/>
+    <MessageDisplay bind:this={messageDisplay} />
+  </div>
 </div>
 
 <style>
