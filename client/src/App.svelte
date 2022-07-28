@@ -16,6 +16,7 @@
 	import Donation from "./views/Donation.svelte";
 	import LetterView from "./views/LetterView.svelte";
 	import Inbox from "./views/Inbox.svelte";
+	import LivingLibrary from "./views/LivingLibrary.svelte";
 	import NotFound from "./views/NotFound.svelte";
 
   // View Components
@@ -102,7 +103,6 @@
 
 	router('/donor/:id', validateSession, (ctx, next) => {
 		params = ctx.params;
-			console.log("/donor/:id Params:", params)
 		next();
 	}, () => page = Donor);
 
@@ -130,6 +130,11 @@
 		params = ctx.params;
 		next();
 	}, () => page = Inbox);
+
+	router('/livingLibrary', validateSession, (ctx, next) => {
+		params = ctx.params;
+		next();
+	}, () => page = LivingLibrary);
 
 	router('/*', () => {
 		page = NotFound;
@@ -174,7 +179,20 @@
 	border-color: #e5e3e1;
 	border-radius: 3px;
 	margin-bottom: 10px;
-	padding: 7px 12px;
+	padding: 7px 12px 7px 0;
+}
+
+:global(.filter-form .form-group) {
+	padding-left: 12px;
+	padding-right: 12px;
+}
+
+:global(.page-section) {
+	margin-top: 25px;
+}
+
+:global(.page-section > h3) {
+	margin-bottom: 30px;
 }
 /*
  * End global styles

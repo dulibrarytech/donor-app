@@ -70,10 +70,12 @@
 </script>
 
 <div class="page">
-  <h1>Inbox</h1>
-  <div>
-    <DataDisplay items={donationDisplay} Table={NewDonationTable} on:message={completeLetterAction}/>
-    <MessageDisplay bind:this={messageDisplay} />
+  <div class="page-section">
+    <h1>Inbox</h1>
+    <div>
+      <DataDisplay items={donationDisplay} Table={NewDonationTable} on:message={completeLetterAction}/>
+      <MessageDisplay bind:this={messageDisplay} />
+    </div>
   </div>
 </div>
 

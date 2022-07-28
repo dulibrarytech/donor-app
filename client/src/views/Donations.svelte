@@ -179,7 +179,7 @@ init();
 <div class="page">
   <h1>Donations</h1>
 
-  <div class="container data-display-form">
+  <div class="container page-section">
     <div class="row">
       <div class="col-md-3">
         <div class="filter-form" style="display:{donationFilterFormDisplay}">

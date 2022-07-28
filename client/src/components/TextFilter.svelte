@@ -42,7 +42,7 @@ const onFilterInput = (event) => {
     <input id="text-filter" type="text" on:input={onFilterInput} placeholder={placeholderText} />
   </div>
 
-  <div class="form-group radio-group search-form">
+  <div class="form-group radio-group">
     {#each options as option}
       <div class="form-check">
         <input class="form-check-input" type="radio" name="filterOption" value="{option.value}" bind:group={filterOption}>
@@ -53,5 +53,7 @@ const onFilterInput = (event) => {
 </form>
 
 <style>
-
+  div.search-form input {
+    width: 100%
+  }
 </style>

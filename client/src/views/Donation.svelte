@@ -79,7 +79,7 @@
 </script>
 
 <div class="page">
-  <div class="donation-data-section">
+  <div class="page-section donation-form">
     <h3>{pageLabel}</h3>
 
     {#await donationData}
@@ -92,5 +92,7 @@
 </div>
 
 <style>
-
+  .donation-form {
+    max-width: 75%;
+  }
 </style>

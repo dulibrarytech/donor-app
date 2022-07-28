@@ -74,10 +74,12 @@
 <div class="page">
   <h1>Donors</h1>
 
-  <div class="container data-display-form">
+  <div class="container page-section">
     <div class="row">
       <div class="col-md-3">
-        <TextFilter data={donors} on:filter={onFilter} filterFunction={filterDataDisplay} placeholderText="Last name or organization" />
+        <div class="filter-form">
+          <TextFilter data={donors} on:filter={onFilter} filterFunction={filterDataDisplay} placeholderText="Last name or organization" />
+        </div>
       </div>
 
       <div class="col-md-9">
