@@ -67,6 +67,7 @@
     else if(donorId) {
       pageLabel = "New Donation";
       donationData = fetchDonorData(donorId);
+      console.log("Donation data", donationData)
       // donationData = {donorId, ...donorData}
       // console.log("Donation data", donationData)
     }
@@ -86,7 +87,7 @@
       <h6>Loading data...</h6>
     {:then donationData}
       <h6>{getDonorInfoLabel(donationData)}</h6>
-      <svelte:component this={DonationForm} args={{donationId, roleId}} data={donationData} />
+      <svelte:component this={DonationForm} args={{donationId, donorId, roleId}} data={donationData} />
     {/await}
   </div>
 </div>

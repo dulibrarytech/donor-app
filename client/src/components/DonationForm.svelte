@@ -7,9 +7,10 @@
   export let args;
   export let data={};
 
-  let donorId;
+  let donorId = args.donorId;
   let donationId = args.donationId;
   let roleId = args.roleId || 1;
+
   let method = "post";
   let action = `${$Configuration.donorApiDomain}/donation`;
   let buttonText = "Add Donation";
@@ -85,6 +86,7 @@
 
   const init = () => {
     $: donorId = data.donorId || data.id;
+    if(donorId) data['donorId'] = donorId;
 
     /* Set select/radio control state */
     typeSelect = data.important && data.important == 1 ? "important" : "standard";
