@@ -52,7 +52,7 @@
 
         <td><a href="/donation/{donation.id}">View Gift</a></td>
 
-        <td><a href="/donor/{donation.id}">View Donor</a></td>
+        <td><a href="/donor/{donation.donorId}">View Donor</a></td>
 
         <td><a href="#" on:click|preventDefault={(event) => onClickComplete(donation.id)} value={donation.id}>Complete</a></td>
       </tr>
