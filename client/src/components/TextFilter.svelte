@@ -37,23 +37,28 @@ const onFilterInput = (event) => {
 </script>
 
 <form>
-  <div class="form-group search-form">
-    <label for="text-filter">Filter:</label>
-    <input id="text-filter" type="text" on:input={onFilterInput} placeholder={placeholderText} />
-  </div>
+  <div class="form-group">
+    <div class="search-form">
+      <input id="text-filter" type="text" on:input={onFilterInput} placeholder={placeholderText} />
+    </div>
 
-  <div class="form-group radio-group">
-    {#each options as option}
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="filterOption" value="{option.value}" bind:group={filterOption}>
-        <label class="form-check-label">{option.label}</label>
-      </div>
-    {/each}
+    <div class="radio-group">
+      {#each options as option}
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="filterOption" value="{option.value}" bind:group={filterOption}>
+          <label class="form-check-label">{option.label}</label>
+        </div>
+      {/each}
+    </div>
   </div>
 </form>
 
 <style>
   div.search-form input {
     width: 100%
+  }
+
+  .form-group {
+    padding-top: 12px;
   }
 </style>

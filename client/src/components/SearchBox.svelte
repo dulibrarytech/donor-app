@@ -75,7 +75,6 @@ init();
 <form>
   <div class="form-group">
     <div class="search-form">
-      <label class="group-label" for="searchbox">Keyword Search:</label>
       <input id="searchbox" type="search" bind:value={keywords} placeholder={placeholder}/>
       <button type="button" on:click|preventDefault={search}>Search</button>
     </div>
@@ -109,5 +108,6 @@ init();
     border-width: 1px;
     border-color: #e5e3e1;
     border-radius: 3px;
+    padding-top: 12px;
   }
 </style>

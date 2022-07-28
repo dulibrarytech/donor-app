@@ -77,6 +77,7 @@
   <div class="container page-section">
     <div class="row">
       <div class="col-md-3">
+        <h6>Filter:</h6>
         <div class="filter-form">
           <TextFilter data={donors} on:filter={onFilter} filterFunction={filterDataDisplay} placeholderText="Last name or organization" />
         </div>

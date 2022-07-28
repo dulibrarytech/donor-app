@@ -186,6 +186,8 @@ init();
           <h6>Filter:</h6>
           <DataFilterMultiField data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/>
           <DaterangeFilter data={donationDisplay} on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
+          
+          <h6>Keyword Search:</h6>
           <SearchBox index={donationDisplay} searchFields={searchFields} on:search={onKeywordSearch} bind:this={searchBox} />
         </div>
         <button id="exit-search" on:click={clearSearchResults} style="display:{donationSearchResultsDisplay}">Exit Search</button>
@@ -235,5 +237,9 @@ init();
 
   #exit-search {
     margin-top: 25px;
+  }
+
+  :global(.form-group > label) {
+    margin-bottom: 5px;
   }
 </style>
