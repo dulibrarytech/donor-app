@@ -13,6 +13,7 @@
   let method = "post";
   let action = `${$Configuration.donorApiDomain}/donation`;
   let buttonText = "Add Donation";
+  let buttonDisabled = false;
   let messageDisplay;
   let typeSelect;
 
@@ -78,9 +79,10 @@
     window.location.replace(`/letter/${donationId}`)
   }
 
-  /*
-   * Initialization
-   */
+  const onChangeFormValue = (event) => {
+    buttonDisabled = false;
+  }
+
   const init = () => {
     $: donorId = data.donorId || data.id;
 
@@ -92,6 +94,7 @@
       method = "put";
       action = `${$Configuration.donorApiDomain}/donation/${donationId}`;
       buttonText = "Update";
+      buttonDisabled = true;
       formatFormFields();
     }
     /* New donation */
@@ -115,37 +118,37 @@
     <div class="form-group row">
       <div class="col-md-3">
         <label for="dateOfGift">Date</label>
-        <input type="text" class="form-control" id="dateOfGift" bind:value={data.dateOfGift}>
+        <input type="text" class="form-control" id="dateOfGift" bind:value={data.dateOfGift} on:input={onChangeFormValue}>
       </div>
       <div class="col-md-6">
         <label for="numberOfGifts">Item Count</label>
-        <input type="text" class="form-control" id="numberOfGifts" bind:value={data.numberOfGifts}>
+        <input type="text" class="form-control" id="numberOfGifts" bind:value={data.numberOfGifts} on:input={onChangeFormValue}>
       </div>
       <div class="col-md-3">
         {#if statusDisplay}
           <label for="status">Status</label>
-          <input type="text" class="form-control" id="status" bind:value={statusDisplay}>
+          <input type="text" class="form-control" id="status" bind:value={statusDisplay} on:input={onChangeFormValue}>
         {/if}
       </div>
     </div>
     <div class="form-group row">
       <div class="col-md-9">
         <label for="giftDescription">Description</label>
-        <input type="text" class="form-control" id="giftDescription" bind:value={data.giftDescription}>
+        <textarea class="form-control" id="giftDescription" bind:value={data.giftDescription} on:input={onChangeFormValue}></textarea>
         <label for="giftDetails">Details</label>
-        <input type="text" class="form-control" id="giftDetails" bind:value={data.giftDetails}>
+        <textarea class="form-control" id="giftDetails" bind:value={data.giftDetails} on:input={onChangeFormValue}></textarea>
       </div>
       <div class="col-md-3">
         {#if displayGiftTypeSelect}
           <label class="form-check-label">Gift Type</label>
           <div class="form-check">
-            <input class="form-check-input" type="radio" bind:group={typeSelect} value="standard" id="type-standard" checked={typeSelect=='standard'}>
+            <input class="form-check-input" type="radio" bind:group={typeSelect} value="standard" id="type-standard" checked={typeSelect=='standard'} on:change={onChangeFormValue}>
             <label class="form-check-label" for="type-standard">
               Standard
             </label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" bind:group={typeSelect} value="important" id="type-important" checked={typeSelect=='important'}>
+            <input class="form-check-input" type="radio" bind:group={typeSelect} value="important" id="type-important" checked={typeSelect=='important'} on:change={onChangeFormValue}>
             <label class="form-check-label" for="type-important">
               Important
             </label>
@@ -155,7 +158,7 @@
     </div>
   </div>
 
-  <button class="btn btn-default" type="submit" on:click|preventDefault={onSubmitForm}>{buttonText}</button>
+  <button class="btn btn-default" type="submit" on:click|preventDefault={onSubmitForm} disabled={buttonDisabled}>{buttonText}</button>
     {#if donationId && donorId > 1}
       {#if roleId == 2 || roleId == 3}
         <button class="btn btn-default" type="button" on:click={onClickLetter}>Letter</button>
@@ -166,5 +169,16 @@
 <MessageDisplay bind:this={messageDisplay} />
 
 <style>
+  input#dateOfGift {
+    max-width: 130px;
+  }
 
+  input#numberOfGifts {
+    max-width: 130px;
+  }
+
+  textarea {
+    max-width: 75%;
+    height: 120px;
+  }
 </style>

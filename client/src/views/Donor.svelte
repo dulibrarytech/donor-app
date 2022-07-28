@@ -106,13 +106,13 @@
 </script>
 
 <div class="page">
-  <div class="donor-data-section">
+  <div class="page-section">
     <h3>{pageLabel}</h3>
     <svelte:component this={DonorForm} {donorId} data={donorData} titles={donorTitles}/>
   </div>
   {#if donorId}
     <NewItemLink text="Add new donation" href={addDonationPath} />
-    <div class="donor-donations-section">
+    <div class="page-section">
       <h5>Donations</h5>
       <svelte:component this={DataDisplay} items={donationDisplay} Table={DonationTable} args={{donorId, roleId}}/>
     </div>
