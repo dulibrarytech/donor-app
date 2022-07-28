@@ -113,7 +113,7 @@
   init();
 </script>
 
-<form id="donor-form" class="form" method="{method}" action="{action}">
+<form id="donation-form" class="form" method="{method}" action="{action}">
   <div class="form-fields container">
     <div class="form-group row">
       <div class="col-md-3">
