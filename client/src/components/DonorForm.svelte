@@ -121,7 +121,7 @@
 
       <label for="titleSelect">Title</label>
       <select class="form-select" name="title" id="titleSelect" bind:value={data.title} on:input={onChangeFormValue}>
-        <option value="none" selected disabled hidden>No title</option>
+        <option value="0" selected disabled hidden>No title</option>
         {#each titles as title}
           <option value="{title.titleId}">{title.titleString}</option>
         {/each}
@@ -169,6 +169,14 @@
 <MessageDisplay bind:this={messageDisplay} />
 
 <style>
+  form {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #e5e3e1;
+    border-radius: 5px;
+    padding: 12px;
+  }
+
   form .form-fields {
     display: flex;
     justify-content: space-between;

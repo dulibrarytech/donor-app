@@ -85,7 +85,7 @@
   }
 
   const init = () => {
-    $: donorId = data.donorId || data.id;
+    donorId = data.donorId || data.id || null;
     if(donorId) data['donorId'] = donorId;
 
     /* Set select/radio control state */
