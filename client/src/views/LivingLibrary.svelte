@@ -1,97 +1,132 @@
 <script>
-  import { ajaxRequest } from '../libs/ajax.js';
-  import { Configuration } from '../config';
-  import DataDisplay from "../components/DataDisplay.svelte";
-  import NewItemLink from "../components/NewItemLink.svelte";
-  import LivingLibraryTable from "../components/LivingLibraryTable.svelte";
-  import LivingLibraryForm from "../components/LivingLibraryForm.svelte";
+import { ajaxRequest } from '../libs/ajax.js';
+import { Configuration } from '../config';
+import DataDisplay from "../components/DataDisplay.svelte";
+import NewItemLink from "../components/NewItemLink.svelte";
+import LivingLibraryTable from "../components/LivingLibraryTable.svelte";
+import LivingLibraryForm from "../components/LivingLibraryForm.svelte";
 
-  export let params;
+export let params;
 
-  var donations = [];
-  var donationDisplay = [];
-  var donationCount = 0;
-  var donationItemCount = 0;
-  var searchBox;
-  var searchResults = [];
-  var searchField = "";
-  var dataFilter;
-  var daterangeFilter;
-  // var donationListDisplay = "block";
-  // var donationFilterFormDisplay = "block";
-  // var donationSearchResultsDisplay = "none";
-  var dataSort = {
-    field: "donor_date_of_donation",
-    type: "desc"
+var donations = [];
+var donationDisplay = [];
+var donationCount = 0;
+var donationItemCount = 0;
+var searchBox;
+var searchResults = [];
+var searchField = "";
+var dataFilter;
+var daterangeFilter;
+// var donationListDisplay = "block";
+// var donationFilterFormDisplay = "block";
+// var donationSearchResultsDisplay = "none";
+var sortOptions = {
+  field: "donor_date_of_donation",
+  type: "desc"
+}
+var isCompleted;
+
+/*
+ * Init page
+ */
+const init = async () => {
+  let data = await getDonationList();
+  donations = parseViewData(data);
+  //isCompleted = dataFilter.is_completed || false;
+  showAllDonations();
+  sortDataDisplay();
+}
+
+/*
+ * Data display init functions
+ */
+const getDonationList = async () => {
+  let list = [],
+      url = `${$Configuration.livingLibraryApiDomain}/donations`;
+
+  let queryData = {
+    'api_key': $Configuration.livingLibraryApiKey
   }
-  var isCompleted;
 
-  const init = async () => {
-    let data = await getDonationList();
-    donations = parseViewData(data);
-    //isCompleted = dataFilter.is_completed || false;
-    showAllDonations();
-    sortDataDisplay();
+  return new Promise((resolve, reject) => {
+    ajaxRequest('GET', url, function(error, response) {
+      if(error) {
+        console.error(error);
+        resolve([]);
+      }
+      if(response) resolve(response.json());
+    }, null, null, queryData);
+  });
+}
+
+const parseViewData = (data) => {
+  let viewData = [], viewItem;
+  for(let {id, is_completed, donor, recipient} of data) {
+    viewItem = {id, is_completed, ...JSON.parse(donor), ...JSON.parse(recipient)}
+    viewData.push(viewItem);
   }
+  return viewData;
+}
 
-  const getDonationList = async () => {
-    let list = [],
-        url = `${$Configuration.livingLibraryApiDomain}/donations`;
+const showAllDonations = () => {
+  setDataDisplay(donations);
+}
 
-    let queryData = {
-      'api_key': $Configuration.livingLibraryApiKey
-    }
+const setDataDisplay = (data) => {
+  donationDisplay = data;
+  donationCount = donationDisplay.length;
 
-    return new Promise((resolve, reject) => {
-      ajaxRequest('GET', url, function(error, response) {
-        if(error) {
-          console.error(error);
-          resolve([]);
-        }
-        if(response) resolve(response.json());
-      }, null, null, queryData);
+  // let totalItems = 0;
+  // donationDisplay.forEach((donationItem) => {
+  //   totalItems += donationItem.numberOfGifts ?? 0;
+  // })
+  //donationItemCount = totalItems;
+}
+/*
+ * End Data display init functions
+ */
+
+/*
+ * Data display user options
+ */
+const sortDataDisplay = () => {
+  let {type, field} = sortOptions;
+  if(type == "asc") {
+    donationDisplay = donationDisplay.sort(function(a, b) {
+      return a[field]?.localeCompare(b[field]);
     });
   }
-
-  const parseViewData = (data) => {
-    let viewData = [], viewItem;
-    for(let {id, is_completed, donor, recipient} of data) {
-      viewItem = {id, is_completed, ...JSON.parse(donor), ...JSON.parse(recipient)}
-      viewData.push(viewItem);
-    }
-    return viewData;
+  else if(type == "desc") {
+    donationDisplay = donationDisplay.sort(function(b, a) {
+      return a[field]?.localeCompare(b[field]);
+    });
   }
+}
 
-  const showAllDonations = () => {
-    setDataDisplay(donations);
-  }
+/* Standard filter functions */
+const onFilter = (event) => {
+  // Set data display to data from standard filter
+  donationDisplay = event.detail;
 
-  const sortDataDisplay = () => {
-    let {type, field} = dataSort;
-    if(type == "asc") {
-      donationDisplay = donationDisplay.sort(function(a, b) {
-        return a[field]?.localeCompare(b[field]);
-      });
-    }
-    else if(type == "desc") {
-      donationDisplay = donationDisplay.sort(function(b, a) {
-        return a[field]?.localeCompare(b[field]);
-      });
-    }
-  }
+  // Filter current daterange
+  setDataDisplay(daterangeFilter.filterDaterange(donationDisplay));
+}
+/* End standard filter functions */
 
-  const setDataDisplay = (data) => {
-    donationDisplay = data;
-    donationCount = donationDisplay.length;
+/* Daterange filter functions */
+const onDaterangeSelect = (event) => {
+  setDataDisplay(event.detail);
+}
 
-    // let totalItems = 0;
-    // donationDisplay.forEach((donationItem) => {
-    //   totalItems += donationItem.numberOfGifts ?? 0;
-    // })
-    //donationItemCount = totalItems;
-  }
+const onClearDaterange = () => {
+  setDataDisplay(dataFilter.filterData(donations));
+}
+/* End daterange filter functions */
+/*
+ * End Data display user options
+ */
 
-  $: init();
+$: init();
 </script>
 
 <div class="page">

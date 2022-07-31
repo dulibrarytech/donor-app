@@ -22,21 +22,23 @@ var searchBox;
 var searchResults = [];
 var searchField = "";
 var dataFilter;
+var filters = [];
 var daterangeFilter;
 var donationListDisplay = "block";
 var donationFilterFormDisplay = "block";
 var donationSearchResultsDisplay = "none";
+
+// TODO: to init()
 var sortOptions = {
   field: "dateOfGift",
   type: "desc"
 }
-
+// TODO: to init()
 const searchFields = [
   {fieldName: "giftDescription", fieldLabel: "Description"},
   {fieldName: "giftDetails", fieldLabel: "Details"}
 ]
-
-var filters = [];
+// TODO: to init()
 filters.push({
   "groupLabel": "Donor Type:",
   "options": [
@@ -97,6 +99,9 @@ filters.push({
   }
 ]});
 
+/*
+ * Init page
+ */
 const init = async () => {
   roleId = Session.getDataItem('roleId');
   donations = await getDonationList();
@@ -104,6 +109,9 @@ const init = async () => {
   sortDataDisplay();
 }
 
+/*
+ * Data display init functions
+ */
 const getDonationList = async () => {
   let list = [],
       url = `${$Configuration.donorApiDomain}/donation`;
@@ -124,28 +132,7 @@ const showAllDonations = () => {
   setDataDisplay(donations);
 }
 
-// const sortDataDisplay = () => {
-//   if(sortType == "dateOfGift") {
-//     donationDisplay = donationDisplay.sort(function(a, b) {
-//       return a[sortType].localeCompare(b[sortType]);
-//     });
-//   }
-// }
-
-const sortDataDisplay = () => {
-  let {type, field} = sortOptions;
-  if(type == "asc") {
-    donationDisplay = donationDisplay.sort(function(a, b) {
-      return a[field]?.localeCompare(b[field]);
-    });
-  }
-  else if(type == "desc") {
-    donationDisplay = donationDisplay.sort(function(b, a) {
-      return a[field]?.localeCompare(b[field]);
-    });
-  }
-}
-
+/* Update data display and item count display */
 const setDataDisplay = (data) => {
   donationDisplay = data;
   donationCount = donationDisplay.length;
@@ -156,7 +143,28 @@ const setDataDisplay = (data) => {
   })
   donationItemCount = totalItems;
 }
+/*
+ * End Data display init functions
+ */
 
+/*
+ * Data display user options
+ */
+ const sortDataDisplay = () => {
+   let {type, field} = sortOptions;
+   if(type == "asc") {
+     donationDisplay = donationDisplay.sort(function(a, b) {
+       return a[field]?.localeCompare(b[field]);
+     });
+   }
+   else if(type == "desc") {
+     donationDisplay = donationDisplay.sort(function(b, a) {
+       return a[field]?.localeCompare(b[field]);
+     });
+   }
+ }
+
+/* Keyword search functions */
 const onKeywordSearch = (event) => {
   searchResults = event.detail.results;
   searchField = event.detail.field;
@@ -177,12 +185,19 @@ const clearSearchResults = () => {
   donationFilterFormDisplay = "block";
   donationSearchResultsDisplay = "none";
 }
+/* End keyword search functions */
 
+/* Standard filter functions */
 const onFilter = (event) => {
+  // Set data display to data from standard filter
   donationDisplay = event.detail;
+
+  // Filter current daterange
   setDataDisplay(daterangeFilter.filterDaterange(donationDisplay));
 }
+/* End standard filter functions */
 
+/* Daterange filter functions */
 const onDaterangeSelect = (event) => {
   setDataDisplay(event.detail);
 }
@@ -190,6 +205,10 @@ const onDaterangeSelect = (event) => {
 const onClearDaterange = () => {
   setDataDisplay(dataFilter.filterData(donations));
 }
+/* End daterange filter functions */
+/*
+ * End Data display user options
+ */
 
 init();
 </script>
