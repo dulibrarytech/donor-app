@@ -17,6 +17,10 @@
   var donorTitles = [];
   var donationDisplay = [];
   var pageLabel = "";
+  var sortOptions = {
+    field: "dateOfGift",
+    type: "desc"
+  }
 
   const fetchDonorData = (id) => {
     return new Promise((resolve, reject) => {
@@ -71,6 +75,20 @@
     return label;
   }
 
+  const sortDataDisplay = () => {
+    let {type, field} = sortOptions;
+    if(type == "asc") {
+      donationDisplay = donationDisplay.sort(function(a, b) {
+        return a[field]?.localeCompare(b[field]);
+      });
+    }
+    else if(type == "desc") {
+      donationDisplay = donationDisplay.sort(function(b, a) {
+        return a[field]?.localeCompare(b[field]);
+      });
+    }
+  }
+
   const init = async () => {
     /* If there is a donor ID, get the data for that donor in the form and get the donation list */
     if(donorId && donorId > 1) {
@@ -82,6 +100,8 @@
         pageLabel = getPageLabel(donorData);
         let donationData = await fetchDonorDonations(donorId);
         if(donationData) donationDisplay = donationData;
+
+        sortDataDisplay();
       }
 
       /* No data for this donor was found */

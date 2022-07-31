@@ -13,7 +13,7 @@ import DataFilterMultiField from "../components/DataFilterMultiField.svelte";
 import DaterangeFilter from "../components/DaterangeFilter.svelte";
 import SearchBox from "../components/SearchBox.svelte";
 
-const roleId = Session.getDataItem('roleId');
+var roleId;
 var donations = [];
 var donationDisplay = [];
 var donationCount = 0;
@@ -26,7 +26,10 @@ var daterangeFilter;
 var donationListDisplay = "block";
 var donationFilterFormDisplay = "block";
 var donationSearchResultsDisplay = "none";
-var sortType = "dateOfGift";
+var sortOptions = {
+  field: "dateOfGift",
+  type: "desc"
+}
 
 const searchFields = [
   {fieldName: "giftDescription", fieldLabel: "Description"},
@@ -95,6 +98,7 @@ filters.push({
 ]});
 
 const init = async () => {
+  roleId = Session.getDataItem('roleId');
   donations = await getDonationList();
   showAllDonations();
   sortDataDisplay();
@@ -118,6 +122,39 @@ const getDonationList = async () => {
 const showAllDonations = () => {
   // TODO: Use dataFilter.resetFilters();
   setDataDisplay(donations);
+}
+
+// const sortDataDisplay = () => {
+//   if(sortType == "dateOfGift") {
+//     donationDisplay = donationDisplay.sort(function(a, b) {
+//       return a[sortType].localeCompare(b[sortType]);
+//     });
+//   }
+// }
+
+const sortDataDisplay = () => {
+  let {type, field} = sortOptions;
+  if(type == "asc") {
+    donationDisplay = donationDisplay.sort(function(a, b) {
+      return a[field]?.localeCompare(b[field]);
+    });
+  }
+  else if(type == "desc") {
+    donationDisplay = donationDisplay.sort(function(b, a) {
+      return a[field]?.localeCompare(b[field]);
+    });
+  }
+}
+
+const setDataDisplay = (data) => {
+  donationDisplay = data;
+  donationCount = donationDisplay.length;
+
+  let totalItems = 0;
+  donationDisplay.forEach((donationItem) => {
+    totalItems += donationItem.numberOfGifts ?? 0;
+  })
+  donationItemCount = totalItems;
 }
 
 const onKeywordSearch = (event) => {
@@ -154,25 +191,6 @@ const onClearDaterange = () => {
   setDataDisplay(dataFilter.filterData(donations));
 }
 
-const sortDataDisplay = () => {
-  if(sortType == "dateOfGift") {
-    donationDisplay = donationDisplay.sort(function(a, b) {
-      return a[sortType].localeCompare(b[sortType]);
-    });
-  }
-}
-
-const setDataDisplay = (data) => {
-  donationDisplay = data;
-  donationCount = donationDisplay.length;
-
-  let totalItems = 0;
-  donationDisplay.forEach((donationItem) => {
-    totalItems += donationItem.numberOfGifts ?? 0;
-  })
-  donationItemCount = totalItems;
-}
-
 init();
 </script>
 
@@ -186,7 +204,7 @@ init();
           <h6>Filter:</h6>
           <DataFilterMultiField data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/>
           <DaterangeFilter data={donationDisplay} on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
-          
+
           <h6>Keyword Search:</h6>
           <SearchBox index={donationDisplay} searchFields={searchFields} on:search={onKeywordSearch} bind:this={searchBox} />
         </div>
