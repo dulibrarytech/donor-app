@@ -35,7 +35,6 @@ const init = async () => {
   }
 
   filters.push({
-    "groupLabel": "Label:",
     "options": [
     {
       "field": "status",
@@ -114,7 +113,6 @@ const setDataDisplay = (data) => {
  * Data display user options
  */
 const sortDataDisplay = () => {
-  console.log("Sorting")
   let {type, field} = sortOptions;
   if(type == "asc") {
     donationDisplay = donationDisplay.sort(function(a, b) {

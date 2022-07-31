@@ -59,7 +59,7 @@ init();
 <form>
   {#each filters as filter }
   <div class="form-group">
-  <label class="group-label">{filter.groupLabel}</label>
+    {#if filter.groupLabel}<label class="group-label">{filter.groupLabel}</label>{/if}
     {#each filter.options as {field, value, label} }
       <div class="form-check">
         <input id={`${field}-${value}`} class="form-check-input" type="radio" value={value} bind:group={fields[field]} on:change={onFilter} >
