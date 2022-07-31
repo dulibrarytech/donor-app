@@ -6,26 +6,44 @@
 import {createEventDispatcher} from 'svelte';
 
 export let data;
-export let filterFunction;
+export let filterFields=[];
 export let placeholderText;
 
 const dispatch = createEventDispatcher();
 let filteredData = [];
-let filterOption = "1";
+let filterOption = "begins_with";
 let options = [
   {
     label: "Begins with",
-    value: "1"
+    value: "begins_with"
   },
   {
     label: "Contains",
-    value: "2"
+    value: "contains"
   }
 ]
 
+const filterText = (data, filter = "", option = "begins_with") => {
+  filter = filter.toLowerCase();
+  if(option == "begins_with") filter = '^' + filter;
+
+  let filtered = data.filter((item) => {
+    let re = new RegExp(filter, "gi"), values="";
+    for(let field of filterFields) {
+      if(item[field].length > 1) {
+        values = item.lastName?.toLowerCase().match(re);
+        break;
+      }
+    }
+    return values;
+  });
+
+  return filtered;
+}
+
 const onFilterInput = (event) => {
   if(event.target.value.length > 0 ) {
-    filteredData = filterFunction(data, event.target.value, filterOption)
+    filteredData = filterText(data, event.target.value, filterOption)
   }
   else {
     filteredData = data;

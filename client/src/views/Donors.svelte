@@ -64,22 +64,10 @@ const sortDataDisplay = () => {
 const onFilter = (event) => {
   donorDisplay = event.detail;
 }
-
-const filterDataDisplay = (data, filter = "", option = 1) => {
-  filter = filter.toLowerCase();
-  if(option == "1") filter = '^' + filter;
-
-  let filtered = data.filter((item) => {
-    let re = new RegExp(filter, "gi"), values="";
-    if(item.lastName.length > 1) values = item.lastName?.toLowerCase().match(re)
-    else if(item.organization.length > 1) values = item.organization?.toLowerCase().match(re)
-
-    return values;
-  });
-
-  return filtered;
-}
 /* End standard filter functions */
+/*
+ * End Data display user options
+ */
 
 init();
 </script>
@@ -92,7 +80,7 @@ init();
       <div class="col-md-3">
         <h6>Filter:</h6>
         <div class="filter-form">
-          <TextFilter data={donors} on:filter={onFilter} filterFunction={filterDataDisplay} placeholderText="Last name or organization" />
+          <TextFilter data={donors} on:filter={onFilter} filterFields={["lastName", "organization"]} placeholderText="Last name or organization" />
         </div>
       </div>
 
