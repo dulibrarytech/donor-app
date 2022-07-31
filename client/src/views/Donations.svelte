@@ -27,87 +27,92 @@ var daterangeFilter;
 var donationListDisplay = "block";
 var donationFilterFormDisplay = "block";
 var donationSearchResultsDisplay = "none";
-
-// TODO: to init()
-var sortOptions = {
-  field: "dateOfGift",
-  type: "desc"
-}
-// TODO: to init()
-const searchFields = [
-  {fieldName: "giftDescription", fieldLabel: "Description"},
-  {fieldName: "giftDetails", fieldLabel: "Details"}
-]
-// TODO: to init()
-filters.push({
-  "groupLabel": "Donor Type:",
-  "options": [
-  {
-    "field": "donorType",
-    "value": "0",
-    "label": "Show All",
-    "function": (item) => {
-      return true;
-    },
-    "isDefault": true
-  },
-  {
-    "field": "donorType",
-    "value": "1",
-    "label": "Known",
-    "function": (item) => {
-      return item.donorId != 1;
-    }
-  },
-  {
-    "field": "donorType",
-    "value": "2",
-    "label": "Anonymous",
-    "function": (item) => {
-      return item.donorId == 1;
-    }
-  }
-]});
-
-filters.push({
-  "groupLabel": "Donation Type:",
-  "options": [
-  {
-    "field": "donationType",
-    "value": "0",
-    "label": "Show All",
-    "function": (item) => {
-      return true;
-    },
-    "isDefault": true
-  },
-  {
-    "field": "donationType",
-    "value": "1",
-    "label": "Standard",
-    "function": (item) => {
-      return item.important == 0;
-    }
-  },
-  {
-    "field": "donationType",
-    "value": "2",
-    "label": "Important",
-    "function": (item) => {
-      return item.important == 1;
-    }
-  }
-]});
+var sortOptions = {};
+var searchFields = [];
 
 /*
  * Init page
  */
 const init = async () => {
+  sortOptions = {
+    field: "dateOfGift",
+    type: "desc"
+  }
+
+  searchFields = [
+    {fieldName: "giftDescription", fieldLabel: "Description"},
+    {fieldName: "giftDetails", fieldLabel: "Details"}
+  ]
+
+  filters.push({
+    "groupLabel": "Donor Type:",
+    "options": [
+    {
+      "field": "donorType",
+      "value": "0",
+      "label": "Show All",
+      "function": (item) => {
+        return true;
+      },
+      "isDefault": true
+    },
+    {
+      "field": "donorType",
+      "value": "1",
+      "label": "Known",
+      "function": (item) => {
+        return item.donorId != 1;
+      }
+    },
+    {
+      "field": "donorType",
+      "value": "2",
+      "label": "Anonymous",
+      "function": (item) => {
+        return item.donorId == 1;
+      }
+    }
+  ]});
+
+  filters.push({
+    "groupLabel": "Donation Type:",
+    "options": [
+    {
+      "field": "donationType",
+      "value": "0",
+      "label": "Show All",
+      "function": (item) => {
+        return true;
+      },
+      "isDefault": true
+    },
+    {
+      "field": "donationType",
+      "value": "1",
+      "label": "Standard",
+      "function": (item) => {
+        return item.important == 0;
+      }
+    },
+    {
+      "field": "donationType",
+      "value": "2",
+      "label": "Important",
+      "function": (item) => {
+        return item.important == 1;
+      }
+    }
+  ]});
+
   roleId = Session.getDataItem('roleId');
   donations = await getDonationList();
-  showAllDonations();
-  sortDataDisplay();
+  //showAllDonations();
+  setDataDisplay(donations);
+  //sortDataDisplay();
 }
+/*
+ * End Init page
+ */
 
 /*
  * Data display init functions
@@ -127,14 +132,15 @@ const getDonationList = async () => {
   });
 }
 
-const showAllDonations = () => {
-  // TODO: Use dataFilter.resetFilters();
-  setDataDisplay(donations);
-}
+// const showAllDonations = () => {
+//   // TODO: Use dataFilter.resetFilters();
+//   setDataDisplay(donations);
+// }
 
 /* Update data display and item count display */
 const setDataDisplay = (data) => {
   donationDisplay = data;
+  sortDataDisplay();
   donationCount = donationDisplay.length;
 
   let totalItems = 0;
@@ -190,7 +196,7 @@ const clearSearchResults = () => {
 /* Standard filter functions */
 const onFilter = (event) => {
   // Set data display to data from standard filter
-  donationDisplay = event.detail;
+  setDataDisplay(event.detail);
 
   // Filter current daterange
   setDataDisplay(daterangeFilter.filterDaterange(donationDisplay));

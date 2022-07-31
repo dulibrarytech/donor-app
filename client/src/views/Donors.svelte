@@ -16,8 +16,7 @@ var donorDisplay = [];
 const init = async () => {
   // TODO: Feedback message "Retrieving donors..." in display window, then remove after getDonorList() returns
   donors = await getDonorList();
-  showAllDonors();
-  sortDataDisplay();
+  setDataDisplay(donors);
 }
 
 /*
@@ -38,10 +37,11 @@ const getDonorList = async () => {
   });
 }
 
-/* Removes any filters from the donor display, sorts by lastname or organization */
-const showAllDonors = () => {
-  donorDisplay = donors;
+const setDataDisplay = (data) => {
+  donorDisplay = data;
+  sortDataDisplay();
 }
+
 /*
  * End Data display init functions
  */
@@ -62,7 +62,7 @@ const sortDataDisplay = () => {
 
 /* Standard filter functions */
 const onFilter = (event) => {
-  donorDisplay = event.detail;
+  setDataDisplay(event.detail);
 }
 /* End standard filter functions */
 /*

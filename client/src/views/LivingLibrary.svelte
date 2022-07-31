@@ -5,6 +5,7 @@ import DataDisplay from "../components/DataDisplay.svelte";
 import NewItemLink from "../components/NewItemLink.svelte";
 import LivingLibraryTable from "../components/LivingLibraryTable.svelte";
 import LivingLibraryForm from "../components/LivingLibraryForm.svelte";
+import DataFilterMultiField from "../components/DataFilterMultiField.svelte";
 
 export let params;
 
@@ -17,25 +18,51 @@ var searchResults = [];
 var searchField = "";
 var dataFilter;
 var daterangeFilter;
+var filters = [];
+var sortOptions = {};
+var donationFilterFormDisplay = true;
 // var donationListDisplay = "block";
 // var donationFilterFormDisplay = "block";
 // var donationSearchResultsDisplay = "none";
-var sortOptions = {
-  field: "donor_date_of_donation",
-  type: "desc"
-}
-var isCompleted;
 
 /*
  * Init page
  */
 const init = async () => {
+  sortOptions = {
+    field: "donor_date_of_donation",
+    type: "desc"
+  }
+
+  filters.push({
+    "groupLabel": "Label:",
+    "options": [
+    {
+      "field": "status",
+      "value": "0",
+      "label": "Queued",
+      "function": (item) => {
+        return item.is_completed == 0;
+      },
+      "isDefault": true
+    },
+    {
+      "field": "status",
+      "value": "1",
+      "label": "Completed",
+      "function": (item) => {
+        return item.is_completed == 1;
+      }
+    }
+  ]});
+
   let data = await getDonationList();
   donations = parseViewData(data);
-  //isCompleted = dataFilter.is_completed || false;
-  showAllDonations();
-  sortDataDisplay();
+  setDataDisplay( dataFilter.filterData(donations) );
 }
+/*
+ * End Init page
+ */
 
 /*
  * Data display init functions
@@ -68,12 +95,9 @@ const parseViewData = (data) => {
   return viewData;
 }
 
-const showAllDonations = () => {
-  setDataDisplay(donations);
-}
-
 const setDataDisplay = (data) => {
   donationDisplay = data;
+  sortDataDisplay();
   donationCount = donationDisplay.length;
 
   // let totalItems = 0;
@@ -90,6 +114,7 @@ const setDataDisplay = (data) => {
  * Data display user options
  */
 const sortDataDisplay = () => {
+  console.log("Sorting")
   let {type, field} = sortOptions;
   if(type == "asc") {
     donationDisplay = donationDisplay.sort(function(a, b) {
@@ -106,10 +131,10 @@ const sortDataDisplay = () => {
 /* Standard filter functions */
 const onFilter = (event) => {
   // Set data display to data from standard filter
-  donationDisplay = event.detail;
+  setDataDisplay(event.detail);
 
   // Filter current daterange
-  setDataDisplay(daterangeFilter.filterDaterange(donationDisplay));
+  //setDataDisplay(daterangeFilter.filterDaterange( event.detail ));
 }
 /* End standard filter functions */
 
@@ -126,7 +151,7 @@ const onClearDaterange = () => {
  * End Data display user options
  */
 
-$: init();
+init();
 </script>
 
 <div class="page">
@@ -137,12 +162,12 @@ $: init();
 
       <div class="col-md-3">
 
-        <!-- <div class="filter-form" style="display:{donationFilterFormDisplay}">
+        <div class="filter-form" style="display:{donationFilterFormDisplay}">
           <h6>Filter:</h6>
           <DataFilterMultiField data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/>
-          <DaterangeFilter data={donationDisplay} on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
-          <SearchBox index={donationDisplay} searchFields={searchFields} on:search={onKeywordSearch} bind:this={searchBox} />
-        </div> -->
+          <!-- <DaterangeFilter data={donationDisplay} on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/> -->
+          <!-- <SearchBox index={donationDisplay} searchFields={searchFields} on:search={onKeywordSearch} bind:this={searchBox} /> -->
+        </div>
 
       </div>
 
@@ -153,7 +178,7 @@ $: init();
         </span> -->
         <NewItemLink text="New donation" href="#" />
         <!-- <DataDisplay items={donationDisplay} Table={LivingLibraryTable} args={{is_completed}} /> -->
-        <svelte:component this={DataDisplay} items={donationDisplay} Table={LivingLibraryTable} args={{isCompleted}}/>
+        <svelte:component this={DataDisplay} items={donationDisplay} Table={LivingLibraryTable} />
 
         <!-- <div style="display:{donationSearchResultsDisplay}">
           <button on:click={clearSearchResults}>Exit Search</button>
