@@ -11,15 +11,11 @@ export const ajaxRequest = (type, url, callback, data=null, options=null, query=
     method: type,
     headers: {
       'Content-Type': 'application/json;charset=utf-8'
-    },
+    }
   }
   if(data) options['body'] = JSON.stringify(data);
 
-  if(options) {
-    // TODO: Combine defaultOptions and options objects
-    // Output options
-  }
-  else options = defaultOptions;
+  if (options= null) options = defaultOptions;
 
   if(query) {
     let value, queryString = "";
@@ -42,5 +38,5 @@ export const ajaxRequest = (type, url, callback, data=null, options=null, query=
     .catch(error => {
       callback(error, null);
     });
-  callback(null, JSON.stringify([]))
+  //callback(null, JSON.stringify([]))
 }

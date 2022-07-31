@@ -179,7 +179,7 @@
 	border-color: #e5e3e1;
 	border-radius: 3px;
 	margin-bottom: 10px;
-	padding: 7px 12px 7px 0;
+	padding: 7px 12px 7px 12px;
 }
 
 :global(.filter-form .form-group) {
