@@ -13,9 +13,10 @@ export const ajaxRequest = (type, url, callback, data=null, options=null, query=
       'Content-Type': 'application/json;charset=utf-8'
     }
   }
-  if(data) options['body'] = JSON.stringify(data);
 
-  if (options= null) options = defaultOptions;
+  if(data) defaultOptions['body'] = JSON.stringify(data);
+  
+  if (options == null) options = defaultOptions;
 
   if(query) {
     let value, queryString = "";
