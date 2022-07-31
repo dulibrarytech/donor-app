@@ -1,6 +1,7 @@
 <script>
   import UserDisplay from "./UserDisplay.svelte";
   import { Session } from '../libs/session.js';
+  import { Configuration } from '../config';
 
   export let userData;
   if(Session.isSession()) {
@@ -11,11 +12,14 @@
   }
 
   var routes = [];
-  if(userData) {
+  if(userData || $Configuration.runtimeEnv == "development") {
     routes = [
       {"label": "Donors", "path": "/donors", "default": true},
-      {"label": "Donations", "path": "/donations"}
+      {"label": "Donations", "path": "/donations"},
+      {"label": "Living Library", "path": "/livingLibrary"}
     ]
+  }
+  if(userData) {
     if(userData.roleId == 2 || userData.roleId == 3) {
         routes.push({"label": "Inbox", "path": "/inbox"})
     }
