@@ -15,7 +15,7 @@ export const ajaxRequest = (type, url, callback, data=null, options=null, query=
   }
 
   if(data) defaultOptions['body'] = JSON.stringify(data);
-  
+
   if (options == null) options = defaultOptions;
 
   if(query) {
@@ -28,8 +28,8 @@ export const ajaxRequest = (type, url, callback, data=null, options=null, query=
     url += queryString;
   }
 
-  if(Session.isSession()) {
-    options.headers['authorization'] = Session.getToken();
+  if(Session.isSession("donor_db")) {
+    options.headers['authorization'] = Session.getToken("donor_db");
   }
 
   fetch(url, options)

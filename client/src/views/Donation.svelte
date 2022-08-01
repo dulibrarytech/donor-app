@@ -10,7 +10,7 @@
 
   const donationId = params.id ?? null;
   const donorId = params.donorId ?? null;
-  const roleId = Session.getDataItem('roleId');
+  const roleId = Session.getDataItem("donor_db", 'roleId');
 
   var donationData = {};
   var pageLabel;

@@ -11,7 +11,7 @@
   export let params;
 
   const donorId = params.id ?? null;
-  const roleId = Session.getDataItem('roleId');
+  const roleId = Session.getDataItem("donor_db", 'roleId');
   const addDonationPath = `/donation/donor/${donorId}`;
   var donorData = {};
   var donorTitles = [];

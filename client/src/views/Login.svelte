@@ -11,7 +11,7 @@
   var messageDisplay;
 
   const init = () => {
-    if(Session.isSession()) window.location.replace("/donors")
+    if(Session.isSession("donor_db")) window.location.replace("/donors")
   }
 
   const onSubmitLogin = (event) => {

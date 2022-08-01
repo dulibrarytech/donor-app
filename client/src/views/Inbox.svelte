@@ -8,7 +8,7 @@
 
   var donations = [];
   var donationDisplay = [];
-  var userData = Session.getData() || null;
+  var userData = Session.getData("donor_db") || null;
   let messageDisplay;
 
   const init = async () => {
