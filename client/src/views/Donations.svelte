@@ -2,6 +2,8 @@
 'use strict'
 
 import { onMount } from 'svelte';
+import lscache from 'client-cache';
+
 import { Configuration } from '../config';
 import { ajaxRequest } from '../libs/ajax.js';
 import { Session } from '../libs/session.js';
@@ -91,7 +93,7 @@ const init = async () => {
       "value": "1",
       "label": "Standard",
       "function": (item) => {
-        return item.important == 0;
+        return item.important == 0 && item.donorId != 1;
       }
     },
     {
@@ -104,11 +106,16 @@ const init = async () => {
     }
   ]});
 
-  roleId = Session.getDataItem('roleId');
+  roleId = Session.getDataItem("donor_db", 'roleId');
   donations = await getDonationList();
-  //showAllDonations();
   setDataDisplay(donations);
-  //sortDataDisplay();
+
+  // TODO: Single object with 2 props
+  if(lscache.get('donation_search_results')) {
+    searchResults = lscache.get('donation_search_results');
+    searchField = lscache.get('donation_search_field');
+    showSearchResults();
+  }
 }
 /*
  * End Init page
@@ -131,11 +138,6 @@ const getDonationList = async () => {
     });
   });
 }
-
-// const showAllDonations = () => {
-//   // TODO: Use dataFilter.resetFilters();
-//   setDataDisplay(donations);
-// }
 
 /* Update data display and item count display */
 const setDataDisplay = (data) => {
@@ -174,6 +176,8 @@ const setDataDisplay = (data) => {
 const onKeywordSearch = (event) => {
   searchResults = event.detail.results;
   searchField = event.detail.field;
+  lscache.set('donation_search_results', searchResults);
+  lscache.set('donation_search_field', searchField);
   showSearchResults();
 }
 
@@ -184,6 +188,7 @@ const showSearchResults = () => {
 }
 
 const clearSearchResults = () => {
+  lscache.flush();
   searchBox.reset();
   searchResults = [];
   searchField = "";

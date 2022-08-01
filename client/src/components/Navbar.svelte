@@ -2,10 +2,14 @@
   import UserDisplay from "./UserDisplay.svelte";
   import { Session } from '../libs/session.js';
   import { Configuration } from '../config';
+  import {createEventDispatcher} from 'svelte';
 
   export let userData;
-  if(Session.isSession()) {
-    userData = Session.getData();
+
+  const dispatch = createEventDispatcher();
+
+  if(Session.isSession("donor_db")) {
+    userData = Session.getData("donor_db");
   }
   else {
     userData = null;
@@ -25,28 +29,18 @@
     }
     routes.push({"label": "Logout", "path": "/logout"})
   }
-  //TODO: push Inbox route if roleid is 2 (admin) or 3 (ext rel)
 
   // Set the clicked nav link to active, remove active state from previously active link
   const onClickNavItem = function(event) {
     let activeLink = document.querySelector(".nav-item.active");
     if(activeLink) { activeLink.classList.remove("active") }
     event.srcElement.parentElement.classList.add("active");
+    dispatch('navigate', {})
   }
 
   const onLogout = () => {
     dispatch('logout-user', {})
   }
-
-  // Initialize the nav menu links, set the link to the current page as active
-  // window.addEventListener('load', (event) => {
-  //   document.querySelectorAll(".active").forEach(link => {
-  //     let path = link.firstElementChild.href;
-  //     if(path != window.location.href) {
-  //       link.classList.remove("active");
-  //     }
-  //   });
-  // });
 </script>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">

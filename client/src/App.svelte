@@ -1,6 +1,8 @@
 <script>
 
 	import router from "page.js";
+	import lscache from 'client-cache';
+
 	import { Configuration } from './config';
 	import { Session } from './libs/session.js';
 
@@ -25,18 +27,22 @@
 	let page;
 	let params;
 
+	const onNavigate = (event) => {
+		lscache.flush();
+	}
+
 	/*
 	 * Session control functions
 	 */
 	const login = (data) => {
-		Session.create(data.token, data.userData);
+		Session.create("donor_db", data.token, data.userData);
 		let {roleId} = data.userData;
 		if(roleId == 2 || roleId == 3) window.location.replace("/inbox");
 		else window.location.replace("/");
 	}
 
 	const logout = () => {
-		if(Session.isSession()) Session.destroy();
+		if(Session.isSession("donor_db")) Session.destroy("donor_db");
 		window.location.replace("/login");
 	}
 
@@ -45,6 +51,7 @@
   }
 
 	const onLogout = () => {
+		lscache.flush();
 		logout();
 	}
 	/*
@@ -56,10 +63,10 @@
 	 */
 	const validateSession = async (ctx, next) => {
 		if($Configuration.runtimeEnv == "production") {
-			if(Session.isSession()) {
+			if(Session.isSession("donor_db")) {
 				let data = {
 					headers: {
-						'authorization': Session.getToken() || ""
+						'authorization': Session.getToken("donor_db") || ""
 					}
 				}
 
@@ -147,7 +154,7 @@
 </script>
 
 <Header />
-<Navbar on:logout-user={onLogout}/>
+<Navbar on:navigate={onNavigate} on:logout-user={onLogout} />
 
 <main class="container">
 	<svelte:component this={page} {params} on:login={onLogin}/>

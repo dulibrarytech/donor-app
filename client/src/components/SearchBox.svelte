@@ -39,15 +39,12 @@ const getSearchFieldArray = (searchFields) => {
   for(let {fieldName} of searchFields) {
     fieldArray.push(fieldName);
   }
-  console.log("Field array", fieldArray)
   return fieldArray;
 }
 
 const search = () => {
-  console.log("search()", multiFieldSearch)
   try {
     let fields = multiFieldSearch === true ? getSearchFieldArray(searchFields) : [searchField];
-    console.log("Fields", fields)
     let miniSearch = new MiniSearch({
       fields: fields,
       storeFields: [resultFields]
