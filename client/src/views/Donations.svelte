@@ -110,10 +110,9 @@ const init = async () => {
   donations = await getDonationList();
   setDataDisplay(donations);
 
-  // TODO: Single object with 2 props
   if(lscache.get('donation_search_results')) {
-    searchResults = lscache.get('donation_search_results');
-    searchField = lscache.get('donation_search_field');
+    searchResults = lscache.get('donation_search_results').results;
+    searchField = lscache.get('donation_search_results').field;
     showSearchResults();
   }
 }
@@ -176,8 +175,12 @@ const setDataDisplay = (data) => {
 const onKeywordSearch = (event) => {
   searchResults = event.detail.results;
   searchField = event.detail.field;
-  lscache.set('donation_search_results', searchResults);
-  lscache.set('donation_search_field', searchField);
+
+  lscache.set('donation_search_results', {
+    results: searchResults,
+    field: searchField
+  });
+
   showSearchResults();
 }
 

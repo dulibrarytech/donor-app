@@ -3,9 +3,6 @@
   export let args;
   let donorId = args?.donorId || null;
   let roleId = args?.roleId;
-  //let searchResultsDisplay = args.searchResultsDisplay;
-
-  console.log("Donation table ARGS:", args)
 
   const formatGiftTypeField = (value=false) => {
     return value == true ? "Important" : "Standard";
@@ -46,13 +43,13 @@
         {#if donation.donorId != 1}
           <td>{formatGiftTypeField(donation.important) || "Unknown"}</td>
         {:else}
-          <td>n/a</td> <!-- TODO Don't show it -->
+          <td>n/a</td>
         {/if}
 
         {#if donation.donorId != 1}
           <td>{formatStatusField(donation.letter) || "Unknown"}</td>
         {:else}
-          <td>n/a</td> <!-- TODO Don't show it -->
+          <td>n/a</td>
         {/if}
 
         <td>{donation.giftDescription}</td>
