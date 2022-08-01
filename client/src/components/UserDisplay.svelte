@@ -18,9 +18,9 @@
 </script>
 
 <div class="user-display">
-  <div>
+  <div class="username">
     {#if userData}
-      <div class="icon"><FaUserAlt /></div><span class="user-display-name">{userData.firstName} {userData.lastName}</span>
+      <span class="icon"><FaUserAlt /></span><span class="user-display-name">{userData.firstName} {userData.lastName}</span>
     {/if}
   </div>
 </div>
@@ -31,8 +31,7 @@
     margin-right: 15px;
   }
 
-  .user-display > div {
-    /* width: 50px; */
+  .user-display .username {
     float: right;
     display: inline-flex;
   }

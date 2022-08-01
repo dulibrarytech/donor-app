@@ -54,9 +54,9 @@
     </ul>
 
     {#if userData}
-      <div class="user-display-wrapper">
+      <!-- <div class="user-display-wrapper"> -->
         <UserDisplay {userData} on:logout-user={onLogout} />
-      </div>
+      <!-- </div> -->
     {/if}
   </div>
 </nav>
@@ -85,6 +85,18 @@
   }
 
   .user-display-wrapper {
-    width: 75%;
+    width: 50%;
+  }
+
+  ul.navbar-nav {
+    width: 50%;
+  }
+
+  ul.navbar-nav li.nav-item:not(:first-child) {
+    margin-left: 10px;
+  }
+
+  .navbar-light .navbar-nav .nav-link {
+    color: rgba(0,0,0,.55);
   }
 </style>
