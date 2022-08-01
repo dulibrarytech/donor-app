@@ -11,6 +11,7 @@ export let placeholderText;
 
 const dispatch = createEventDispatcher();
 let filteredData = [];
+let filterValue;
 let filterOption = "begins_with";
 let options = [
   {
@@ -23,7 +24,7 @@ let options = [
   }
 ]
 
-const filterText = (data, filter = "", option = "begins_with") => {
+export const filterText = (data, filter = filterValue, option = filterOption) => {
   filter = filter.toLowerCase();
   if(option == "begins_with") filter = '^' + filter;
 
@@ -49,7 +50,12 @@ const onFilterInput = (event) => {
     filteredData = data;
   }
 
-  dispatch('filter', filteredData);
+  dispatch('filter-text', filteredData);
+}
+
+const onChangeOption = (event) => {
+  filterOption = event.target.value;
+  dispatch('text-filter-change-option', filterText(data, filterValue, filterOption))
 }
 
 </script>
@@ -57,13 +63,13 @@ const onFilterInput = (event) => {
 <form>
   <div class="form-group">
     <div class="search-form">
-      <input id="text-filter" type="text" on:input={onFilterInput} placeholder={placeholderText} />
+      <input id="text-filter" type="text" on:input={onFilterInput} bind:value="{filterValue}" placeholder={placeholderText} />
     </div>
 
     <div class="radio-group">
       {#each options as option}
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="filterOption" value="{option.value}" bind:group={filterOption}>
+          <input class="form-check-input" type="radio" name="filterOption" value="{option.value}" on:change="{onChangeOption}" bind:group={filterOption}>
           <label class="form-check-label">{option.label}</label>
         </div>
       {/each}
