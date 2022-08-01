@@ -85,6 +85,6 @@
   }
 
   .user-display-wrapper {
-    width: 100%;
+    width: 75%;
   }
 </style>
