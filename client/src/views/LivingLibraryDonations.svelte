@@ -1,4 +1,9 @@
 <script>
+/*
+ * Living Library Donations page
+ * Display donation table and data filters
+ */
+ 
 import { ajaxRequest } from '../libs/ajax.js';
 import { Configuration } from '../config';
 import DataDisplay from "../components/DataDisplay.svelte";

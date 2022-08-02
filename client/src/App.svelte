@@ -19,6 +19,7 @@
 	import LetterView from "./views/LetterView.svelte";
 	import Inbox from "./views/Inbox.svelte";
 	import LivingLibraryDonations from "./views/LivingLibraryDonations.svelte";
+	import LivingLibraryDonation from "./views/LivingLibraryDonation.svelte";
 	import NotFound from "./views/NotFound.svelte";
 
   // View Components
@@ -153,10 +154,10 @@
 		next();
 	}, () => page = LivingLibraryDonation);
 
-	router('/livingLibrary/donation/:id/bookPlate', validateSession, (ctx, next) => {
-		params = ctx.params;
-		next();
-	}, () => page = LivingLibraryBookPlate);
+	// router('/livingLibrary/donation/:id/bookPlate', validateSession, (ctx, next) => {
+	// 	params = ctx.params;
+	// 	next();
+	// }, () => page = LivingLibraryBookPlate);
 
 	router('/*', () => {
 		page = NotFound;
