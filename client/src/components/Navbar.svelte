@@ -20,7 +20,7 @@
     routes = [
       {"label": "Donors", "path": "/donors", "default": true},
       {"label": "Donations", "path": "/donations"},
-      {"label": "Living Library", "path": "/livingLibrary"}
+      {"label": "Living Library", "path": "/livingLibrary/donations"}
     ]
   }
   if(userData) {

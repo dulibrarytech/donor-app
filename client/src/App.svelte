@@ -18,7 +18,7 @@
 	import Donation from "./views/Donation.svelte";
 	import LetterView from "./views/LetterView.svelte";
 	import Inbox from "./views/Inbox.svelte";
-	import LivingLibrary from "./views/LivingLibrary.svelte";
+	import LivingLibraryDonations from "./views/LivingLibraryDonations.svelte";
 	import NotFound from "./views/NotFound.svelte";
 
   // View Components
@@ -138,10 +138,25 @@
 		next();
 	}, () => page = Inbox);
 
-	router('/livingLibrary', validateSession, (ctx, next) => {
+	router('/livingLibrary/donations', validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
-	}, () => page = LivingLibrary);
+	}, () => page = LivingLibraryDonations);
+
+	router('/livingLibrary/donation', validateSession, (ctx, next) => {
+		params = ctx.params;
+		next();
+	}, () => page = LivingLibraryDonation);
+
+	router('/livingLibrary/donation/:id', validateSession, (ctx, next) => {
+		params = ctx.params;
+		next();
+	}, () => page = LivingLibraryDonation);
+
+	router('/livingLibrary/donation/:id/bookPlate', validateSession, (ctx, next) => {
+		params = ctx.params;
+		next();
+	}, () => page = LivingLibraryBookPlate);
 
 	router('/*', () => {
 		page = NotFound;
