@@ -4,6 +4,7 @@
 import {createEventDispatcher} from 'svelte';
 
 export let data;
+export let dateField;
 
 var fromDate = "";
 var toDate = "";
@@ -34,8 +35,8 @@ export const filterDaterange = (currentData) => {
     // TEST: Performance, if issues, convert date string to numeric and compare, or string compare
     let itemDate;
     filteredData = currentData.filter((item) => {
-      if(item.dateOfGift) {
-        itemDate = new Date(item.dateOfGift);
+      if(item[dateField]) {
+        itemDate = new Date(item[dateField]);
 
         return (
           itemDate >= from &&

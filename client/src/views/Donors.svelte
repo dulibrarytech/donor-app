@@ -62,7 +62,7 @@ const sortDataDisplay = () => {
 
 /* Standard filter functions */
 const onFilter = (event) => {
-  setDataDisplay(event.detail);
+  setDataDisplay(event.detail ? event.detail : donors);
 }
 /* End standard filter functions */
 /*

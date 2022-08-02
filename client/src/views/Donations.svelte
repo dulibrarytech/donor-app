@@ -175,12 +175,10 @@ const setDataDisplay = (data) => {
 const onKeywordSearch = (event) => {
   searchResults = event.detail.results;
   searchField = event.detail.field;
-
   lscache.set('donation_search_results', {
     results: searchResults,
     field: searchField
   });
-
   showSearchResults();
 }
 
@@ -236,7 +234,7 @@ init();
         <div class="filter-form" style="display:{donationFilterFormDisplay}">
           <h6>Filter:</h6>
           <DataFilterMultiField data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/>
-          <DaterangeFilter data={donationDisplay} on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
+          <DaterangeFilter data={donationDisplay} dateField="dateOfGift" on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
 
           <h6>Keyword Search:</h6>
           <SearchBox index={donationDisplay} searchFields={searchFields} on:search={onKeywordSearch} bind:this={searchBox} />

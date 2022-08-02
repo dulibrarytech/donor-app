@@ -6,6 +6,8 @@ import NewItemLink from "../components/NewItemLink.svelte";
 import LivingLibraryTable from "../components/LivingLibraryTable.svelte";
 import LivingLibraryForm from "../components/LivingLibraryForm.svelte";
 import DataFilterMultiField from "../components/DataFilterMultiField.svelte";
+import DaterangeFilter from "../components/DaterangeFilter.svelte";
+import TextFilter from "../components/TextFilter.svelte";
 
 export let params;
 
@@ -17,13 +19,12 @@ var searchBox;
 var searchResults = [];
 var searchField = "";
 var dataFilter;
+var textFilter;
 var daterangeFilter;
 var filters = [];
+var textFilterFields;
 var sortOptions = {};
 var donationFilterFormDisplay = true;
-// var donationListDisplay = "block";
-// var donationFilterFormDisplay = "block";
-// var donationSearchResultsDisplay = "none";
 
 /*
  * Init page
@@ -55,9 +56,20 @@ const init = async () => {
     }
   ]});
 
+  textFilterFields = [
+    "donor_date_of_donation",
+    "id",
+    "donor_first_name",
+    "donor_last_name",
+    "recipient_first_name",
+    "recipient_last_name"
+  ]
+
   let data = await getDonationList();
   donations = parseViewData(data);
-  setDataDisplay( dataFilter.filterData(donations) );
+
+  // This page has filters set by default
+  setDataDisplay(dataFilter.filterData(donations));
 }
 /*
  * End Init page
@@ -94,16 +106,9 @@ const parseViewData = (data) => {
   return viewData;
 }
 
-const setDataDisplay = (data) => {
-  donationDisplay = data;
+const setDataDisplay = (data=null) => {
+  donationDisplay = data == null ? donations : data;
   sortDataDisplay();
-  donationCount = donationDisplay.length;
-
-  // let totalItems = 0;
-  // donationDisplay.forEach((donationItem) => {
-  //   totalItems += donationItem.numberOfGifts ?? 0;
-  // })
-  //donationItemCount = totalItems;
 }
 /*
  * End Data display init functions
@@ -126,25 +131,22 @@ const sortDataDisplay = () => {
   }
 }
 
-/* Standard filter functions */
+/* Filter functions */
 const onFilter = (event) => {
-  // Set data display to data from standard filter
-  setDataDisplay(event.detail);
-
-  // Filter current daterange
-  //setDataDisplay(daterangeFilter.filterDaterange( event.detail ));
-}
-/* End standard filter functions */
-
-/* Daterange filter functions */
-const onDaterangeSelect = (event) => {
-  setDataDisplay(event.detail);
+  donationDisplay = daterangeFilter.filterDaterange(event.detail);
+  setDataDisplay(textFilter.filterText(donationDisplay) || donationDisplay);
 }
 
-const onClearDaterange = () => {
-  setDataDisplay(dataFilter.filterData(donations));
+const onDaterangeFilter = (event) => {
+  setDataDisplay(textFilter.filterText(event.detail));
 }
-/* End daterange filter functions */
+
+const onTextFilter = (event) => {
+  donationDisplay = dataFilter.filterData(event.detail || donations);
+  setDataDisplay(daterangeFilter.filterDaterange(donationDisplay));
+}
+/* End Filter functions */
+
 /*
  * End Data display user options
  */
@@ -157,31 +159,18 @@ init();
 
   <div class="container page-section">
     <div class="row">
-
       <div class="col-md-3">
-
         <div class="filter-form" style="display:{donationFilterFormDisplay}">
           <h6>Filter:</h6>
           <DataFilterMultiField data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/>
-          <!-- <DaterangeFilter data={donationDisplay} on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/> -->
-          <!-- <SearchBox index={donationDisplay} searchFields={searchFields} on:search={onKeywordSearch} bind:this={searchBox} /> -->
+          <DaterangeFilter data={donationDisplay} dateField="donor_date_of_donation" on:daterange-select={onDaterangeFilter} on:clear-daterange={onFilter} bind:this={daterangeFilter}/>
+          <TextFilter data={donations} on:filter-text={onTextFilter} on:text-filter-change-option={onTextFilter} filterFields={textFilterFields} placeholderText="All Fields" bind:this={textFilter}/>
         </div>
-
       </div>
 
       <div class="col-md-9">
-
-        <!-- <span class="statistics-display">
-          <label>Donations:</label><span>{donationCount}</span><label>Total Items:</label><span>{donationItemCount}</span>
-        </span> -->
         <NewItemLink text="New donation" href="#" />
-        <!-- <DataDisplay items={donationDisplay} Table={LivingLibraryTable} args={{is_completed}} /> -->
         <svelte:component this={DataDisplay} items={donationDisplay} Table={LivingLibraryTable} />
-
-        <!-- <div style="display:{donationSearchResultsDisplay}">
-          <button on:click={clearSearchResults}>Exit Search</button>
-          <DataDisplay items={searchResults} Table={DonationSearchResultsTable} args={searchField} />
-        </div> -->
       </div>
 
     </div>

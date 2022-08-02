@@ -1,14 +1,13 @@
 <script>
   export let items;
   export let args;
-
-  console.log("Donation table items:", items)
 </script>
 
 <thead class="header">
   <tr>
 
     <th scope="col">Date of Donation</th>
+    <th scope="col">ID</th>
     <th scope="col">Donor Name</th>
     <th scope="col">Recipient Name</th>
 
@@ -23,6 +22,7 @@
     {#each items as donation}
       <tr>
         <td>{donation.donor_date_of_donation}</td>
+        <td>{donation.id}</td>
         <td>{`${donation.donor_title} ${donation.donor_first_name} ${donation.donor_last_name}`}</td>
         <td>{`${donation.recipient_title} ${donation.recipient_first_name} ${donation.recipient_last_name}`}</td>
 

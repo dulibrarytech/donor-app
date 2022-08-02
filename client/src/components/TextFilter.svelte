@@ -25,21 +25,34 @@ let options = [
 ]
 
 export const filterText = (data, filter = filterValue, option = filterOption) => {
-  filter = filter.toLowerCase();
-  if(option == "begins_with") filter = '^' + filter;
+  let filtered = data;
 
-  let filtered = data.filter((item) => {
-    let re = new RegExp(filter, "gi"), values="";
-    for(let field of filterFields) {
-      if(item[field].length > 1) {
-        values = item.lastName?.toLowerCase().match(re);
-        break;
+  if(filterValue) {
+    filter = filter.toLowerCase();
+    if(option == "begins_with") filter = '^' + filter;
+
+    filtered = data.filter((item) => {
+      let re = new RegExp(filter, "gi"), values="", matches = [];
+      for(let field of filterFields) {
+        if(typeof item[field]) item[field] = String(item[field])
+
+        if(item[field].length > 0) {
+          matches = item[field].toLowerCase().match(re);
+          if(matches) {
+            values = values.concat(matches);
+          }
+        }
       }
-    }
-    return values;
-  });
+      return values;
+    });
+  }
 
   return filtered;
+}
+
+export const reset = () => {
+  filterOption = "begins_with";
+  filterValue = "";
 }
 
 const onFilterInput = (event) => {
@@ -47,23 +60,25 @@ const onFilterInput = (event) => {
     filteredData = filterText(data, event.target.value, filterOption)
   }
   else {
-    filteredData = data;
+    filteredData = [];
   }
-
-  dispatch('filter-text', filteredData);
+  dispatch('filter-text', filterValue.length > 0 ? filteredData : null);
 }
 
 const onChangeOption = (event) => {
-  filterOption = event.target.value;
-  dispatch('text-filter-change-option', filterText(data, filterValue, filterOption))
+  if(filterValue && filterValue.length > 0) {
+    filterOption = event.target.value;
+    dispatch('text-filter-change-option', filterText(data, filterValue, filterOption))
+  }
 }
 
 </script>
 
 <form>
   <div class="form-group">
+    <label class="group-label">Text Filter:</label>
     <div class="search-form">
-      <input id="text-filter" type="text" on:input={onFilterInput} bind:value="{filterValue}" placeholder={placeholderText} />
+      <input id="text-filter" type="text" on:keyup={onFilterInput} bind:value="{filterValue}" placeholder={placeholderText} />
     </div>
 
     <div class="radio-group">
