@@ -16,6 +16,20 @@
   var pageLabel;
   var donorInfoLabel = null;
 
+  const init = async () => {
+    if(donationId) {
+      pageLabel = "Donation";
+      donationData = fetchDonationData(donationId);
+    }
+    else if(donorId) {
+      pageLabel = "New Donation";
+      donationData = fetchDonorData(donorId);
+    }
+    else {
+      window.location.replace("/notfound");
+    }
+  }
+
   const fetchDonationData = (id) => {
     return new Promise((resolve, reject) => {
       let url = `${$Configuration.donorApiDomain}/donation/${id}`;
@@ -42,6 +56,18 @@
     });
   }
 
+  // const fetchData = (url) => {
+  //   return new Promise((resolve, reject) => {
+  //     ajaxRequest('GET', url, function(error, response) {
+  //       if(error) reject(error);
+  //       if(response) {
+  //         // TODO: Handle status != 200
+  //         resolve(response.json());
+  //       }
+  //     });
+  //   });
+  // }
+
   const getDonorInfoLabel = ({lastName="", firstName="", organization=""}) => {
     let label = "No donor data available";
     if(donorId && donorId == 1) {
@@ -57,23 +83,6 @@
       label = `${organization}`;
     }
     return label;
-  }
-
-  const init = async () => {
-    if(donationId) {
-      pageLabel = "Donation";
-      donationData = fetchDonationData(donationId);
-    }
-    else if(donorId) {
-      pageLabel = "New Donation";
-      donationData = fetchDonorData(donorId);
-      console.log("Donation data", donationData)
-      // donationData = {donorId, ...donorData}
-      // console.log("Donation data", donationData)
-    }
-    else {
-      window.location.replace("/notfound");
-    }
   }
 
   init();
