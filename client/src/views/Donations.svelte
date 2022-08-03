@@ -206,21 +206,24 @@ const clearSearchResults = () => {
 
 /* Standard filter functions */
 const onFilter = (event) => {
-  // Set data display to data from standard filter
-  setDataDisplay(event.detail);
-
-  // Filter current daterange
-  setDataDisplay(daterangeFilter.filterDaterange(donationDisplay));
+  setDataDisplay(daterangeFilter.filterDaterange(event.detail));
+  // donationDisplay = daterangeFilter.filterDaterange(event.detail)
+  // setDataDisplay(textFilter.filterText(donationDisplay) || donationDisplay);
 }
 /* End standard filter functions */
 
 /* Daterange filter functions */
 const onDaterangeSelect = (event) => {
-  setDataDisplay(event.detail);
+  donationDisplay = dataFilter.filterData(donations)
+  setDataDisplay(daterangeFilter.filterDaterange(donationDisplay));
+  // donationDisplay = daterangeFilter.filterDaterange(donationDisplay)
+  // setDataDisplay(textFilter.filterText(donationDisplay) || donationDisplay);
 }
 
 const onClearDaterange = () => {
   setDataDisplay(dataFilter.filterData(donations));
+  // donationDisplay = dataFilter.filterData(donations)
+  // setDataDisplay(textFilter.filterText(donationDisplay) || donationDisplay);
 }
 /* End daterange filter functions */
 /*

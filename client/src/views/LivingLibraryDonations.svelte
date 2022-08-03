@@ -139,7 +139,14 @@ const onFilter = (event) => {
 }
 
 const onDaterangeFilter = (event) => {
-  setDataDisplay(textFilter.filterText(event.detail));
+  donationDisplay = dataFilter.filterData(donations);
+  donationDisplay = daterangeFilter.filterDaterange(donationDisplay);
+  setDataDisplay(textFilter.filterText(donationDisplay) || donationDisplay);
+}
+
+const onClearDaterange = () => {
+  donationDisplay = dataFilter.filterData(donations)
+  setDataDisplay(textFilter.filterText(donationDisplay) || donationDisplay);
 }
 
 const onTextFilter = (event) => {
@@ -164,7 +171,7 @@ init();
         <div class="filter-form" style="display:{donationFilterFormDisplay}">
           <h6>Filter:</h6>
           <DataFilterMultiField data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/>
-          <DaterangeFilter data={donationDisplay} dateField="donor_date_of_donation" on:daterange-select={onDaterangeFilter} on:clear-daterange={onFilter} bind:this={daterangeFilter}/>
+          <DaterangeFilter data={donationDisplay} dateField="donor_date_of_donation" on:daterange-select={onDaterangeFilter} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
           <TextFilter data={donations} on:filter-text={onTextFilter} on:text-filter-change-option={onTextFilter} filterFields={textFilterFields} placeholderText="All Fields" bind:this={textFilter}/>
         </div>
       </div>
