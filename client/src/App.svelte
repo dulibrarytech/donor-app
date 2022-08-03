@@ -129,7 +129,7 @@
 		next();
 	}, () => page = Donation);
 
-	router('/letter/:donationId', validateSession, (ctx, next) => {
+	router('/letter/:donorId/:donationId', validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
 	}, () => page = LetterView);

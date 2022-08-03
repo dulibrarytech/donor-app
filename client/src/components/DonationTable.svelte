@@ -58,7 +58,7 @@
 
         {#if donorId}
           {#if roleId == 2 || roleId == 3}
-            <td><a href="/letter/{donation.id}">Letter</a></td>
+            <td><a href="/letter/{donorId}/{donation.id}">Letter</a></td>
           {/if}
         {/if}
       </tr>

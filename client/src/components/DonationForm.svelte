@@ -77,7 +77,7 @@
   }
 
   const onClickLetter = () => {
-    window.location.replace(`/letter/${donationId}`)
+    window.location.replace(`/letter/${donorId}/${donationId}`)
   }
 
   const onChangeFormValue = (event) => {
