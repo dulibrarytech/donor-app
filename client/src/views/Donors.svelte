@@ -14,7 +14,6 @@ var donorDisplay = [];
  * Init page
  */
 const init = async () => {
-  // TODO: Feedback message "Retrieving donors..." in display window, then remove after getDonorList() returns
   donors = await getDonorList();
   setDataDisplay(donors);
 }
@@ -27,12 +26,13 @@ const getDonorList = async () => {
       url = `${$Configuration.donorApiDomain}/donor`;
 
   return new Promise((resolve, reject) => {
-    ajaxRequest('GET', url, function(error, response) {
+    ajaxRequest('GET', url, function(error, response, status) {
       if(error) {
         console.error(error);
         resolve([]);
       }
-      if(response) resolve(response.json());
+      else if(status != 200) resolve([]);
+      else resolve(response.json());
     });
   });
 }
@@ -41,7 +41,6 @@ const setDataDisplay = (data) => {
   donorDisplay = data;
   sortDataDisplay();
 }
-
 /*
  * End Data display init functions
  */

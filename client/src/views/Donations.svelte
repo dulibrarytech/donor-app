@@ -29,83 +29,87 @@ var daterangeFilter;
 var donationListDisplay = "block";
 var donationFilterFormDisplay = "block";
 var donationSearchResultsDisplay = "none";
-var sortOptions = {};
-var searchFields = [];
+
+/*
+ * Page configuration
+ */
+var sortOptions = {
+  field: "dateOfGift",
+  type: "desc"
+};
+
+var searchFields = [
+  {fieldName: "giftDescription", fieldLabel: "Description"},
+  {fieldName: "giftDetails", fieldLabel: "Details"}
+];
+
+filters.push({
+  "groupLabel": "Donor Type:",
+  "options": [
+  {
+    "field": "donorType",
+    "value": "0",
+    "label": "Show All",
+    "function": (item) => {
+      return true;
+    },
+    "isDefault": true
+  },
+  {
+    "field": "donorType",
+    "value": "1",
+    "label": "Known",
+    "function": (item) => {
+      return item.donorId != 1;
+    }
+  },
+  {
+    "field": "donorType",
+    "value": "2",
+    "label": "Anonymous",
+    "function": (item) => {
+      return item.donorId == 1;
+    }
+  }
+]});
+
+filters.push({
+  "groupLabel": "Donation Type:",
+  "options": [
+  {
+    "field": "donationType",
+    "value": "0",
+    "label": "Show All",
+    "function": (item) => {
+      return true;
+    },
+    "isDefault": true
+  },
+  {
+    "field": "donationType",
+    "value": "1",
+    "label": "Standard",
+    "function": (item) => {
+      return item.important == 0 && item.donorId != 1;
+    }
+  },
+  {
+    "field": "donationType",
+    "value": "2",
+    "label": "Important",
+    "function": (item) => {
+      return item.important == 1;
+    }
+  }
+]});
+/*
+ * End Page configuration
+ */
 
 /*
  * Init page
  */
 const init = async () => {
-  sortOptions = {
-    field: "dateOfGift",
-    type: "desc"
-  }
-
-  searchFields = [
-    {fieldName: "giftDescription", fieldLabel: "Description"},
-    {fieldName: "giftDetails", fieldLabel: "Details"}
-  ]
-
-  filters.push({
-    "groupLabel": "Donor Type:",
-    "options": [
-    {
-      "field": "donorType",
-      "value": "0",
-      "label": "Show All",
-      "function": (item) => {
-        return true;
-      },
-      "isDefault": true
-    },
-    {
-      "field": "donorType",
-      "value": "1",
-      "label": "Known",
-      "function": (item) => {
-        return item.donorId != 1;
-      }
-    },
-    {
-      "field": "donorType",
-      "value": "2",
-      "label": "Anonymous",
-      "function": (item) => {
-        return item.donorId == 1;
-      }
-    }
-  ]});
-
-  filters.push({
-    "groupLabel": "Donation Type:",
-    "options": [
-    {
-      "field": "donationType",
-      "value": "0",
-      "label": "Show All",
-      "function": (item) => {
-        return true;
-      },
-      "isDefault": true
-    },
-    {
-      "field": "donationType",
-      "value": "1",
-      "label": "Standard",
-      "function": (item) => {
-        return item.important == 0 && item.donorId != 1;
-      }
-    },
-    {
-      "field": "donationType",
-      "value": "2",
-      "label": "Important",
-      "function": (item) => {
-        return item.important == 1;
-      }
-    }
-  ]});
-
   roleId = Session.getDataItem("donor_db", 'roleId');
   donations = await getDonationList();
   setDataDisplay(donations);
@@ -128,12 +132,13 @@ const getDonationList = async () => {
       url = `${$Configuration.donorApiDomain}/donation`;
 
   return new Promise((resolve, reject) => {
-    ajaxRequest('GET', url, function(error, response) {
+    ajaxRequest('GET', url, function(error, response, status) {
       if(error) {
         console.error(error);
         resolve([]);
       }
-      if(response) resolve(response.json());
+      else if(status != 200) resolve([]);
+      else resolve(response.json());
     });
   });
 }
@@ -142,9 +147,9 @@ const getDonationList = async () => {
 const setDataDisplay = (data) => {
   donationDisplay = data;
   sortDataDisplay();
-  donationCount = donationDisplay.length;
 
   let totalItems = 0;
+  donationCount = donationDisplay.length;
   donationDisplay.forEach((donationItem) => {
     totalItems += donationItem.numberOfGifts ?? 0;
   })

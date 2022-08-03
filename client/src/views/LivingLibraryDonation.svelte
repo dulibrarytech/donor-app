@@ -17,7 +17,8 @@ var formData = {};
 const baseUrl = `${$Configuration.livingLibraryApiDomain}/donations`;
 const apiKey  = $Configuration.livingLibraryApiKey;
 
-var fieldDataUrls = [
+const donationUrl = `${baseUrl}?api_key=${apiKey}&id=${donationId ?? ""}`;
+const fieldDataUrls = [
   {
     name: "states",
     url: `${baseUrl}?api_key=${apiKey}&tbl=states&is_active=true`
@@ -40,52 +41,56 @@ const init = async () => {
   if(donationId) pageLabel = "Living Library: Donation Record";
   else pageLabel = "Living Library: Book Plate Form";
 
-  formData = getFormData(donationId);
+  formData = getFormData();
 }
 
-const getFormData = async (donationId) => {
+const getFormData = async () => {
   return new Promise(async (resolve, reject) => {
     let data = {};
-
-    if(donationId) data['donationData'] = await getDonationData();
-    else data['donationData'] = {};
-
-    data['fieldData'] = await getFormFieldData(fieldDataUrls);
-
+    data['donationData'] = await getDonationData();
+    data['fieldData'] = await getFormFieldData();
     resolve(data);
   });
 }
 
-const getFormFieldData = (urls) => {
-  // TODO: try catch reject error
+const getFormFieldData = () => {
   return new Promise(async (resolve, reject) => {
-    let data = {};
-    for(let field of urls) {
-      data[field.name] = await fetchData(field.url);
+    try {
+      let data = {};
+      for(let field of fieldDataUrls) {
+        data[field.name] = await fetchData(field.url);
+      }
+      resolve(data);
     }
-    resolve(data)
+    catch(e) {
+      console.error(e);
+      reject(e);
+    }
   });
 }
 
 const getDonationData = () => {
-  // TODO: try catch reject error
-  return new Promise((resolve, reject) => {
-
-    resolve({title: "Dr.", test2: "test2"})
-
+  return new Promise(async (resolve, reject) => {
+    try {
+      if(donationId) resolve({title: "Dr.", test2: "test2"}) // resolve(await fetchData(donationUrl))
+      else resolve({});
+    }
+    catch(e) {
+      console.error(e);
+      reject(e);
+    }
   });
 }
 
 const fetchData = (url) => {
   return new Promise((resolve, reject) => {
-    ajaxRequest('GET', url, function(error, response) {
+    ajaxRequest('GET', url, function(error, response, status) {
       if(error) {
         console.error(error);
-        reject(error);
+        resolve([]);
       }
-      if(response) {
-        resolve(response.json());
-      }
+      else if(status != 200) resolve([]);
+      else resolve(response.json());
     });
   });
 }

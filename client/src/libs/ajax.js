@@ -6,7 +6,7 @@
 
 import {Session} from './session.js';
 
-export const ajaxRequest = (type, url, callback, data=null, options=null, query=null) => {
+export const ajaxRequest = (type="get", url="", callback, data=null, options=null, query=null) => {
   let defaultOptions = {
     method: type,
     headers: {
@@ -39,5 +39,4 @@ export const ajaxRequest = (type, url, callback, data=null, options=null, query=
     .catch(error => {
       callback(error, null);
     });
-  //callback(null, JSON.stringify([]))
 }

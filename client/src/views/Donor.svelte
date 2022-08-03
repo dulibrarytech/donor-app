@@ -13,6 +13,7 @@
   const donorId = params.id ?? null;
   const roleId = Session.getDataItem("donor_db", 'roleId');
   const addDonationPath = `/donation/donor/${donorId}`;
+
   const donorUrl = `${$Configuration.donorApiDomain}/donor/${donorId ?? ""}`;
   const donorDonationUrl = `${$Configuration.donorApiDomain}/donation/donor/${donorId ?? ""}`;
   const donorTitlesUrl = `${$Configuration.donorApiDomain}/donor/titles/list`;
@@ -60,12 +61,13 @@
 
   const fetchData = (url) => {
     return new Promise((resolve, reject) => {
-      ajaxRequest('GET', url, function(error, response) {
-        if(error) reject(error);
-        if(response) {
-          // TODO: Handle status != 200
-          resolve(response.json());
+      ajaxRequest('GET', url, function(error, response, status) {
+        if(error) {
+          console.error(error);
+          resolve([]);
         }
+        else if(status != 200) resolve([]);
+        else resolve(response.json());
       });
     });
   }

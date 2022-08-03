@@ -1,15 +1,15 @@
 <script>
+'use-strict'
 /*
  * Living Library Donations page
  * Display donation table and data filters
  */
- 
+
 import { ajaxRequest } from '../libs/ajax.js';
 import { Configuration } from '../config';
 import DataDisplay from "../components/DataDisplay.svelte";
 import NewItemLink from "../components/NewItemLink.svelte";
 import LivingLibraryTable from "../components/LivingLibraryTable.svelte";
-import LivingLibraryForm from "../components/LivingLibraryForm.svelte";
 import DataFilterMultiField from "../components/DataFilterMultiField.svelte";
 import DaterangeFilter from "../components/DaterangeFilter.svelte";
 import TextFilter from "../components/TextFilter.svelte";
@@ -26,54 +26,56 @@ var searchField = "";
 var dataFilter;
 var textFilter;
 var daterangeFilter;
-var filters = [];
-var textFilterFields;
-var sortOptions = {};
 var donationFilterFormDisplay = true;
+
+var sortOptions = {
+  field: "donor_date_of_donation",
+  type: "desc"
+};
+
+var textFilterFields = [
+  "donor_date_of_donation",
+  "id",
+  "donor_first_name",
+  "donor_last_name",
+  "recipient_first_name",
+  "recipient_last_name"
+];
+
+var filters = [
+  {
+    "options": [
+      {
+        "field": "status",
+        "value": "0",
+        "label": "Queued",
+        "function": (item) => {
+          return item.is_completed == 0;
+        },
+        "isDefault": true
+      },
+      {
+        "field": "status",
+        "value": "1",
+        "label": "Completed",
+        "function": (item) => {
+          return item.is_completed == 1;
+        }
+      }
+    ]
+  }
+];
+
+var donationsUrl = `${$Configuration.livingLibraryApiDomain}/donations`;
 
 /*
  * Init page
  */
 const init = async () => {
-  sortOptions = {
-    field: "donor_date_of_donation",
-    type: "desc"
-  }
-
-  filters.push({
-    "options": [
-    {
-      "field": "status",
-      "value": "0",
-      "label": "Queued",
-      "function": (item) => {
-        return item.is_completed == 0;
-      },
-      "isDefault": true
-    },
-    {
-      "field": "status",
-      "value": "1",
-      "label": "Completed",
-      "function": (item) => {
-        return item.is_completed == 1;
-      }
-    }
-  ]});
-
-  textFilterFields = [
-    "donor_date_of_donation",
-    "id",
-    "donor_first_name",
-    "donor_last_name",
-    "recipient_first_name",
-    "recipient_last_name"
-  ]
-
-  let data = await getDonationList();
+  let data = await fetchData(donationsUrl);
   donations = parseViewData(data);
 
-  // This page has filters set by default
+  // Apply default filters
   setDataDisplay(dataFilter.filterData(donations));
 }
 /*
@@ -83,22 +85,16 @@ const init = async () => {
 /*
  * Data display init functions
  */
-const getDonationList = async () => {
-  let list = [],
-      url = `${$Configuration.livingLibraryApiDomain}/donations`;
-
-  let queryData = {
-    'api_key': $Configuration.livingLibraryApiKey
-  }
-
+const fetchData = (url) => {
   return new Promise((resolve, reject) => {
-    ajaxRequest('GET', url, function(error, response) {
+    ajaxRequest('GET', url, function(error, response, status) {
       if(error) {
         console.error(error);
         resolve([]);
       }
-      if(response) resolve(response.json());
-    }, null, null, queryData);
+      else if(status != 200) resolve([]);
+      else resolve(response.json());
+    }, null, null, {'api_key': $Configuration.livingLibraryApiKey});
   });
 }
 

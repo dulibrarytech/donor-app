@@ -34,12 +34,13 @@
     let url = `${$Configuration.donorApiDomain}/donation/pending/all`;
 
     return new Promise((resolve, reject) => {
-      ajaxRequest('GET', url, function(error, response) {
+      ajaxRequest('GET', url, function(error, response, status) {
         if(error) {
           console.error(error);
           resolve([]);
         }
-        if(response) resolve(response.json());
+        else if(status != 200) resolve([]);
+        else resolve(response.json());
       });
     });
   }

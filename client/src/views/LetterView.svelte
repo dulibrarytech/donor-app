@@ -17,9 +17,8 @@ const init = async () => {
   let donorData = null;
 
   try {
-    donationData = await fetchDonationData(donationId);
-    donorId = donationData.donorId ?? null;
-    donorData = await fetchDonorData(donorId);
+    donationData = await fetchData(donationUrl);
+    donorData = await fetchData(donorUrl);
   }
   catch(error) {
     console.error(`Error retrieving data for letter template: ${error}`)
@@ -30,50 +29,22 @@ const init = async () => {
   }
 }
 
-const fetchDonationData = (id) => {
+const fetchData = (url) => {
   return new Promise((resolve, reject) => {
-    let url = `${$Configuration.donorApiDomain}/donation/${id}`;
     ajaxRequest('GET', url, function(error, response, status) {
-      if(error) reject(error);
-      if(response) {
-        if(status == 200) resolve(response.json());
-        else reject(`Donation data request received a status of ${status}`)
+      if(error) {
+        console.error(error);
+        resolve([]);
       }
+      else if(status != 200) resolve([]);
+      else resolve(response.json());
     });
   });
 }
-
-const fetchDonorData = (id) => {
-  return new Promise((resolve, reject) => {
-    let url = `${$Configuration.donorApiDomain}/donor/${id}`;
-    ajaxRequest('GET', url, function(error, response, status) {
-      if(error) reject(error);
-      if(response) {
-        if(status == 200) resolve(response.json());
-        else reject(`Donor data request received a status of ${status}`)
-      }
-    });
-  });
-}
-
-// const fetchData = (url) => {
-//   return new Promise((resolve, reject) => {
-//     ajaxRequest('GET', url, function(error, response) {
-//       if(error) {
-//         console.error(error);
-//         resolve([]);
-//       }
-//       else if(status != 200) resolve([]);
-//       else resolve(response.json());
-//     });
-//   });
-// }
 
 init();
 </script>
 
 <div id="letter-view">
-  <!-- TODO: Letter partial. Pass in data variable -->
-  <!-- <Letter {data} /> -->
   <svelte:component this={Letter} data={data}/>
 </div>
