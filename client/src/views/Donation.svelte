@@ -22,6 +22,7 @@
   const init = async () => {
     if(donationId) {
       pageLabel = "Donation";
+      // TODO: Combine donor and donation data into one object, as on LivingLibrary page
       donationData = fetchData(donationUrl);
     }
     else if(donorId) {

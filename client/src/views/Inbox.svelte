@@ -11,6 +11,8 @@
   var userData = Session.getData("donor_db") || null;
   let messageDisplay;
 
+  const donationsUrl = `${$Configuration.donorApiDomain}/donation/pending/all`;
+
   const init = async () => {
     donations = await getDonationList();
 
@@ -30,11 +32,8 @@
   }
 
   const getDonationList = async () => {
-    let list = []
-    let url = `${$Configuration.donorApiDomain}/donation/pending/all`;
-
     return new Promise((resolve, reject) => {
-      ajaxRequest('GET', url, function(error, response, status) {
+      ajaxRequest('GET', donationsUrl, function(error, response, status) {
         if(error) {
           console.error(error);
           resolve([]);

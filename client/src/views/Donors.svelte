@@ -10,6 +10,8 @@ import NewItemLink from "../components/NewItemLink.svelte";
 var donors = [];
 var donorDisplay = [];
 
+var donorsUrl = `${$Configuration.donorApiDomain}/donor`;
+
 /*
  * Init page
  */
@@ -22,11 +24,8 @@ const init = async () => {
  * Data display init functions
  */
 const getDonorList = async () => {
-  let list = [],
-      url = `${$Configuration.donorApiDomain}/donor`;
-
   return new Promise((resolve, reject) => {
-    ajaxRequest('GET', url, function(error, response, status) {
+    ajaxRequest('GET', donorsUrl, function(error, response, status) {
       if(error) {
         console.error(error);
         resolve([]);
