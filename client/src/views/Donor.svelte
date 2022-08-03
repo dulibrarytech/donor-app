@@ -13,6 +13,10 @@
   const donorId = params.id ?? null;
   const roleId = Session.getDataItem("donor_db", 'roleId');
   const addDonationPath = `/donation/donor/${donorId}`;
+  const donorUrl = `${$Configuration.donorApiDomain}/donor/${donorId ?? ""}`;
+  const donorDonationUrl = `${$Configuration.donorApiDomain}/donation/donor/${donorId ?? ""}`;
+  const donorTitlesUrl = `${$Configuration.donorApiDomain}/donor/titles/list`;
+
   var donorData = {};
   var donorTitles = [];
   var donationDisplay = [];
@@ -22,35 +26,40 @@
     type: "desc"
   }
 
-  const fetchDonorData = (id) => {
-    return new Promise((resolve, reject) => {
-      let url = `${$Configuration.donorApiDomain}/donor/${id}`;
-      ajaxRequest('GET', url, function(error, response) {
-        if(error) reject(error);
-        if(response) {
-          // TODO: Handle status != 200
-          resolve(response.json());
-        }
-      });
-    });
+  const init = async () => {
+    /* If there is a donor ID, get the data for that donor in the form and get the donation list */
+    if(donorId && donorId > 1) {
+      donorData = await fetchData(donorUrl);
+      donorTitles = await fetchData(donorTitlesUrl);
+
+      /* Create page label displaying donor name/info, and fetch the donations from the donor */
+      if(Object.keys(donorData).length > 0) {
+        pageLabel = getPageLabel(donorData);
+        let donationData = await fetchData(donorDonationUrl);
+        if(donationData) donationDisplay = donationData;
+        sortDataDisplay();
+      }
+
+      /* No data for this donor was found */
+      else {
+        window.location.replace("/notfound");
+      }
+    }
+
+    /* Do not load anonymous donor */
+    else if(donorId == 1) {
+      window.location.replace("/notfound");
+    }
+
+    /* If no ID, show the new donor form */
+    else {
+      pageLabel = "New Donor";
+      donorTitles = await fetchData(donorTitlesUrl);
+    }
   }
 
-  const fetchDonorDonations = (id) => {
+  const fetchData = (url) => {
     return new Promise((resolve, reject) => {
-      let url = `${$Configuration.donorApiDomain}/donation/donor/${id}`;
-      ajaxRequest('GET', url, function(error, response) {
-        if(error) reject(error);
-        if(response) {
-          // TODO: Handle status != 200
-          resolve(response.json());
-        }
-      });
-    });
-  }
-
-  const fetchDonorTitles = (id) => {
-    return new Promise((resolve, reject) => {
-      let url = `${$Configuration.donorApiDomain}/donor/titles/list`;
       ajaxRequest('GET', url, function(error, response) {
         if(error) reject(error);
         if(response) {
@@ -86,39 +95,6 @@
       donationDisplay = donationDisplay.sort(function(b, a) {
         return a[field]?.localeCompare(b[field]);
       });
-    }
-  }
-
-  const init = async () => {
-    /* If there is a donor ID, get the data for that donor in the form and get the donation list */
-    if(donorId && donorId > 1) {
-      donorData = await fetchDonorData(donorId);
-      donorTitles = await fetchDonorTitles();
-
-      /* Create page label displaying donor name/info, and fetch the donations from the donor */
-      if(Object.keys(donorData).length > 0) {
-        pageLabel = getPageLabel(donorData);
-        let donationData = await fetchDonorDonations(donorId);
-        if(donationData) donationDisplay = donationData;
-
-        sortDataDisplay();
-      }
-
-      /* No data for this donor was found */
-      else {
-        window.location.replace("/notfound");
-      }
-    }
-
-    /* Do not load anonymous donor */
-    else if(donorId == 1) {
-      window.location.replace("/notfound");
-    }
-
-    /* If no ID, show the new donor form */
-    else {
-      pageLabel = "New Donor";
-      donorTitles = await fetchDonorTitles();
     }
   }
 

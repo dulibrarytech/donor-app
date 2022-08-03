@@ -11,6 +11,8 @@
   const donationId = params.id ?? null;
   const donorId = params.donorId ?? null;
   const roleId = Session.getDataItem("donor_db", 'roleId');
+  const donationUrl = `${$Configuration.donorApiDomain}/donation/${donationId ?? ""}`;
+  const donorUrl = `${$Configuration.donorApiDomain}/donor/${donorId ?? ""}`;
 
   var donationData = {};
   var pageLabel;
@@ -19,20 +21,20 @@
   const init = async () => {
     if(donationId) {
       pageLabel = "Donation";
-      donationData = fetchDonationData(donationId);
+      donationData = fetchData(donationUrl);
     }
     else if(donorId) {
       pageLabel = "New Donation";
-      donationData = fetchDonorData(donorId);
+      // TODO: Combine donor and donation data into one object, as on LivingLibrary page
+      donationData = fetchData(donorUrl);
     }
     else {
       window.location.replace("/notfound");
     }
   }
 
-  const fetchDonationData = (id) => {
+  const fetchData = (url) => {
     return new Promise((resolve, reject) => {
-      let url = `${$Configuration.donorApiDomain}/donation/${id}`;
       ajaxRequest('GET', url, function(error, response) {
         if(error) reject(error);
         if(response) {
@@ -42,31 +44,6 @@
       });
     });
   }
-
-  const fetchDonorData = (id) => {
-    return new Promise((resolve, reject) => {
-      let url = `${$Configuration.donorApiDomain}/donor/${id}`;
-      ajaxRequest('GET', url, function(error, response) {
-        if(error) reject(error);
-        if(response) {
-          // TODO: Handle status != 200
-          resolve(response.json());
-        }
-      });
-    });
-  }
-
-  // const fetchData = (url) => {
-  //   return new Promise((resolve, reject) => {
-  //     ajaxRequest('GET', url, function(error, response) {
-  //       if(error) reject(error);
-  //       if(response) {
-  //         // TODO: Handle status != 200
-  //         resolve(response.json());
-  //       }
-  //     });
-  //   });
-  // }
 
   const getDonorInfoLabel = ({lastName="", firstName="", organization=""}) => {
     let label = "No donor data available";
