@@ -1,15 +1,19 @@
 <script>
 'use strict'
 
+import DatePicker from "./DatePicker.svelte";
 import {createEventDispatcher} from 'svelte';
 
 export let data;
 export let dateField;
 
+const dispatch = createEventDispatcher();
+
 var fromDate = "";
 var toDate = "";
+var fromDatePickerDisplay = "none";
+var toDatePickerDisplay = "none";
 var filteredData = [];
-const dispatch = createEventDispatcher();
 
 const onClear = () => {
   fromDate = "";
@@ -53,14 +57,35 @@ export const filterDaterange = (currentData) => {
   }
 }
 
+const onClickToDateInput = (event) => {
+  toDatePickerDisplay = "block";
+}
+
+const onClickFromDateInput = (event) => {
+  fromDatePickerDisplay = "block";
+}
+
+const onDateSelect = (event) => {
+  fromDatePickerDisplay = "none";
+  toDatePickerDisplay = "none";
+}
+
 </script>
 
 <form>
   <div class="form-group">
     <label class="group-label">Daterange:</label>
-    <!-- TODO Date selector inputs, output standardized datestring 'yyyy-mm-ddTnn:nn:nn' -->
-    <input type="text" placeholder="From" bind:value={fromDate}/>
-    <input type="text" placeholder="To" bind:value={toDate}/>
+
+    <input type="text" placeholder="From" bind:value={fromDate} on:click={onClickFromDateInput}/>
+    <div class="datepicker" style="display:{fromDatePickerDisplay}">
+      <DatePicker bind:value={fromDate}  on:date-select={onDateSelect} />
+    </div>
+
+    <input type="text" placeholder="To" bind:value={toDate} on:click={onClickToDateInput}/>
+    <div class="datepicker" style="display:{toDatePickerDisplay}">
+      <DatePicker bind:value={toDate}  on:date-select={onDateSelect} />
+    </div>
+
     <button type="button" on:click|preventDefault={onSet}>Apply</button>
     <button type="button" on:click|preventDefault={onClear}>Clear</button>
   </div>
@@ -68,12 +93,23 @@ export const filterDaterange = (currentData) => {
 
 <style>
   input {
-    max-width: 30%;
+    max-width: 37%;
   }
   .form-group {
     border-style: solid;
     border-width: 1px;
     border-color: #e5e3e1;
     border-radius: 3px;
+  }
+
+  .datepicker {
+    position: absolute;
+    background-color: #e5e3e1;
+    padding: 8px;
+    border-radius: 5px;
+  }
+
+  :global(td.btn) {
+    display: table-cell !important;
   }
 </style>
