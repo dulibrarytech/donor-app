@@ -1,8 +1,9 @@
 <script>
 'use strict'
 
-import DatePicker from "./DatePicker.svelte";
+//import DatePicker from "./DatePicker.svelte";
 import {createEventDispatcher} from 'svelte';
+import FormValidator from '../libs/FormValidator.js';
 
 export let data;
 export let dateField;
@@ -15,6 +16,22 @@ var fromDatePickerDisplay = "none";
 var toDatePickerDisplay = "none";
 var filteredData = [];
 
+let validationRules = {
+  fromDate: {
+    required: true,
+    maxlength: 10,
+    pattern: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
+    patternFormat: "yyyy-mm-dd"
+  },
+  toDate: {
+    required: true,
+    maxlength: 10,
+    pattern: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
+    patternFormat: "yyyy-mm-dd"
+  }
+}
+let formValidator = new FormValidator('daterange', validationRules, "#ced4da");
+
 const onClear = () => {
   fromDate = "";
   toDate = "";
@@ -23,25 +40,24 @@ const onClear = () => {
 }
 
 const onSet = () => {
-  let filteredData = filterDaterange(data); // TODO: Try to pass this function into dispatch()
-  dispatch('daterange-select', filteredData);
+  console.log("Validation:", formValidator.validate({fromDate, toDate}))
+  if(formValidator.validate({fromDate, toDate})) {
+    let filteredData = filterDaterange(data);
+    dispatch('daterange-select', filteredData);
+  }
 }
 
 export const filterDaterange = (currentData) => {
   if(fromDate?.length > 0 && toDate?.length > 0) {
     filteredData = [];
-    // TODO: Validate date format, AND to date > from date
 
-    // DEV: Remove after date selector implemented
     let from = new Date(fromDate + "T00:00:00");
     let to = new Date(toDate + "T23:59:59");
 
-    // TEST: Performance, if issues, convert date string to numeric and compare, or string compare
     let itemDate;
     filteredData = currentData.filter((item) => {
       if(item[dateField]) {
         itemDate = new Date(item[dateField]);
-
         return (
           itemDate >= from &&
           itemDate <= to
@@ -72,19 +88,19 @@ const onDateSelect = (event) => {
 
 </script>
 
-<form>
+<form id="daterange">
   <div class="form-group">
     <label class="group-label">Daterange:</label>
 
-    <input type="text" placeholder="From" bind:value={fromDate} on:click={onClickFromDateInput}/>
-    <div class="datepicker" style="display:{fromDatePickerDisplay}">
+    <input type="text" id="fromDate" placeholder="From" bind:value={fromDate} on:click={onClickFromDateInput}/>
+    <!-- <div class="datepicker" style="display:{fromDatePickerDisplay}">
       <DatePicker bind:value={fromDate}  on:date-select={onDateSelect} />
-    </div>
+    </div> -->
 
-    <input type="text" placeholder="To" bind:value={toDate} on:click={onClickToDateInput}/>
-    <div class="datepicker" style="display:{toDatePickerDisplay}">
+    <input type="text" id="toDate" placeholder="To" bind:value={toDate} on:click={onClickToDateInput}/>
+    <!-- <div class="datepicker" style="display:{toDatePickerDisplay}">
       <DatePicker bind:value={toDate}  on:date-select={onDateSelect} />
-    </div>
+    </div> -->
 
     <button type="button" on:click|preventDefault={onSet}>Apply</button>
     <button type="button" on:click|preventDefault={onClear}>Clear</button>
