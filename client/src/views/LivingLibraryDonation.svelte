@@ -4,7 +4,7 @@
  * Living Library Donation page
  * Display donation form and book plate form
  */
-import { ajaxRequest } from '../libs/ajax.js';
+import { fetchData } from '../libs/ajax.js';
 import { Configuration } from '../config';
 import LivingLibraryDonationForm from "../components/LivingLibraryDonationForm.svelte";
 
@@ -17,7 +17,9 @@ var formData = {};
 const baseUrl = `${$Configuration.livingLibraryApiDomain}/donations`;
 const apiKey  = $Configuration.livingLibraryApiKey;
 
-const donationUrl = `${baseUrl}?api_key=${apiKey}&id=${donationId ?? ""}`;
+var donationUrl = `${baseUrl}?api_key=${apiKey}`;
+if(donationId) donationUrl += `&id=${donationId}`;
+
 const fieldDataUrls = [
   {
     name: "states",
@@ -49,6 +51,11 @@ const getFormData = async () => {
     let data = {};
     data['donationData'] = await getDonationData();
     data['fieldData'] = await getFormFieldData();
+
+    data.donationData.donor = JSON.parse(data.donationData.donor || {});
+    data.donationData.recipient = JSON.parse(data.donationData.recipient || {});
+    data.donationData.who_to_notify = JSON.parse(data.donationData.who_to_notify || {});
+
     resolve(data);
   });
 }
@@ -72,26 +79,18 @@ const getFormFieldData = () => {
 const getDonationData = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      if(donationId) resolve({title: "Dr.", test2: "test2"}) // resolve(await fetchData(donationUrl))
+      if(donationId) {
+        let data = await fetchData(donationUrl);
+        if(data.length > 0) resolve(data[0])
+        else window.location.replace("/notfound");
+      }
+
       else resolve({});
     }
     catch(e) {
       console.error(e);
       reject(e);
     }
-  });
-}
-
-const fetchData = (url) => {
-  return new Promise((resolve, reject) => {
-    ajaxRequest('GET', url, function(error, response, status) {
-      if(error) {
-        console.error(error);
-        resolve([]);
-      }
-      else if(status != 200) resolve([]);
-      else resolve(response.json());
-    });
   });
 }
 
@@ -106,7 +105,7 @@ init()
       <h6>Loading data...</h6>
     {:then formData}
       <!-- <h6>{getDonorInfoLabel(donationData)}</h6> -->
-      <svelte:component this={LivingLibraryDonationForm} args={{donationId}} data={formData} />
+      <svelte:component this={LivingLibraryDonationForm} args={{donationId}} data={formData.donationData} fieldData={formData.fieldData}/>
     {/await}
   </div>
 </div>
