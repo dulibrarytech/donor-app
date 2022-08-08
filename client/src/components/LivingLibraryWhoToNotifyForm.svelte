@@ -7,6 +7,7 @@
   export let index=0;
 </script>
 
+<h6>Person {index+1}</h6>
 <div transition:fade class="form-section notify-section" id="notify_section_{index+1}">
   <div class="form-group">
     <label for="notify_title_{index+1}">Title</label>

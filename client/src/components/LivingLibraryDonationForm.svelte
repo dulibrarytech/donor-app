@@ -10,11 +10,25 @@ export let args;
 export let data;
 export let fieldData;
 
+console.log("Form data", data)
+
 const donationId = args.donationId || null;
 
 let donorData = data.donor;
 let recipientData = data.recipient;
 let whoToNotifyData = data.who_to_notify;
+let bookData = data.book;
+let status;
+
+const init = () => {
+  $: status = data.is_completed ? "Completed" : "Queued";
+
+  if(donationId) {
+    document.querySelectorAll("input").forEach((element) => {
+      element.style.pointerEvents = "none";
+    });
+  }
+}
 
 if(!donorData) {
   donorData = {
@@ -81,9 +95,15 @@ const onSubmit = () => {
   console.log("subjectAreas", subjectAreas)
 }
 
+init();
 </script>
 
 <form>
+  {#if donationId}
+    <label for="statusDisplay">Status:</label>
+    <input type="text" id="statusDisplay" value={status}/>
+  {/if}
+
   <h5>Person Making Donation</h5>
   <div class="form-section">
     <div class="form-group">
@@ -130,14 +150,15 @@ const onSubmit = () => {
     </div>
   </div>
 
-  <h5>Person to be Notified of Donation</h5>
+  <h5>Person(s) to be Notified of Donation</h5>
   <div id="whoToNotify">
-  {#each whoToNotifyData as notify, index}
-    <div><svelte:component this={LivingLibraryWhoToNotifyForm} {donationId} {fieldData} {whoToNotifyData} {index}/></div>
-  {/each}
-
+    {#each whoToNotifyData as notify, index}
+      <div><svelte:component this={LivingLibraryWhoToNotifyForm} {donationId} {fieldData} {whoToNotifyData} {index}/></div>
+    {/each}
   </div>
-  <button type="button" on:click={addPersonToNotify}>Add person to be notified</button>
+  {#if donationId == null}
+    <button type="button" on:click={addPersonToNotify}>Add person to be notified</button>
+  {/if}
 
   <h5>Person Receiving Donation</h5>
   <div class="form-section">
@@ -202,7 +223,9 @@ const onSubmit = () => {
     </div>
   </div>
 
-  <button type="submit" on:click|preventDefault={onSubmit}>Send to queue</button>
+  {#if donationId == null}
+    <button type="submit" on:click|preventDefault={onSubmit}>Send to queue</button>
+  {/if}
 </form>
 
 <style>
@@ -227,5 +250,9 @@ const onSubmit = () => {
   .form-group {
     border-style: none;
     width: 400px
+  }
+
+  #statusDisplay {
+    pointer-events: none;
   }
 </style>

@@ -52,9 +52,11 @@ const getFormData = async () => {
     data['donationData'] = await getDonationData();
     data['fieldData'] = await getFormFieldData();
 
-    data.donationData.donor = JSON.parse(data.donationData.donor || {});
-    data.donationData.recipient = JSON.parse(data.donationData.recipient || {});
-    data.donationData.who_to_notify = JSON.parse(data.donationData.who_to_notify || {});
+    if(Object.keys(data.donationData).length > 0) {
+      data.donationData.donor = JSON.parse(data.donationData.donor || {});
+      data.donationData.recipient = JSON.parse(data.donationData.recipient || {});
+      data.donationData.who_to_notify = JSON.parse(data.donationData.who_to_notify || {});
+    }
 
     resolve(data);
   });
