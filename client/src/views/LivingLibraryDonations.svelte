@@ -5,7 +5,7 @@
  * Display donation table and data filters
  */
 
-import { ajaxRequest } from '../libs/ajax.js';
+import { fetchData } from '../libs/ajax.js';
 import { Configuration } from '../config';
 import DataDisplay from "../components/DataDisplay.svelte";
 import NewItemLink from "../components/NewItemLink.svelte";
@@ -85,19 +85,6 @@ const init = async () => {
 /*
  * Data display init functions
  */
-const fetchData = (url) => {
-  return new Promise((resolve, reject) => {
-    ajaxRequest('GET', url, function(error, response, status) {
-      if(error) {
-        console.error(error);
-        resolve([]);
-      }
-      else if(status != 200) resolve([]);
-      else resolve(response.json());
-    }, null, null, {'api_key': $Configuration.livingLibraryApiKey});
-  });
-}
-
 const parseViewData = (data) => {
   let viewData = [], viewItem;
   for(let {id, is_completed, donor, recipient} of data) {
