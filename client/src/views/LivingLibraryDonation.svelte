@@ -59,6 +59,7 @@ const getFormData = async () => {
       data.donationData.donor = JSON.parse(data.donationData.donor || {});
       data.donationData.recipient = JSON.parse(data.donationData.recipient || {});
       data.donationData.who_to_notify = JSON.parse(data.donationData.who_to_notify || {});
+      if(data.donationData.book) data.donationData.book = JSON.parse(data.donationData.book);
     }
 
     resolve(data);
@@ -118,9 +119,9 @@ init()
       <!-- <h6>{getDonorInfoLabel(donationData)}</h6> -->
       <svelte:component this={LivingLibraryDonationForm} args={{donationId}} data={formData.donationData} fieldData={formData.fieldData} on:form-submit={onSubmitForm}/>
 
-      {#if donationId && formData.book}
+      {#if donationId && formData.donationData.book}
         <h5>Book Plate Record</h5>
-        <svelte:component this={LivingLibraryBookplateForm} args={{donationId}} data={formData.book}/>
+        <svelte:component this={LivingLibraryBookplateForm} args={{donationId, submitButtonVisible:false}} data={formData.donationData.book}/>
       {/if}
     {/await}
   </div>
