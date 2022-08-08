@@ -39,7 +39,7 @@ const fieldDataUrls = [
 
 const init = async () => {
   if(donationId) pageLabel = "Living Library: Donation Record";
-  else pageLabel = "Living Library: Book Plate Form";
+  else pageLabel = "Living Library: Donation Form";
 
   formData = getFormData();
 }
