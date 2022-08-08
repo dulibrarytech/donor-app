@@ -7,6 +7,7 @@
 import { fetchData } from '../libs/ajax.js';
 import { Configuration } from '../config';
 import LivingLibraryDonationForm from "../components/LivingLibraryDonationForm.svelte";
+import LivingLibraryBookplateForm from "../components/LivingLibraryBookplateForm.svelte";
 
 export let params;
 const donationId = params.id ?? null;
@@ -52,6 +53,8 @@ const getFormData = async () => {
     data['donationData'] = await getDonationData();
     data['fieldData'] = await getFormFieldData();
 
+    console.log("t Form Data", data)
+
     if(Object.keys(data.donationData).length > 0) {
       data.donationData.donor = JSON.parse(data.donationData.donor || {});
       data.donationData.recipient = JSON.parse(data.donationData.recipient || {});
@@ -96,6 +99,12 @@ const getDonationData = () => {
   });
 }
 
+const onSubmitForm = (event) => {
+  let formSubmitData = event.detail;
+
+  console.log("FSD", formSubmitData)
+}
+
 init()
 </script>
 
@@ -107,7 +116,12 @@ init()
       <h6>Loading data...</h6>
     {:then formData}
       <!-- <h6>{getDonorInfoLabel(donationData)}</h6> -->
-      <svelte:component this={LivingLibraryDonationForm} args={{donationId}} data={formData.donationData} fieldData={formData.fieldData}/>
+      <svelte:component this={LivingLibraryDonationForm} args={{donationId}} data={formData.donationData} fieldData={formData.fieldData} on:form-submit={onSubmitForm}/>
+
+      {#if donationId && formData.book}
+        <h5>Book Plate Record</h5>
+        <svelte:component this={LivingLibraryBookplateForm} args={{donationId}} data={formData.book}/>
+      {/if}
     {/await}
   </div>
 </div>

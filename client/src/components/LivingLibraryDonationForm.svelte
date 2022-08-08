@@ -4,14 +4,14 @@
  * Donor, recipient, person to be notified, donation info`
  * Display data or enter new data
  */
+import {createEventDispatcher} from 'svelte';
 import LivingLibraryWhoToNotifyForm from "../components/LivingLibraryWhoToNotifyForm.svelte";
 
 export let args;
 export let data;
 export let fieldData;
 
-console.log("Form data", data)
-
+const dispatch = createEventDispatcher();
 const donationId = args.donationId || null;
 
 let donorData = data.donor;
@@ -87,12 +87,15 @@ const addPersonToNotify = () => {
 }
 
 const onSubmit = () => {
-  // TODO: POST object: {donor: {}, recipient: {}, who_to_notify: [{}]}
-
   console.log("donorData", donorData)
   console.log("recipientData", recipientData)
   console.log("whoToNotifyData", whoToNotifyData)
-  console.log("subjectAreas", subjectAreas)
+
+  dispatch('form-submit', {
+    donor: donorData,
+    recipient: recipientData,
+    who_to_notify: whoToNotifyData
+  });
 }
 
 init();
@@ -203,7 +206,7 @@ init();
     </div>
 
     <div class="form-group">
-      <label for="donor_dateOfDonation">Amount of Donation (yyyy-mm-dd)</label>
+      <label for="donor_dateOfDonation">Date of Donation (yyyy-mm-dd)</label>
       <input type="text" id="donor_dateOfDonation" bind:value={donorData.donor_date_of_donation}/>
     </div>
 

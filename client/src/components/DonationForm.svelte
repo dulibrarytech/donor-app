@@ -7,8 +7,6 @@
   export let args;
   export let data={};
 
-  console.log("Donation Form data:", data)
-
   let donorId = args.donorId;
   let donationId = args.donationId;
   let roleId = args.roleId || 1;
