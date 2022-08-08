@@ -12,8 +12,8 @@
     <th scope="col">Recipient Name</th>
 
     <!-- Links -->
-    <th scope="col"></th><!-- New Book Plate || View Record -->
-    <th scope="col"></th><!-- Delete -->
+    <th scope="col"></th><!-- View Record -->
+    <th scope="col"></th><!-- Book Plate Form || Delete -->
 
   </tr>
 </thead>
@@ -26,23 +26,16 @@
         <td>{`${donation.donor_title} ${donation.donor_first_name} ${donation.donor_last_name}`}</td>
         <td>{`${donation.recipient_title} ${donation.recipient_first_name} ${donation.recipient_last_name}`}</td>
 
-        <!-- Links -->
-        <!-- New Book Plate || View Record -->
+        <!-- View Record -->
+        <td><a href="/livingLibrary/donation/{donation.id}">View Record</a></td>
+        <!-- New Book Plate || Delete -->
         <td>
           {#if donation.is_completed == true}
-            <a href="#">View Record</a>
+            <a href="#">Delete</a>
           {:else}
             <a href="#">Book Plate Form</a>
           {/if}
         </td>
-
-        <!-- Delete -->
-        {#if donation.is_completed == true}
-          <td>
-            <a href="#">Delete</a>
-          </td>
-        {/if}
-
       </tr>
     {/each}
   {:else}
