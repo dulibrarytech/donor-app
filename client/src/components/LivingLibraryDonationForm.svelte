@@ -115,7 +115,7 @@ init();
         <input type="text" id="donor_title" bind:value="{donorData.donor_title}"/>
       {:else}
         <select class="form-select" id="donor_title" bind:value={donorData.donor_title}>
-          <option value="" selected disabled hidden>-- Select a title --</option>
+          <option value="" selected disabled hidden>{#if fieldData.titles.length == 0}Error retrieving data{:else}-- Select a title --{/if}</option>
           {#each fieldData.titles as title}
             <option value="{title.term}" selected={donationId && donorData?.donor_title == title.term}>{title.term}</option>
           {/each}
@@ -144,7 +144,7 @@ init();
         <input type="text" id="donor_state" value="{donorData.donor_state}"/>
       {:else}
         <select class="form-select" id="donor_state" bind:value={donorData.donor_state}>
-          <option value="" selected disabled hidden>-- Select a state --</option>
+          <option value="" selected disabled hidden>{#if fieldData.states.length == 0}Error retrieving data{:else}-- Select a state --{/if}</option>
           {#each fieldData.states as state}
             <option value="{state.term}" selected={donationId && donorData?.donor_state == state.term}>{state.term}</option>
           {/each}
@@ -171,7 +171,7 @@ init();
         <input type="text" id="recipient_title" bind:value="{recipientData.recipient_title}"/>
       {:else}
         <select class="form-select" id="recipient_title" bind:value={recipientData.recipient_title}>
-          <option value="0" selected disabled hidden>-- Select a title --</option>
+          <option value="" selected disabled hidden>{#if fieldData.titles.length == 0}Error retrieving data{:else}-- Select a title --{/if}</option>
           {#each fieldData.titles as title}
             <option value="{title.term}" selected={donationId && recipientData.recipient_title == title.term}>{title.term}</option>
           {/each}

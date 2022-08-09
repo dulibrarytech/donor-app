@@ -15,7 +15,7 @@
       <input type="text" id="notify_title_{index+1}" bind:value="{whoToNotifyData[index].notify_title}"/>
     {:else}
       <select class="form-select" id="notify_title_{index+1}" bind:value={whoToNotifyData[index].notify_title}>
-        <option value="" selected disabled hidden>-- Select a title --</option>
+        <option value="" selected disabled hidden>{#if fieldData.titles.length == 0}Error retrieving data{:else}-- Select a title --{/if}</option>
         {#each fieldData.titles as title}
           <option value="{title.term}" selected={donationId && whoToNotifyData[index].notify_title == title.term}>{title.term}</option>
         {/each}
@@ -40,7 +40,7 @@
       <input type="text" id="notify_relation_to_donor_{index+1}" value="{whoToNotifyData[index].notify_relation_to_donor}"/>
     {:else}
       <select class="form-select" id="notify_relation_to_donor_{index+1}" bind:value={whoToNotifyData[index].notify_relation_to_donor}>
-        <option value="" selected disabled hidden>-- Select a relation --</option>
+        <option value="" selected disabled hidden>{#if fieldData.relationships.length == 0}Error retrieving data{:else}-- Select a relationship --{/if}</option>
         {#each fieldData.relationships as relationship}
           <option value="{relationship.term}" selected={donationId && whoToNotifyData[index].notify_relation_to_donor == relationship.term}>{relationship.term}</option>
         {/each}
@@ -57,7 +57,7 @@
       <input type="text" id="notify_state_{index+1}" value="{whoToNotifyData[index].notify_state}"/>
     {:else}
       <select class="form-select" id="notify_state_{index+1}" bind:value={whoToNotifyData[index].notify_state}>
-        <option value="" selected disabled hidden>-- Select a state --</option>
+        <option value="" selected disabled hidden>{#if fieldData.states.length == 0}Error retrieving data{:else}-- Select a state --{/if}</option>
         {#each fieldData.states as state}
           <option value="{state.term}" selected={donationId && whoToNotifyData[index].notify_state == state.term}>{state.term}</option>
         {/each}
