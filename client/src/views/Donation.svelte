@@ -4,7 +4,6 @@
   import { Session } from '../libs/session.js';
   import PageTitleLabel from "../components/PageTitleLabel.svelte";
   import DonationForm from "../components/DonationForm.svelte";
-  import DataDisplay from "../components/DataDisplay.svelte";
 
   export let params;
 

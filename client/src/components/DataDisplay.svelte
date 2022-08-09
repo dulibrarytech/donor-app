@@ -33,19 +33,19 @@
     /* width: 100% */
   }
 
-  :global(.table>:not(:first-child)) {
+  :global(.table:not(:first-child)) {
     border-top: none;
   }
 
-  :global(tbody tr:nth-child(even)) {
+  :global(.data-display tbody tr:nth-child(even)) {
     background: #e5e3e1;
   }
 
-  :global(table thead) {
+  :global(.data-display table thead) {
     background-color: #e5e3e1;
   }
 
-  :global(thead.header) {
+  :global(.data-display thead.header) {
     position: sticky;
     top: 0;
   }
