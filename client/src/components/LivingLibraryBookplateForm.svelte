@@ -17,13 +17,10 @@ let donationData = data.donor || {
 };
 let bookData = data.book || {
   book_author_name: "",
-  book_bibliographic_number: "",
   book_title: "",
-  book_call_number: "",
-  book_publisher: "",
-  book_date_published: ""
+  book_bibliographic_number: "",
+  book_call_number: ""
 }
-
 let recipientData = data.recipient || {};
 let whoToNotifyData = data.who_to_notify || [];
 
@@ -61,7 +58,7 @@ const onSubmit = (event) => {
         <td>Subject areas</td>
         <td>
           {#each donationData.donor_subject_areas as subject}
-            {subject}
+            {subject}<br>
           {/each}
         </td>
       </tr>
@@ -87,14 +84,6 @@ const onSubmit = (event) => {
       <label for="book_call_number">Call Number</label>
       <input type="text" id="book_call_number" bind:value={bookData.book_call_number}/>
     </div>
-
-    <!-- <div class="form-group">
-      <label for="book_publisher">Book Publisher</label>
-      <input type="text" id="book_publisher" bind:value={bookData.book_publisher}/>
-
-      <label for="book_date_published">Date Published</label>
-      <input type="text" id="book_date_published" bind:value={bookData.book_date_published}/>
-    </div> -->
   </div>
   <button type="button" on:click={onSubmit} style="display:{args.submitButtonVisible ? "block" : "none"}">Save Book Plate</button>
 </form>
@@ -121,6 +110,10 @@ const onSubmit = (event) => {
   .form-group {
     border-style: none;
     width: 400px
+  }
+
+  .donor-display table {
+    width: 50%;
   }
 
   .donor-display tbody tr td:first-child {

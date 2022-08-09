@@ -20,16 +20,6 @@ let whoToNotifyData = data.who_to_notify;
 let bookData = data.book;
 let status;
 
-const init = () => {
-  $: status = data.is_completed ? "Completed" : "Queued";
-
-  if(donationId) {
-    document.querySelectorAll("input").forEach((element) => {
-      element.style.pointerEvents = "none";
-    });
-  }
-}
-
 if(!donorData) {
   donorData = {
     donor_title: "",
@@ -86,6 +76,16 @@ const addPersonToNotify = () => {
   }
 }
 
+const init = () => {
+  $: status = data.is_completed ? "Completed" : "Queued";
+
+  if(donationId) {
+    document.querySelectorAll("input").forEach((element) => {
+      element.style.pointerEvents = "none";
+    });
+  }
+}
+
 const onSubmit = () => {
   console.log("donorData", donorData)
   console.log("recipientData", recipientData)
@@ -93,8 +93,8 @@ const onSubmit = () => {
 
   dispatch('form-submit', {
     donor: donorData,
-    recipient: recipientData,
-    who_to_notify: whoToNotifyData
+    who_to_notify: whoToNotifyData,
+    recipient: recipientData
   });
 }
 

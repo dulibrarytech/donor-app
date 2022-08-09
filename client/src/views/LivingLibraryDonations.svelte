@@ -165,7 +165,7 @@ init();
       </div>
 
       <div class="col-md-9">
-        <NewItemLink text="New donation" href="#" />
+        <NewItemLink text="New donation" href="/livingLibrary/donation" />
         <svelte:component this={DataDisplay} items={donationDisplay} Table={LivingLibraryTable} />
       </div>
 

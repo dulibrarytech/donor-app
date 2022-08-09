@@ -4,7 +4,7 @@
  * Living Library Donation page
  * Display donation form and book plate form
  */
-import { fetchData } from '../libs/ajax.js';
+import { ajaxRequest, fetchData } from '../libs/ajax.js';
 import { Configuration } from '../config';
 import LivingLibraryDonationForm from "../components/LivingLibraryDonationForm.svelte";
 import LivingLibraryBookplateForm from "../components/LivingLibraryBookplateForm.svelte";
@@ -101,9 +101,16 @@ const getDonationData = () => {
 }
 
 const onSubmitForm = (event) => {
-  let formSubmitData = event.detail;
+  let formSubmitData = {};
+  for(let key in event.detail) {
+    formSubmitData[key] = JSON.stringify(event.detail[key]);
+  }
 
-  console.log("FSD", formSubmitData)
+  ajaxRequest('POST', donationUrl, function(error, response, status) {
+    if(error) console.error(error)
+    else if(status != 200 && status != 201) console.error(`Form post receives response status of ${status}`);
+    else console.log("Donation created sucessfully.");
+  }, formSubmitData);
 }
 
 init()

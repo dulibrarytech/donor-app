@@ -1,5 +1,5 @@
 <script>
-import { fetchData } from '../libs/ajax.js';
+import { ajaxRequest, fetchData } from '../libs/ajax.js';
 import { Configuration } from '../config';
 import LivingLibraryBookplateForm from "../components/LivingLibraryBookplateForm.svelte";
 
@@ -41,9 +41,15 @@ const getDonationData = () => {
 }
 
 const onSubmitForm = (event) => {
-  console.log("Form submits data:", event.detail)
+  let bookSubmitData = {
+    book: JSON.stringify(event.detail.book)
+  }
 
-  // TODO convert to json strings, POST to server
+  ajaxRequest('PUT', donationUrl, function(error, response, status) {
+    if(error) console.error(error)
+    else if(status != 200 && status != 201) console.error(`Form post receives response status of ${status}`);
+    else console.log("Book plate request created sucessfully.");
+  }, bookSubmitData);
 }
 
 init()
