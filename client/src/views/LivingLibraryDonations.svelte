@@ -28,6 +28,9 @@ var textFilter;
 var daterangeFilter;
 var donationFilterFormDisplay = true;
 
+const apiKey  = $Configuration.livingLibraryApiKey;
+var donationsUrl = `${$Configuration.livingLibraryApiDomain}/donations?api_key=${apiKey}`;
+
 var sortOptions = {
   field: "donor_date_of_donation",
   type: "desc"
@@ -65,8 +68,6 @@ var filters = [
     ]
   }
 ];
-
-var donationsUrl = `${$Configuration.livingLibraryApiDomain}/donations`;
 
 /*
  * Init page
