@@ -15,6 +15,7 @@
   let action = `${$Configuration.donorApiDomain}/donation`;
   let buttonText = "Add Donation";
   let buttonDisabled = false;
+  let validationLabelDisplay = "inline";
   let messageDisplay;
   let typeSelect;
 
@@ -48,6 +49,10 @@
 
     /* Format to yyyy-mm-dd. Formatted value should be submitted with the form. */
     data.dateOfGift = data.dateOfGift.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g)[0];
+  }
+
+  const showValidationLabels = (isVisible) => {
+    validationLabelDisplay = isVisible ? "inline" : "none";
   }
 
   const onSubmitForm = () => {
@@ -98,6 +103,7 @@
       buttonText = "Update";
       buttonDisabled = true;
       formatFormFields();
+      showValidationLabels(false);
     }
     /* New donation */
     else {
@@ -119,11 +125,11 @@
   <div class="form-fields container">
     <div class="form-group row">
       <div class="col-md-3">
-        <label for="dateOfGift">Date</label>
+        <label for="dateOfGift">Date<span style="display:{validationLabelDisplay}">(Required yyyy-mm-dd)</span></label>
         <input type="text" class="form-control" id="dateOfGift" bind:value={data.dateOfGift} on:input={onChangeFormValue}>
       </div>
       <div class="col-md-6">
-        <label for="numberOfGifts">Item Count</label>
+        <label for="numberOfGifts">Item Count<span style="display:{validationLabelDisplay}">(Required)</span></label>
         <input type="text" class="form-control" id="numberOfGifts" bind:value={data.numberOfGifts} on:input={onChangeFormValue}>
       </div>
       <div class="col-md-3">
@@ -135,7 +141,7 @@
     </div>
     <div class="form-group row">
       <div class="col-md-9">
-        <label for="giftDescription">Description</label>
+        <label for="giftDescription">Description<span style="display:{validationLabelDisplay}">(Required)</span></label>
         <textarea class="form-control" id="giftDescription" bind:value={data.giftDescription} on:input={onChangeFormValue}></textarea>
         <label for="giftDetails">Details</label>
         <textarea class="form-control" id="giftDetails" bind:value={data.giftDetails} on:input={onChangeFormValue}></textarea>

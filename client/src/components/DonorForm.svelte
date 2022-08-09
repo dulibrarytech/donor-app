@@ -12,6 +12,7 @@
   let action = `${$Configuration.donorApiDomain}/donor`;
   let buttonText = "Add Donor";
   let buttonDisabled = false;
+  let validationLabelDisplay = "inline";
   let messageDisplay;
 
   let validationRules = {
@@ -46,6 +47,20 @@
     }
   }
   let formValidator = new FormValidator('donor-form', validationRules, "#ced4da");
+
+  const init = () => {
+    if(donorId) {
+      method = "put";
+      action = `${$Configuration.donorApiDomain}/donor/${donorId}`;
+      buttonText = "Update";
+      buttonDisabled = true;
+      showValidationLabels(false);
+    }
+  }
+
+  const showValidationLabels = (isVisible) => {
+    validationLabelDisplay = isVisible ? "inline" : "none";
+  }
 
   const onSubmitForm = () => {
     /*
@@ -103,15 +118,6 @@
     buttonDisabled = false;
   }
 
-  const init = () => {
-    if(donorId) {
-      method = "put";
-      action = `${$Configuration.donorApiDomain}/donor/${donorId}`;
-      buttonText = "Update";
-      buttonDisabled = true;
-    }
-  }
-
   init();
 </script>
 
@@ -127,7 +133,7 @@
         {/each}
       </select>
 
-      <label for="organization">Organization</label>
+      <label for="organization">Organization<span style="display:{validationLabelDisplay}">(Required if no last name)</span></label>
       <input type="text" class="form-control" id="organization" name="organization" bind:value={data.organization} on:input={onChangeFormValue}>
 
       <label for="city">City</label>
@@ -137,7 +143,7 @@
       <input type="text" class="form-control" id="country" name="country" bind:value={data.country} on:input={onChangeFormValue}>
     </div>
     <div class="form-group">
-      <label for="lastName">Last Name</label>
+      <label for="lastName">Last Name<span style="display:{validationLabelDisplay}">(Required if no organization)</span></label>
       <input type="text" class="form-control" id="lastName" name="lastName" bind:value={data.lastName} on:input={onChangeFormValue}>
 
       <label for="address1">Address 1</label>
@@ -159,7 +165,7 @@
       <label for="postalCode">Postal Code</label>
       <input type="text" class="form-control" id="postalCode" name="postalCode" bind:value={data.postalCode} on:input={onChangeFormValue}>
 
-      <label for="email">Email</label>
+      <label for="email">Email<span style="display:{validationLabelDisplay}">(e.g. test@example.com)</span></label>
       <input type="email" class="form-control" id="email" name="email" bind:value={data.email} on:input={onChangeFormValue}>
     </div>
   </div>

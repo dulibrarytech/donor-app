@@ -218,6 +218,17 @@
 :global(.page-section > h3) {
 	margin-bottom: 30px;
 }
+
+:global(form label span) {
+	margin-left: 15px;
+	font-size: 0.85em;
+	font-style: italic;
+	color: #808080;
+}
+
+:global(form label:not(> span)) {
+	font-weight: bold;
+}
 /*
  * End global styles
  */

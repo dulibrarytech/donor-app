@@ -40,7 +40,6 @@ const onClear = () => {
 }
 
 const onSet = () => {
-  console.log("Validation:", formValidator.validate({fromDate, toDate}))
   if(formValidator.validate({fromDate, toDate})) {
     let filteredData = filterDaterange(data);
     dispatch('daterange-select', filteredData);
