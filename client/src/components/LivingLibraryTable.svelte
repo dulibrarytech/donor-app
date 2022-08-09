@@ -33,7 +33,7 @@
           {#if donation.is_completed == true}
             <a href="#">Delete</a>
           {:else}
-            <a href="#">Book Plate Form</a>
+            <a href="/livingLibrary/donation/{donation.id}/bookPlate">Book Plate Form</a>
           {/if}
         </td>
       </tr>
