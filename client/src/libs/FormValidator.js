@@ -10,6 +10,11 @@ class FormValidator {
   validate(data) {
     let isValid = true;
 
+    if(typeof data == 'undefined') {
+      data = {};
+      console.error("FormValidator: Requires data object. Data is undefined");
+    }
+
     document.querySelectorAll(".fail-message").forEach((label) => {
       label.remove();
     });
