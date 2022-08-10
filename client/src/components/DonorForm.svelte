@@ -17,30 +17,39 @@
 
   let validationRules = {
     firstName: {
+      name: "firstName",
       maxlength: 20
     },
     address1: {
+      name: "address1",
       maxlength: 70
     },
     address2: {
+      name: "address2",
       maxlength: 70
     },
     city: {
+      name: "city",
       maxlength: 20
     },
     state: {
+      name: "state",
       maxlength: 20
     },
     postalCode: {
+      name: "postalCode",
       maxlength: 10
     },
     country: {
+      name: "country",
       maxlength: 20
     },
     phone: {
+      name: "phone",
       maxlength: 20
     },
     email: {
+      name: "email",
       maxlength: 50,
       pattern: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
       patternFormat: "test@example.com"
@@ -69,28 +78,34 @@
      */
     if(!data.lastName && !data.organization) {
       validationRules['lastName'] = {
+        name: "lastName",
         required: true,
         fail: "Must specify a last name or an organization"
       };
       validationRules['organization'] = {
+        name: "organization",
         required: true,
         fail: "Must specify a last name or an organization"
       };
     }
     else if(data.lastName) {
       validationRules['lastName'] = {
+        name: "lastName",
         maxlength: 20
       };
       validationRules['organization'] = {
+        name: "organization",
         required: false,
         maxlength: 20
       };
     }
     else if(data.organization) {
       validationRules['organization'] = {
+        name: "organization",
         maxlength: 20
       };
       validationRules['lastName'] = {
+        name: "lastName",
         required: false,
         maxlength: 20
       };

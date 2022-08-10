@@ -53,8 +53,6 @@ const getFormData = async () => {
     data['donationData'] = await getDonationData();
     data['fieldData'] = await getFormFieldData();
 
-    console.log("t Form Data", data)
-
     if(Object.keys(data.donationData).length > 0) {
       data.donationData.donor = JSON.parse(data.donationData.donor || {});
       data.donationData.recipient = JSON.parse(data.donationData.recipient || {});

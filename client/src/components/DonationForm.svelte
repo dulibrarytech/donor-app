@@ -27,16 +27,19 @@
 
   let validationRules = {
     dateOfGift: {
+      name: "dateOfGift",
       required: true,
       maxlength: 10,
       pattern: /[0-9]{4}-[0-9]{2}-[0-9]{2}/,
       patternFormat: "yyyy-mm-dd"
     },
     numberOfGifts: {
+      name: "numberOfGifts",
       required: true,
       maxlength: 10
     },
     giftDescription: {
+      name: "giftDescription",
       required: true,
       maxlength: 255
     }

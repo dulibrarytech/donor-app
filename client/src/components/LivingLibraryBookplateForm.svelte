@@ -36,15 +36,18 @@ var donorTitleString;
 var recipientTitleString;
 
 var validationRules = {
+  name: "book_bibliographic_number",
   book_bibliographic_number: {
     required: true,
     maxlength: 30
   },
   book_title: {
+    name: "book_title",
     required: true,
     maxlength: 100
   },
   book_call_number: {
+    name: "book_call_number",
     required: true,
     maxlength: 30
   }

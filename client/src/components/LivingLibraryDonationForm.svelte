@@ -65,48 +65,58 @@ if(!whoToNotifyData) {
 
 var validationRules = {
   donor_first_name: {
+    name: "donor_first_name",
     required: true,
     maxlength: 30
   },
   donor_last_name: {
+    name: "donor_last_name",
     required: true,
     maxlength: 30
   },
   donor_address: {
+    name: "donor_address",
     required: true,
     maxlength: 70
   },
   donor_city: {
+    name: "donor_city",
     required: true,
     maxlength: 70
   },
   donor_state: {
+    name: "donor_state",
     required: true,
     maxlength: 20
   },
   donor_zip: {
+    name: "donor_zip",
     required: true,
     maxlength: 11,
     pattern: /^([0-9]{2,5})(-[0-9]{1,5})*$/,
     patternFormat: "12345 or 12345-6789 (second part can have 1-5 digits)"
   },
   donor_amount_of_donation: {
+    name: "donor_amount_of_donation",
     required: true,
     maxlength: 10,
     pattern: /^([0-9]+)\.[0-9]{2}$/,
     patternFormat: "1000.00"
   },
   donor_date_of_donation: {
+    name: "donor_date_of_donation",
     required: true,
     maxlength: 10,
     pattern: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
     patternFormat: "yyyy-mm-dd"
   },
   recipient_first_name: {
+    name: "recipient_first_name",
     required: true,
     maxlength: 30
   },
   recipient_last_name: {
+    name: "recipient_last_name",
     required: true,
     maxlength: 30
   }
@@ -148,14 +158,12 @@ const validateAll = () => {
 
 const onSubmit = () => {
   if(formValidator.validate({...donorData, ...recipientData})) { // TODO use validateAll() or OR here to use 'who to notify' validator/validation separately
-    console.log("All validation passes")
-    // dispatch('form-submit', {
-    //   donor: donorData,
-    //   who_to_notify: whoToNotifyData,
-    //   recipient: recipientData
-    // });
+    dispatch('form-submit', {
+      donor: donorData,
+      who_to_notify: whoToNotifyData,
+      recipient: recipientData
+    });
   }
-  console.log("Validation fail")
 }
 
 init();

@@ -8,6 +8,7 @@ class FormValidator {
   }
 
   validate(data) {
+    console.log("Validator data in:", data)
     let isValid = true;
 
     if(typeof data == 'undefined') {
@@ -24,24 +25,24 @@ class FormValidator {
     });
 
     let rule;
-    for(var field in this.rules) {
-      rule = this.rules[field];
+    for(var id in this.rules) {
+      rule = this.rules[id];
 
       if(rule.required && rule.required == true) {
-        if(!data[field]) isValid = this.#fail(field, rule.fail || "Field required")
+        if(!data[rule.name]) isValid = this.#fail(id, rule.fail || "Field required")
       }
 
-      if(data[field] && rule.maxlength) {
-        if(data[field].length > rule.maxlength) isValid = this.#fail(field, rule.fail || `Maximum length of ${rule.maxlength} characters`)
+      if(data[rule.name] && rule.maxlength) {
+        if(data[rule.name].length > rule.maxlength) isValid = this.#fail(id, rule.fail || `Maximum length of ${rule.maxlength} characters`)
       }
 
-      if(data[field] && rule.minlength) {
-        if(data[field].length < rule.minlength) isValid = this.#fail(field, rule.fail || `Minimum length of ${rule.minlength} characters`)
+      if(data[rule.name] && rule.minlength) {
+        if(data[rule.name].length < rule.minlength) isValid = this.#fail(id, rule.fail || `Minimum length of ${rule.minlength} characters`)
       }
 
-      if(data[field] && rule.pattern) {
+      if(data[rule.name] && rule.pattern) {
         let regex = new RegExp(rule.pattern, 'gi');
-        if(regex.test(data[field]) == false) isValid = this.#fail(field, rule.fail || `Must match format ${rule.patternFormat || ""}`)
+        if(regex.test(data[rule.name]) == false) isValid = this.#fail(id, rule.fail || `Must match format ${rule.patternFormat || ""}`)
       }
     }
 

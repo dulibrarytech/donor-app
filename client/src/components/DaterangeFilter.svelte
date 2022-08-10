@@ -18,12 +18,14 @@ var filteredData = [];
 
 let validationRules = {
   fromDate: {
+    name: "fromDate",
     required: true,
     maxlength: 10,
     pattern: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
     patternFormat: "yyyy-mm-dd"
   },
   toDate: {
+    name: "toDate",
     required: true,
     maxlength: 10,
     pattern: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
