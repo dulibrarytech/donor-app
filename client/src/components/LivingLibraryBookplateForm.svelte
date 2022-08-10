@@ -8,11 +8,9 @@ import FormValidator from '../libs/FormValidator.js';
 export let args;
 export let data;
 
-console.log("DID", args.donationId)
-
 const dispatch = createEventDispatcher();
 var submitButtonVisible = true;
-let validationLabelDisplay = "inline";
+var validationLabelDisplay = "inline";
 const donationId = args.donationId;
 
 let donationData = data.donor || {
@@ -61,12 +59,14 @@ const init = () => {
 }
 
 const onSubmit = (event) => {
-  dispatch('form-submit', {
-    donor: donationData,
-    recipient: recipientData,
-    who_to_notify: whoToNotifyData,
-    book: bookData
-  });
+  if(formValidator.validate(bookData)) {
+    dispatch('form-submit', {
+      donor: donationData,
+      recipient: recipientData,
+      who_to_notify: whoToNotifyData,
+      book: bookData
+    });
+  }
 }
 
 init();

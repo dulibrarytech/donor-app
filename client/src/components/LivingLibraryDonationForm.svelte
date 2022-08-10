@@ -15,6 +15,7 @@ export let fieldData;
 const dispatch = createEventDispatcher();
 const donationId = args.donationId || null;
 var inputPointerEvents = "all";
+var validationLabelDisplay = "inline";
 
 let donorData = data.donor;
 let recipientData = data.recipient;
@@ -62,8 +63,64 @@ if(!whoToNotifyData) {
   ]
 }
 
-var validationRules = {};
+var validationRules = {
+  donor_first_name: {
+    required: true,
+    maxlength: 30
+  },
+  donor_last_name: {
+    required: true,
+    maxlength: 30
+  },
+  donor_address: {
+    required: true,
+    maxlength: 70
+  },
+  donor_city: {
+    required: true,
+    maxlength: 70
+  },
+  donor_state: {
+    required: true,
+    maxlength: 20
+  },
+  donor_zip: {
+    required: true,
+    maxlength: 11,
+    pattern: /^([0-9]{2,5})(-[0-9]{1,5})*$/,
+    patternFormat: "12345 or 12345-6789 (second part can have 1-5 digits)"
+  },
+  donor_amount_of_donation: {
+    required: true,
+    maxlength: 10,
+    pattern: /^([0-9]+)\.[0-9]{2}$/,
+    patternFormat: "1000.00"
+  },
+  donor_date_of_donation: {
+    required: true,
+    maxlength: 10,
+    pattern: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
+    patternFormat: "yyyy-mm-dd"
+  },
+  recipient_first_name: {
+    required: true,
+    maxlength: 30
+  },
+  recipient_last_name: {
+    required: true,
+    maxlength: 30
+  }
+};
 let formValidator = new FormValidator('living-library-donation-form', validationRules, "#ced4da");
+
+const init = () => {
+  $: status = data.is_completed ? "Completed" : "Queued";
+
+  if(donationId) {
+    toggleInputEnabled(false);
+    validationLabelDisplay = "none";
+  }
+}
 
 const addPersonToNotify = () => {
   var len = whoToNotifyData.length;
@@ -77,26 +134,28 @@ const addPersonToNotify = () => {
     notify_zip: "",
     notify_relation_to_donor: ""
   }
-}
 
-const init = () => {
-  $: status = data.is_completed ? "Completed" : "Queued";
-
-  if(donationId) {
-    toggleInputEnabled(false);
-  }
+  // Add new keys to validationRules {}: field_{index} Validator based on id. Just add new set of [notify ids] to be validated, appending the index ti the id. Use one set of val rules this way.
 }
 
 const toggleInputEnabled = (isEnabled) => {
   inputPointerEvents = isEnabled ? "all" : "none";
 }
 
+const validateAll = () => {
+  // TODO validate donor and recipient
+}
+
 const onSubmit = () => {
-  dispatch('form-submit', {
-    donor: donorData,
-    who_to_notify: whoToNotifyData,
-    recipient: recipientData
-  });
+  if(formValidator.validate({...donorData, ...recipientData})) { // TODO use validateAll() or OR here to use 'who to notify' validator/validation separately
+    console.log("All validation passes")
+    // dispatch('form-submit', {
+    //   donor: donorData,
+    //   who_to_notify: whoToNotifyData,
+    //   recipient: recipientData
+    // });
+  }
+  console.log("Validation fail")
 }
 
 init();
@@ -123,24 +182,24 @@ init();
         </select>
       {/if}
 
-      <label for="donor_address">Address</label>
+      <label for="donor_address">Address<span style="display:{validationLabelDisplay}">(Required)</span></label>
       <input type="text" id="donor_address" bind:value={donorData.donor_address} style="pointer-events:{inputPointerEvents}" tabindex="4"/>
 
-      <label for="donor_zipCode">Zip Code</label>
-      <input type="text" id="donor_zipCode" bind:value={donorData.donor_zip} style="pointer-events:{inputPointerEvents}" tabindex="7"/>
+      <label for="donor_zip">Zip Code<span style="display:{validationLabelDisplay}">(Required e.g. 80210 or 80210-4711)</span></label>
+      <input type="text" id="donor_zip" bind:value={donorData.donor_zip} style="pointer-events:{inputPointerEvents}" tabindex="7"/>
     </div>
     <div class="form-group">
-      <label for="donor_firstName">First Name</label>
-      <input type="text" id="donor_firstName" bind:value={donorData.donor_first_name} style="pointer-events:{inputPointerEvents}" tabindex="2"/>
+      <label for="donor_first_name">First Name<span style="display:{validationLabelDisplay}">(Required)</span></label>
+      <input type="text" id="donor_first_name" bind:value={donorData.donor_first_name} style="pointer-events:{inputPointerEvents}" tabindex="2"/>
 
-      <label for="donor_city">City</label>
+      <label for="donor_city">City<span style="display:{validationLabelDisplay}">(Required)</span></label>
       <input type="text" id="donor_city" bind:value={donorData.donor_city} style="pointer-events:{inputPointerEvents}" tabindex="5"/>
     </div>
     <div class="form-group">
-      <label for="donor_lastName">Last Name</label>
-      <input type="text" id="donor_lastName" bind:value={donorData.donor_last_name} style="pointer-events:{inputPointerEvents}" tabindex="3"/>
+      <label for="donor_last_name">Last Name<span style="display:{validationLabelDisplay}">(Required)</span></label>
+      <input type="text" id="donor_last_name" bind:value={donorData.donor_last_name} style="pointer-events:{inputPointerEvents}" tabindex="3"/>
 
-      <label for="state">State</label>
+      <label for="state">State<span style="display:{validationLabelDisplay}">(Required)</span></label>
       {#if donationId }
         <input type="text" id="donor_state" value={donorData.donor_state} style="pointer-events:{inputPointerEvents}" tabindex="6"/>
       {:else}
@@ -179,8 +238,8 @@ init();
         </select>
       {/if}
 
-      <label for="recipient_donationType">Donation Type</label>
-      <div class="form-check" id="recipient_donationType">
+      <label for="recipient_donation_type">Donation Type</label>
+      <div class="form-check" id="recipient_donation_type">
         <input type="radio" class="form-check-input" id="recipient_donationTypeHonor" bind:group={recipientData.recipient_donation_type} style="pointer-events:{inputPointerEvents}" value="In Honor of">
         <label for="recipient_donationTypeHonor">In Honor of</label>
         <input type="radio" class="form-check-input" id="recipient_donationTypeMemory" bind:group={recipientData.recipient_donation_type} style="pointer-events:{inputPointerEvents}" value="In Memory of">
@@ -189,26 +248,26 @@ init();
     </div>
 
     <div class="form-group">
-      <label for="recipient_firstName">First Name</label>
-      <input type="text" id="recipient_firstName" bind:value={recipientData.recipient_first_name} style="pointer-events:{inputPointerEvents}"/>
+      <label for="recipient_first_name">First Name<span style="display:{validationLabelDisplay}">(Required)</span></label>
+      <input type="text" id="recipient_first_name" bind:value={recipientData.recipient_first_name} style="pointer-events:{inputPointerEvents}"/>
     </div>
 
     <div class="form-group">
-      <label for="recipient_lastName">Last Name</label>
-      <input type="text" id="recipient_lastName" bind:value={recipientData.recipient_last_name} style="pointer-events:{inputPointerEvents}"/>
+      <label for="recipient_last_name">Last Name<span style="display:{validationLabelDisplay}">(Required)</span></label>
+      <input type="text" id="recipient_last_name" bind:value={recipientData.recipient_last_name} style="pointer-events:{inputPointerEvents}"/>
     </div>
   </div>
 
   <h5>Donation Information</h5>
   <div class="form-section">
     <div class="form-group">
-      <label for="donor_amountOfDonation">Amount of Donation (e.g. 1500.00)</label>
-      <input type="text" id="donor_amountOfDonation" bind:value={donorData.donor_amount_of_donation} style="pointer-events:{inputPointerEvents}"/>
+      <label for="donor_amount_of_donation">Amount of Donation<span style="display:{validationLabelDisplay}">(Required e.g. 1500.00)</span></label>
+      <input type="text" id="donor_amount_of_donation" bind:value={donorData.donor_amount_of_donation} style="pointer-events:{inputPointerEvents}"/>
     </div>
 
     <div class="form-group">
-      <label for="donor_dateOfDonation">Date of Donation (yyyy-mm-dd)</label>
-      <input type="text" id="donor_dateOfDonation" bind:value={donorData.donor_date_of_donation} style="pointer-events:{inputPointerEvents}"/>
+      <label for="donor_date_of_donation">Date of Donation<span style="display:{validationLabelDisplay}">(Required e.g. yyyy-mm-dd)</span></label>
+      <input type="text" id="donor_date_of_donation" bind:value={donorData.donor_date_of_donation} style="pointer-events:{inputPointerEvents}"/>
     </div>
 
     <div class="form-group">
