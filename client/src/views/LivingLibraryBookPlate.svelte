@@ -62,7 +62,7 @@ init()
       <h6>Loading data...</h6>
     {:then data}
       {#if data}
-        <svelte:component this={LivingLibraryBookplateForm} args={{donationId, submitButtonVisible:true}} {data} on:form-submit={onSubmitForm}/>
+        <svelte:component this={LivingLibraryBookplateForm} args={{donationId: null, submitButtonVisible:true}} {data} on:form-submit={onSubmitForm}/>
       {:else}
         <h6>Error retrieving data</h6>
       {/if}

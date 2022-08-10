@@ -128,7 +128,7 @@ init()
 
       {#if donationId && formData.donationData.book}
         <h5>Book Plate Record</h5>
-        <svelte:component this={LivingLibraryBookplateForm} args={{donationId, submitButtonVisible:false}} data={formData.donationData.book}/>
+        <svelte:component this={LivingLibraryBookplateForm} args={{donationId, submitButtonVisible:false}} data={formData.donationData}/>
       {/if}
     {/await}
   </div>
@@ -137,5 +137,9 @@ init()
 <style>
   #livinglibrary-donation-form {
     max-width: 80%;
+  }
+
+  :global(#livinglibrary-donation-form #living-library-bookplate-form input) {
+    pointer-events: none;
   }
 </style>

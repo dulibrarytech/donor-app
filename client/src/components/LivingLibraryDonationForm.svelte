@@ -6,6 +6,7 @@
  */
 import {createEventDispatcher} from 'svelte';
 import LivingLibraryWhoToNotifyForm from "../components/LivingLibraryWhoToNotifyForm.svelte";
+import FormValidator from '../libs/FormValidator.js';
 
 export let args;
 export let data;
@@ -13,6 +14,7 @@ export let fieldData;
 
 const dispatch = createEventDispatcher();
 const donationId = args.donationId || null;
+var inputPointerEvents = "all";
 
 let donorData = data.donor;
 let recipientData = data.recipient;
@@ -61,6 +63,7 @@ if(!whoToNotifyData) {
 }
 
 var validationRules = {};
+let formValidator = new FormValidator('living-library-donation-form', validationRules, "#ced4da");
 
 const addPersonToNotify = () => {
   var len = whoToNotifyData.length;
@@ -80,17 +83,15 @@ const init = () => {
   $: status = data.is_completed ? "Completed" : "Queued";
 
   if(donationId) {
-    document.querySelectorAll("input").forEach((element) => {
-      element.style.pointerEvents = "none";
-    });
+    toggleInputEnabled(false);
   }
 }
 
-const onSubmit = () => {
-  console.log("donorData", donorData)
-  console.log("recipientData", recipientData)
-  console.log("whoToNotifyData", whoToNotifyData)
+const toggleInputEnabled = (isEnabled) => {
+  inputPointerEvents = isEnabled ? "all" : "none";
+}
 
+const onSubmit = () => {
   dispatch('form-submit', {
     donor: donorData,
     who_to_notify: whoToNotifyData,
@@ -101,7 +102,7 @@ const onSubmit = () => {
 init();
 </script>
 
-<form>
+<form id="living-library-donation-form">
   {#if donationId}
     <label for="statusDisplay">Status:</label>
     <input type="text" id="statusDisplay" value={status}/>
@@ -112,9 +113,9 @@ init();
     <div class="form-group">
       <label for="donor_title">Title</label>
       {#if donationId }
-        <input type="text" id="donor_title" bind:value="{donorData.donor_title}"/>
+        <input type="text" id="donor_title" bind:value="{donorData.donor_title}" style="pointer-events:{inputPointerEvents}" tabindex="1"/>
       {:else}
-        <select class="form-select" id="donor_title" bind:value={donorData.donor_title}>
+        <select class="form-select" id="donor_title" bind:value={donorData.donor_title} style="pointer-events:{inputPointerEvents}" tabindex="1">
           <option value="" selected disabled hidden>{#if fieldData.titles.length == 0}Error retrieving data{:else}-- Select a title --{/if}</option>
           {#each fieldData.titles as title}
             <option value="{title.term}" selected={donationId && donorData?.donor_title == title.term}>{title.term}</option>
@@ -123,27 +124,27 @@ init();
       {/if}
 
       <label for="donor_address">Address</label>
-      <input type="text" id="donor_address" bind:value={donorData.donor_address}/>
+      <input type="text" id="donor_address" bind:value={donorData.donor_address} style="pointer-events:{inputPointerEvents}" tabindex="4"/>
 
       <label for="donor_zipCode">Zip Code</label>
-      <input type="text" id="donor_zipCode" bind:value={donorData.donor_zip}/>
+      <input type="text" id="donor_zipCode" bind:value={donorData.donor_zip} style="pointer-events:{inputPointerEvents}" tabindex="7"/>
     </div>
     <div class="form-group">
       <label for="donor_firstName">First Name</label>
-      <input type="text" id="donor_firstName" bind:value={donorData.donor_first_name}/>
+      <input type="text" id="donor_firstName" bind:value={donorData.donor_first_name} style="pointer-events:{inputPointerEvents}" tabindex="2"/>
 
       <label for="donor_city">City</label>
-      <input type="text" id="donor_city" bind:value={donorData.donor_city}/>
+      <input type="text" id="donor_city" bind:value={donorData.donor_city} style="pointer-events:{inputPointerEvents}" tabindex="5"/>
     </div>
     <div class="form-group">
       <label for="donor_lastName">Last Name</label>
-      <input type="text" id="donor_lastName" bind:value={donorData.donor_last_name}/>
+      <input type="text" id="donor_lastName" bind:value={donorData.donor_last_name} style="pointer-events:{inputPointerEvents}" tabindex="3"/>
 
       <label for="state">State</label>
       {#if donationId }
-        <input type="text" id="donor_state" value="{donorData.donor_state}"/>
+        <input type="text" id="donor_state" value={donorData.donor_state} style="pointer-events:{inputPointerEvents}" tabindex="6"/>
       {:else}
-        <select class="form-select" id="donor_state" bind:value={donorData.donor_state}>
+        <select class="form-select" id="donor_state" bind:value={donorData.donor_state} style="pointer-events:{inputPointerEvents}" tabindex="6">
           <option value="" selected disabled hidden>{#if fieldData.states.length == 0}Error retrieving data{:else}-- Select a state --{/if}</option>
           {#each fieldData.states as state}
             <option value="{state.term}" selected={donationId && donorData?.donor_state == state.term}>{state.term}</option>
@@ -160,7 +161,7 @@ init();
     {/each}
   </div>
   {#if donationId == null}
-    <button type="button" on:click={addPersonToNotify}>Add person to be notified</button>
+    <button type="button" on:click={addPersonToNotify} style="pointer-events:{inputPointerEvents}">Add person to be notified</button>
   {/if}
 
   <h5>Person Receiving Donation</h5>
@@ -168,9 +169,9 @@ init();
     <div class="form-group">
       <label for="recipient_title">Title</label>
       {#if donationId }
-        <input type="text" id="recipient_title" bind:value="{recipientData.recipient_title}"/>
+        <input type="text" id="recipient_title" bind:value="{recipientData.recipient_title}" style="pointer-events:{inputPointerEvents}"/>
       {:else}
-        <select class="form-select" id="recipient_title" bind:value={recipientData.recipient_title}>
+        <select class="form-select" id="recipient_title" bind:value={recipientData.recipient_title} style="pointer-events:{inputPointerEvents}">
           <option value="" selected disabled hidden>{#if fieldData.titles.length == 0}Error retrieving data{:else}-- Select a title --{/if}</option>
           {#each fieldData.titles as title}
             <option value="{title.term}" selected={donationId && recipientData.recipient_title == title.term}>{title.term}</option>
@@ -180,21 +181,21 @@ init();
 
       <label for="recipient_donationType">Donation Type</label>
       <div class="form-check" id="recipient_donationType">
-        <input type="radio" class="form-check-input" id="recipient_donationTypeHonor" bind:group={recipientData.recipient_donation_type} value="In Honor of">
+        <input type="radio" class="form-check-input" id="recipient_donationTypeHonor" bind:group={recipientData.recipient_donation_type} style="pointer-events:{inputPointerEvents}" value="In Honor of">
         <label for="recipient_donationTypeHonor">In Honor of</label>
-        <input type="radio" class="form-check-input" id="recipient_donationTypeMemory" bind:group={recipientData.recipient_donation_type} value="In Memory of">
+        <input type="radio" class="form-check-input" id="recipient_donationTypeMemory" bind:group={recipientData.recipient_donation_type} style="pointer-events:{inputPointerEvents}" value="In Memory of">
         <label for="recipient_donationTypeMemory">In Memory of</label>
       </div>
     </div>
 
     <div class="form-group">
       <label for="recipient_firstName">First Name</label>
-      <input type="text" id="recipient_firstName" bind:value={recipientData.recipient_first_name}/>
+      <input type="text" id="recipient_firstName" bind:value={recipientData.recipient_first_name} style="pointer-events:{inputPointerEvents}"/>
     </div>
 
     <div class="form-group">
       <label for="recipient_lastName">Last Name</label>
-      <input type="text" id="recipient_lastName" bind:value={recipientData.recipient_last_name}/>
+      <input type="text" id="recipient_lastName" bind:value={recipientData.recipient_last_name} style="pointer-events:{inputPointerEvents}"/>
     </div>
   </div>
 
@@ -202,17 +203,17 @@ init();
   <div class="form-section">
     <div class="form-group">
       <label for="donor_amountOfDonation">Amount of Donation (e.g. 1500.00)</label>
-      <input type="text" id="donor_amountOfDonation" bind:value={donorData.donor_amount_of_donation}/>
+      <input type="text" id="donor_amountOfDonation" bind:value={donorData.donor_amount_of_donation} style="pointer-events:{inputPointerEvents}"/>
     </div>
 
     <div class="form-group">
       <label for="donor_dateOfDonation">Date of Donation (yyyy-mm-dd)</label>
-      <input type="text" id="donor_dateOfDonation" bind:value={donorData.donor_date_of_donation}/>
+      <input type="text" id="donor_dateOfDonation" bind:value={donorData.donor_date_of_donation} style="pointer-events:{inputPointerEvents}"/>
     </div>
 
     <div class="form-group">
       <label for="donor_notes">Notes</label>
-      <textarea class="form-control" id="donor_notes" bind:value={donorData.donor_notes}></textarea>
+      <textarea class="form-control" id="donor_notes" bind:value={donorData.donor_notes} style="pointer-events:{inputPointerEvents}"></textarea>
     </div>
   </div>
 
@@ -220,14 +221,14 @@ init();
   <div class="form-section">
     <div class="form-group form-check">
       {#each fieldData.subject_areas as subject, index}
-        <input class="form-check-input" type="checkbox" bind:group={donorData.donor_subject_areas} value={subject.term} id="subjectAreaCheck_{index+1}">
+        <input class="form-check-input" type="checkbox" bind:group={donorData.donor_subject_areas} value={subject.term} id="subjectAreaCheck_{index+1}" style="pointer-events:{inputPointerEvents}">
         <label class="form-check-label" for="subjectAreaCheck_{index+1}">{subject.term}</label>
       {/each}
     </div>
   </div>
 
   {#if donationId == null}
-    <button type="submit" on:click|preventDefault={onSubmit}>Send to queue</button>
+    <button type="submit" on:click|preventDefault={onSubmit} style="pointer-events:{inputPointerEvents}">Send to queue</button>
   {/if}
 </form>
 

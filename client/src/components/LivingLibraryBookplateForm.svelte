@@ -3,9 +3,17 @@
  * Living Library bookplate request form
  */
 import {createEventDispatcher} from 'svelte';
+import FormValidator from '../libs/FormValidator.js';
 
 export let args;
 export let data;
+
+console.log("DID", args.donationId)
+
+const dispatch = createEventDispatcher();
+var submitButtonVisible = true;
+let validationLabelDisplay = "inline";
+const donationId = args.donationId;
 
 let donationData = data.donor || {
   donor_title: "",
@@ -24,11 +32,33 @@ let bookData = data.book || {
 let recipientData = data.recipient || {};
 let whoToNotifyData = data.who_to_notify || [];
 
-$: donorTitleString = `${donationData.donor_title} ${donationData.donor_first_name} ${donationData.donor_last_name}`;
-$: recipientTitleString = `${recipientData.recipient_title} ${recipientData.recipient_first_name} ${recipientData.recipient_last_name}`;
+// $: donorTitleString = `${donationData.donor_title} ${donationData.donor_first_name} ${donationData.donor_last_name}`;
+// $: recipientTitleString = `${recipientData.recipient_title} ${recipientData.recipient_first_name} ${recipientData.recipient_last_name}`;
+var donorTitleString;
+var recipientTitleString;
 
-const dispatch = createEventDispatcher();
-var submitButtonVisible = args.submitButtonVisible || true;
+var validationRules = {
+  book_bibliographic_number: {
+    required: true,
+    maxlength: 30
+  },
+  book_title: {
+    required: true,
+    maxlength: 100
+  },
+  book_call_number: {
+    required: true,
+    maxlength: 30
+  }
+};
+let formValidator = new FormValidator('living-library-bookplate-form', validationRules, "#ced4da");
+
+const init = () => {
+  if(donationId) validationLabelDisplay = "none";
+  submitButtonVisible = args.submitButtonVisible || true;
+  donorTitleString = `${donationData.donor_title} ${donationData.donor_first_name} ${donationData.donor_last_name}`;
+  recipientTitleString = `${recipientData.recipient_title} ${recipientData.recipient_first_name} ${recipientData.recipient_last_name}`;
+}
 
 const onSubmit = (event) => {
   dispatch('form-submit', {
@@ -38,8 +68,11 @@ const onSubmit = (event) => {
     book: bookData
   });
 }
+
+init();
 </script>
 
+{#if !donationId}
 <div class="donor-display">
   <table class="table">
     <tbody>
@@ -48,7 +81,7 @@ const onSubmit = (event) => {
         <td>Person(s) to be notified of donation</td>
         <td>
           {#each whoToNotifyData as notify}
-            {notify.notify_title} {notify.notify_first_name} {notify.notify_last_name}
+            {notify.notify_title} {notify.notify_first_name} {notify.notify_last_name}<br>
           {/each}
         </td>
       </tr>
@@ -66,22 +99,23 @@ const onSubmit = (event) => {
     </tbody>
   </table>
 </div>
+{/if}
 
-<form>
+<form id="living-library-bookplate-form">
   <div class="form-section">
     <div class="form-group">
       <label for="book_author_name">Author Name</label>
       <input type="text" id="book_author_name" bind:value={bookData.book_author_name}/>
 
-      <label for="book_bibliographic_number">Bibliographic Number</label>
+      <label for="book_bibliographic_number">Bibliographic Number<span style="display:{validationLabelDisplay}">(Required)</span></label>
       <input type="text" id="book_bibliographic_number" bind:value={bookData.book_bibliographic_number}/>
     </div>
 
     <div class="form-group">
-      <label for="book_title">Book title</label>
+      <label for="book_title">Book title<span style="display:{validationLabelDisplay}">(Required)</span></label>
       <input type="text" id="book_title" bind:value={bookData.book_title}/>
 
-      <label for="book_call_number">Call Number</label>
+      <label for="book_call_number">Call Number<span style="display:{validationLabelDisplay}">(Required)</span></label>
       <input type="text" id="book_call_number" bind:value={bookData.book_call_number}/>
     </div>
   </div>
