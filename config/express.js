@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const compress = require('compression');
 const { baseUrl } = require(`./${process.env.CONFIGURATION_FILE}`);
 
 const donorRoutes = require("../server/donor/routes");
@@ -11,7 +12,17 @@ const userRoutes = require("../server/user/routes");
 
 module.exports = function () {
 
-  app.use(cors());
+  if (process.env.NODE_ENV === 'development') {
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+      app.use(cors());
+  }
+  else if (process.env.NODE_ENV === 'production') {
+      app.use(cors({
+        origin: process.env.CORS_ALLOWED_ORIGIN
+      }));
+      app.use(compress());
+  }
+
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded());
   app.use(morgan('tiny'));
@@ -22,7 +33,6 @@ module.exports = function () {
 
   app.route('/')
     .get(function(req, res) {
-      //     res.redirect(baseUrl);
       res.sendStatus(403);
   });
 
