@@ -4,6 +4,8 @@
  * Donor, recipient, person to be notified, donation info`
  * Display data or enter new data
  */
+'use strict'
+
 import {createEventDispatcher} from 'svelte';
 import LivingLibraryWhoToNotifyForm from "../components/LivingLibraryWhoToNotifyForm.svelte";
 import FormValidator from '../libs/FormValidator.js';
@@ -14,6 +16,7 @@ export let fieldData;
 
 const dispatch = createEventDispatcher();
 const donationId = args.donationId || null;
+var whoToNotifyForm;
 var inputPointerEvents = "all";
 var validationLabelDisplay = "inline";
 
@@ -121,7 +124,6 @@ var validationRules = {
     maxlength: 30
   }
 };
-let formValidator = new FormValidator('living-library-donation-form', validationRules, "#ced4da");
 
 const init = () => {
   $: status = data.is_completed ? "Completed" : "Queued";
@@ -144,20 +146,26 @@ const addPersonToNotify = () => {
     notify_zip: "",
     notify_relation_to_donor: ""
   }
-
-  // Add new keys to validationRules {}: field_{index} Validator based on id. Just add new set of [notify ids] to be validated, appending the index ti the id. Use one set of val rules this way.
 }
 
 const toggleInputEnabled = (isEnabled) => {
   inputPointerEvents = isEnabled ? "all" : "none";
 }
 
-const validateAll = () => {
-  // TODO validate donor and recipient
-}
-
 const onSubmit = () => {
-  if(formValidator.validate({...donorData, ...recipientData})) { // TODO use validateAll() or OR here to use 'who to notify' validator/validation separately
+  let donationFormValidator = new FormValidator('living-library-donation-form', validationRules, "#ced4da");
+  let donationFormValid = donationFormValidator.validate({...donorData, ...recipientData});
+
+  let whoToNotifyRules = whoToNotifyForm.getValidationRules();
+  let whoToNotifyFormValidator = new FormValidator('living-library-donation-who-to-notify-form', whoToNotifyRules, "#ced4da");
+  let whoToNotifyFormValid = true;
+  for(let data of whoToNotifyData) {
+    if(whoToNotifyFormValidator.validate(data) == false) {
+      whoToNotifyFormValid = false;
+    };
+  }
+
+  if(donationFormValid && whoToNotifyFormValid) {
     dispatch('form-submit', {
       donor: donorData,
       who_to_notify: whoToNotifyData,
@@ -224,7 +232,7 @@ init();
   <h5>Person(s) to be Notified of Donation</h5>
   <div id="whoToNotify">
     {#each whoToNotifyData as notify, index}
-      <div><svelte:component this={LivingLibraryWhoToNotifyForm} {donationId} {fieldData} {whoToNotifyData} {index}/></div>
+      <div><svelte:component this={LivingLibraryWhoToNotifyForm} bind:this={whoToNotifyForm} args={{donationId, inputPointerEvents, validationLabelDisplay, index}} {fieldData} {whoToNotifyData} /></div>
     {/each}
   </div>
   {#if donationId == null}

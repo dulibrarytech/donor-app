@@ -8,7 +8,6 @@ class FormValidator {
   }
 
   validate(data) {
-    console.log("Validator data in:", data)
     let isValid = true;
 
     if(typeof data == 'undefined') {
