@@ -17,6 +17,8 @@ var inputPointerEvents = args.inputPointerEvents;
 var validationLabelDisplay = args.validationLabelDisplay;
 var index = args.index ?? 0;
 
+console.log("WTND", whoToNotifyData)
+
 var validationRules = {
   notify_title: {
     name: "notify_title",
@@ -70,7 +72,7 @@ export const getValidationRules = () => {
 
 <form class="subform" id="living-library-donation-who-to-notify-form">
 <h6>Person {index+1}</h6>
-<div transition:fl class="form-section notify-section" id="notify_section_{index+1}">
+<div transition:fade class="form-section notify-section" id="notify_section_{index+1}">
   <div class="form-group">
     <label for="notify_title_{index+1}">Title</label>
     {#if donationId }
