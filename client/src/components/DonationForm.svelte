@@ -1,127 +1,133 @@
 <script>
-  import {Configuration} from '../config';
-  import {ajaxRequest} from '../libs/ajax.js';
-  import FormValidator from '../libs/FormValidator.js';
-  import MessageDisplay from "../components/MessageDisplay.svelte";
+/*
+ * Living Library Donation Data Form
+ *
+ */
+'use-strict'
 
-  export let args;
-  export let data={};
+import {Configuration} from '../config';
+import {ajaxRequest} from '../libs/ajax.js';
+import FormValidator from '../libs/FormValidator.js';
+import MessageDisplay from "../components/MessageDisplay.svelte";
 
-  let donorId = args.donorId;
-  let donationId = args.donationId;
-  let roleId = args.roleId || 1;
+export let args;
+export let data={};
 
-  let method = "post";
-  let action = `${$Configuration.donorApiDomain}/donation`;
-  let buttonText = "Add Donation";
-  let buttonDisabled = false;
-  let validationLabelDisplay = "inline";
-  let messageDisplay;
-  let typeSelect;
+let donorId = args.donorId;
+let donationId = args.donationId;
+let roleId = args.roleId || 1;
 
-  /* Formatted fields: default values */
-  let statusDisplay = null;
+let method = "post";
+let action = `${$Configuration.donorApiDomain}/donation`;
+let buttonText = "Add Donation";
+let buttonDisabled = false;
+let validationLabelDisplay = "inline";
+let messageDisplay;
+let typeSelect;
 
-  /* Toggle visibility of controls */
-  let displayGiftTypeSelect = true;
+/* Formatted fields: default values */
+let statusDisplay = null;
 
-  let validationRules = {
-    dateOfGift: {
-      name: "dateOfGift",
-      required: true,
-      maxlength: 10,
-      pattern: /[0-9]{4}-[0-9]{2}-[0-9]{2}/,
-      patternFormat: "yyyy-mm-dd"
-    },
-    numberOfGifts: {
-      name: "numberOfGifts",
-      required: true,
-      maxlength: 10
-    },
-    giftDescription: {
-      name: "giftDescription",
-      required: true,
-      maxlength: 255
-    }
+/* Toggle visibility of controls */
+let displayGiftTypeSelect = true;
+
+let validationRules = {
+  dateOfGift: {
+    name: "dateOfGift",
+    required: true,
+    maxlength: 10,
+    pattern: /[0-9]{4}-[0-9]{2}-[0-9]{2}/,
+    patternFormat: "yyyy-mm-dd"
+  },
+  numberOfGifts: {
+    name: "numberOfGifts",
+    required: true,
+    maxlength: 10
+  },
+  giftDescription: {
+    name: "giftDescription",
+    required: true,
+    maxlength: 255
   }
-  let formValidator = new FormValidator('donation-form', validationRules, "#ced4da");
+}
+let formValidator = new FormValidator('donation-form', validationRules, "#ced4da");
 
-  const formatFormFields = () => {
-    /* Convert status to text */
-    statusDisplay = data.letter && data.letter == 1 ? "Pending" : "Complete";
+const formatFormFields = () => {
+  /* Convert status to text */
+  statusDisplay = data.letter && data.letter == 1 ? "Pending" : "Complete";
 
-    /* Format to yyyy-mm-dd. Formatted value should be submitted with the form. */
-    data.dateOfGift = data.dateOfGift.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g)[0];
+  /* Format to yyyy-mm-dd. Formatted value should be submitted with the form. */
+  data.dateOfGift = data.dateOfGift.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g)[0];
+}
+
+const showValidationLabels = (isVisible) => {
+  validationLabelDisplay = isVisible ? "inline" : "none";
+}
+
+const onSubmitForm = () => {
+  $: data.important = typeSelect == "important" ? 1 : 0;
+
+  if(formValidator.validate(data)) {
+    messageDisplay.displayMessage("Submitting data...");
+    ajaxRequest(method, action, function(error, response, status) {
+      if(error) {
+        messageDisplay.displayMessage("Error", `Ajax error: ${error}`);
+      }
+      else if(status != 200) {
+        messageDisplay.displayMessage("Error", `Response status: ${status}`);
+      }
+      else {
+        let message = method == "post" ? "New donation created" : "Donation record updated";
+        messageDisplay.displayTimeoutMessage(message);
+      }
+    }, data);
+  }
+}
+
+const onViewDonorInfo = () => {
+  if(donorId) {
+    window.location.replace(`/donor/${donorId}`)
+  }
+}
+
+const onClickLetter = () => {
+  window.location.replace(`/letter/${donorId}/${donationId}`)
+}
+
+const onChangeFormValue = (event) => {
+  buttonDisabled = false;
+}
+
+const init = () => {
+  donorId = data.donorId || data.id || null;
+  if(donorId) data['donorId'] = donorId;
+
+  /* Set select/radio control state */
+  typeSelect = data.important && data.important == 1 ? "important" : "standard";
+
+  /* Display data for donation */
+  if(donationId) {
+    method = "put";
+    action = `${$Configuration.donorApiDomain}/donation/${donationId}`;
+    buttonText = "Update";
+    buttonDisabled = true;
+    formatFormFields();
+    showValidationLabels(false);
+  }
+  /* New donation */
+  else {
+    /* Set letter flag on all new donations, except for anonymous donations */
+    data.letter = donorId == 1 ? 0 : 1;
   }
 
-  const showValidationLabels = (isVisible) => {
-    validationLabelDisplay = isVisible ? "inline" : "none";
+  /* Anonymous donation: hide the 'Status' and 'Gift Type' fields */
+  if(donorId == 1) {
+    statusDisplay = false;
+    displayGiftTypeSelect = false;
   }
+}
 
-  const onSubmitForm = () => {
-    $: data.important = typeSelect == "important" ? 1 : 0;
-
-    if(formValidator.validate(data)) {
-      messageDisplay.displayMessage("Submitting data...");
-      ajaxRequest(method, action, function(error, response, status) {
-        if(error) {
-          messageDisplay.displayMessage("Error", `Ajax error: ${error}`);
-        }
-        else if(status != 200) {
-          messageDisplay.displayMessage("Error", `Response status: ${status}`);
-        }
-        else {
-          let message = method == "post" ? "New donation created" : "Donation record updated";
-          messageDisplay.displayTimeoutMessage(message);
-        }
-      }, data);
-    }
-  }
-
-  const onViewDonorInfo = () => {
-    if(donorId) {
-      window.location.replace(`/donor/${donorId}`)
-    }
-  }
-
-  const onClickLetter = () => {
-    window.location.replace(`/letter/${donorId}/${donationId}`)
-  }
-
-  const onChangeFormValue = (event) => {
-    buttonDisabled = false;
-  }
-
-  const init = () => {
-    donorId = data.donorId || data.id || null;
-    if(donorId) data['donorId'] = donorId;
-
-    /* Set select/radio control state */
-    typeSelect = data.important && data.important == 1 ? "important" : "standard";
-
-    /* Display data for donation */
-    if(donationId) {
-      method = "put";
-      action = `${$Configuration.donorApiDomain}/donation/${donationId}`;
-      buttonText = "Update";
-      buttonDisabled = true;
-      formatFormFields();
-      showValidationLabels(false);
-    }
-    /* New donation */
-    else {
-      /* Set letter flag on all new donations, except for anonymous donations */
-      data.letter = donorId == 1 ? 0 : 1;
-    }
-
-    /* Anonymous donation: hide the 'Status' and 'Gift Type' fields */
-    if(donorId == 1) {
-      statusDisplay = false;
-      displayGiftTypeSelect = false;
-    }
-  }
-
-  init();
+init();
 </script>
 
 <form id="donation-form" class="form" method="{method}" action="{action}">

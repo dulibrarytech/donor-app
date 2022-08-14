@@ -1,139 +1,145 @@
 <script>
-  import {Configuration} from '../config';
-  import {ajaxRequest} from '../libs/ajax.js';
-  import FormValidator from '../libs/FormValidator.js';
-  import MessageDisplay from "../components/MessageDisplay.svelte";
+/*
+ * Living Library Donor Data Form
+ *
+ */
+'use-strict'
 
-  export let donorId;
-  export let data = {};
-  export let titles = [];
+import {Configuration} from '../config';
+import {ajaxRequest} from '../libs/ajax.js';
+import FormValidator from '../libs/FormValidator.js';
+import MessageDisplay from "../components/MessageDisplay.svelte";
 
-  let method = "post";
-  let action = `${$Configuration.donorApiDomain}/donor`;
-  let buttonText = "Add Donor";
-  let buttonDisabled = false;
-  let validationLabelDisplay = "inline";
-  let messageDisplay;
+export let donorId;
+export let data = {};
+export let titles = [];
 
-  let validationRules = {
-    firstName: {
-      name: "firstName",
-      maxlength: 20
-    },
-    address1: {
-      name: "address1",
-      maxlength: 70
-    },
-    address2: {
-      name: "address2",
-      maxlength: 70
-    },
-    city: {
-      name: "city",
-      maxlength: 20
-    },
-    state: {
-      name: "state",
-      maxlength: 20
-    },
-    postalCode: {
-      name: "postalCode",
-      maxlength: 10
-    },
-    country: {
-      name: "country",
-      maxlength: 20
-    },
-    phone: {
-      name: "phone",
-      maxlength: 20
-    },
-    email: {
-      name: "email",
-      maxlength: 50,
-      pattern: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
-      patternFormat: "test@example.com"
-    }
+let method = "post";
+let action = `${$Configuration.donorApiDomain}/donor`;
+let buttonText = "Add Donor";
+let buttonDisabled = false;
+let validationLabelDisplay = "inline";
+let messageDisplay;
+
+let validationRules = {
+  firstName: {
+    name: "firstName",
+    maxlength: 20
+  },
+  address1: {
+    name: "address1",
+    maxlength: 70
+  },
+  address2: {
+    name: "address2",
+    maxlength: 70
+  },
+  city: {
+    name: "city",
+    maxlength: 20
+  },
+  state: {
+    name: "state",
+    maxlength: 20
+  },
+  postalCode: {
+    name: "postalCode",
+    maxlength: 10
+  },
+  country: {
+    name: "country",
+    maxlength: 20
+  },
+  phone: {
+    name: "phone",
+    maxlength: 20
+  },
+  email: {
+    name: "email",
+    maxlength: 50,
+    pattern: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
+    patternFormat: "test@example.com"
   }
-  let formValidator = new FormValidator('donor-form', validationRules, "#ced4da");
+}
+let formValidator = new FormValidator('donor-form', validationRules, "#ced4da");
 
-  const init = () => {
-    if(donorId) {
-      method = "put";
-      action = `${$Configuration.donorApiDomain}/donor/${donorId}`;
-      buttonText = "Update";
-      buttonDisabled = true;
-      showValidationLabels(false);
-    }
+const init = () => {
+  if(donorId) {
+    method = "put";
+    action = `${$Configuration.donorApiDomain}/donor/${donorId}`;
+    buttonText = "Update";
+    buttonDisabled = true;
+    showValidationLabels(false);
   }
+}
 
-  const showValidationLabels = (isVisible) => {
-    validationLabelDisplay = isVisible ? "inline" : "none";
+const showValidationLabels = (isVisible) => {
+  validationLabelDisplay = isVisible ? "inline" : "none";
+}
+
+const onSubmitForm = () => {
+  /*
+   * Need this code to adjust the validation rules based on the presence of either lastName or organization values
+   * Either a last name or an organization is required. If there is an organization, last name is not required, and vice versa
+   */
+  if(!data.lastName && !data.organization) {
+    validationRules['lastName'] = {
+      name: "lastName",
+      required: true,
+      fail: "Must specify a last name or an organization"
+    };
+    validationRules['organization'] = {
+      name: "organization",
+      required: true,
+      fail: "Must specify a last name or an organization"
+    };
   }
-
-  const onSubmitForm = () => {
-    /*
-     * Need this code to adjust the validation rules based on the presence of either lastName or organization values
-     * Either a last name or an organization is required. If there is an organization, last name is not required, and vice versa
-     */
-    if(!data.lastName && !data.organization) {
-      validationRules['lastName'] = {
-        name: "lastName",
-        required: true,
-        fail: "Must specify a last name or an organization"
-      };
-      validationRules['organization'] = {
-        name: "organization",
-        required: true,
-        fail: "Must specify a last name or an organization"
-      };
-    }
-    else if(data.lastName) {
-      validationRules['lastName'] = {
-        name: "lastName",
-        maxlength: 20
-      };
-      validationRules['organization'] = {
-        name: "organization",
-        required: false,
-        maxlength: 20
-      };
-    }
-    else if(data.organization) {
-      validationRules['organization'] = {
-        name: "organization",
-        maxlength: 20
-      };
-      validationRules['lastName'] = {
-        name: "lastName",
-        required: false,
-        maxlength: 20
-      };
-    }
-    //formValidator.setRules(validationRules);
-
-    if(formValidator.validate(data)) {
-      messageDisplay.displayMessage("Submitting data...");
-      ajaxRequest(method, action, function(error, response, status) {
-        if(error) {
-          messageDisplay.displayMessage("Error", `Ajax error: ${error}`);
-        }
-        else if(status != 200) {
-          messageDisplay.displayMessage("Error", `Response status: ${status}`);
-        }
-        else {
-          let message = method == "post" ? "New donor created" : "Donor record updated";
-          messageDisplay.displayTimeoutMessage(message);
-        }
-      }, data);
-    }
+  else if(data.lastName) {
+    validationRules['lastName'] = {
+      name: "lastName",
+      maxlength: 20
+    };
+    validationRules['organization'] = {
+      name: "organization",
+      required: false,
+      maxlength: 20
+    };
   }
-
-  const onChangeFormValue = (event) => {
-    buttonDisabled = false;
+  else if(data.organization) {
+    validationRules['organization'] = {
+      name: "organization",
+      maxlength: 20
+    };
+    validationRules['lastName'] = {
+      name: "lastName",
+      required: false,
+      maxlength: 20
+    };
   }
+  //formValidator.setRules(validationRules);
 
-  init();
+  if(formValidator.validate(data)) {
+    messageDisplay.displayMessage("Submitting data...");
+    ajaxRequest(method, action, function(error, response, status) {
+      if(error) {
+        messageDisplay.displayMessage("Error", `Ajax error: ${error}`);
+      }
+      else if(status != 200) {
+        messageDisplay.displayMessage("Error", `Response status: ${status}`);
+      }
+      else {
+        let message = method == "post" ? "New donor created" : "Donor record updated";
+        messageDisplay.displayTimeoutMessage(message);
+      }
+    }, data);
+  }
+}
+
+const onChangeFormValue = (event) => {
+  buttonDisabled = false;
+}
+
+init();
 </script>
 
 <form id="donor-form" class="form" method="{method}" action="{action}">
