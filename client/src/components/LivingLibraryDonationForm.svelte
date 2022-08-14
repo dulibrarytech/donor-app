@@ -302,14 +302,20 @@ init();
 
   <h5>Subject Areas</h5>
   <div class="form-section">
-
+    {#if formState == "data_display"}
+      <ul>
+        {#each donorData.donor_subject_areas as subject}
+          <li>{subject}</li>
+        {/each}
+      </ul>
+    {:else}
       <div class="form-group form-check">
         {#each fieldData.subject_areas as subject, index}
           <input class="form-check-input" type="checkbox" bind:group={donorData.donor_subject_areas} value={subject.term} id="subjectAreaCheck_{index+1}" style="pointer-events:{inputPointerEvents}">
           <label class="form-check-label" for="subjectAreaCheck_{index+1}">{subject.term}</label>
         {/each}
       </div>
-
+    {/if}
   </div>
 
   {#if formState == "data_entry"}
