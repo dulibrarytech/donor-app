@@ -5,5 +5,6 @@ export const Configuration = writable({
   donorApiDomain: process.env.DONORDB_API_DOMAIN,
   livingLibraryApiDomain: process.env.LIVINGLIBRARY_API_DOMAIN,
   livingLibraryApiKey: process.env.LIVINGLIBRARY_API_KEY,
-  signatureImageFilename: process.env.DONOR_LETTER_SIGNATURE_IMAGE_FILENAME
+  signatureImageFilename: process.env.DONOR_LETTER_SIGNATURE_IMAGE_FILENAME,
+  landingPagePath: process.env.LANDING_PAGE_PATH
 })

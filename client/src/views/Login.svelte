@@ -6,12 +6,17 @@
   import LoginForm from "../components/LoginForm.svelte";
   import MessageDisplay from "../components/MessageDisplay.svelte";
 
+  export let params;
+
   const dispatch = createEventDispatcher();
+  const urlParams = new URLSearchParams(window.location.search);
+  var loginRedirectPath = null;
   var sessionData = null;
   var messageDisplay;
 
   const init = () => {
-    if(Session.isSession("donor_db")) window.location.replace("/donors")
+    loginRedirectPath = urlParams.get('redirect');
+    if(Session.isSession("donor_db")) window.location.replace($Configuration.landingPagePath)
   }
 
   const onSubmitLogin = (event) => {
@@ -37,7 +42,7 @@
         messageDisplay.displayTimeoutMessage("Error");
       }
 
-      dispatch('login', sessionData);
+      dispatch('login', {sessionData, loginRedirectPath});
     }, data);
   }
 

@@ -37,23 +37,23 @@
 	 * Session control functions
 	 */
 	const login = (data) => {
-		Session.create("donor_db", data.token, data.userData);
-		let {roleId} = data.userData;
-		if(roleId == 2 || roleId == 3) window.location.replace("/inbox");
-		else window.location.replace("/");
+		Session.create("donor_db", data.sessionData.token, data.sessionData.userData);
+		let {roleId} = data.sessionData.userData;
+		if(roleId == 2 || roleId == 3) window.location.replace(data.loginRedirectPath || "/inbox");
+		else window.location.replace(data.loginRedirectPath || "/");
 	}
 
-	const logout = () => {
+	const logout = (requestPath = null) => {
 		if(Session.isSession("donor_db")) Session.destroy("donor_db");
-		window.location.replace("/login");
+		lscache.flush();
+		window.location.replace(requestPath ? `/login?redirect=${requestPath}` : "/login");
 	}
 
 	const onLogin = (event) => {
 		if(event.detail) login(event.detail);
   }
 
-	const onLogout = () => {
-		lscache.flush();
+	const onLogout = (event) => {
 		logout();
 	}
 	/*
@@ -65,6 +65,8 @@
 	 */
 	const validateSession = async (ctx, next) => {
 		if($Configuration.runtimeEnv == "production") {
+			let path = null;
+			if(ctx.path != '/' && ctx.path != $Configuration.landingPagePath) path = ctx.path;
 			if(Session.isSession("donor_db")) {
 				let data = {
 					headers: {
@@ -74,9 +76,9 @@
 
 				let response = await fetch(`${$Configuration.donorApiDomain}/user/validate`, data);
 				if(response.status == 200) next()
-				else logout()
+				else logout(path)
 			}
-			else logout()
+			else logout(path)
 		}
 		else next()
 	}
@@ -88,10 +90,11 @@
  	 * Router
  	 */
 	router('/', () => {
-		window.location.replace("/donors");
+		window.location.replace($Configuration.landingPagePath);
 	});
 
 	router('/login', (ctx, next) => {
+		params = ctx.params;
 		next();
 	}, () => page = Login);
 
