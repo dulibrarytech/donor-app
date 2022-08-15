@@ -44,7 +44,7 @@ export const filterData = (currentData) => {
   return filteredData;
 }
 
-const resetFilters = () => {
+export const resetFilters = () => {
   filteredData = data;
   for(let filter of filters) {
     for(let filterOption of filter.options) {

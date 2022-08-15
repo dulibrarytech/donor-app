@@ -22,7 +22,7 @@ export const ajaxRequest = (type="get", url="", callback, data=null, options=nul
     let value, queryString = "";
     Object.keys(query).forEach((param, index) => {
       value = query[param];
-      if(index == 0) queryString += `?${param}=${value}`
+      if(index == 0 && url.indexOf('?') < 0) queryString += `?${param}=${value}`
       else queryString += `&${param}=${value}`
     });
     url += queryString;
