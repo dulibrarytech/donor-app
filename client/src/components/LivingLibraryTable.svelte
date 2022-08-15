@@ -1,6 +1,14 @@
 <script>
+  import {createEventDispatcher} from 'svelte';
+
   export let items;
   export let args;
+
+  const dispatch = createEventDispatcher();
+
+  const onDeleteRecord = (event) => {
+    dispatch('message', {data: event.target.getAttribute("data-record-id"), eventName: "delete-record"});
+  }
 </script>
 
 <thead class="header">
@@ -13,7 +21,10 @@
 
     <!-- Links -->
     <th scope="col"></th><!-- View Record -->
-    <th scope="col"></th><!-- Book Plate Form || Delete -->
+    <!-- {#if donation.is_completed == false} -->
+      <th scope="col"></th><!-- Book Plate Form -->
+      <th scope="col"></th><!-- Delete -->
+    <!-- {/if} -->
 
   </tr>
 </thead>
@@ -28,14 +39,18 @@
 
         <!-- View Record -->
         <td><a href="/livingLibrary/donation/{donation.id}">View Record</a></td>
-        <!-- New Book Plate || Delete -->
-        <td>
-          {#if donation.is_completed == true}
-            <a href="#">Delete</a>
-          {:else}
+        <!-- New Book Plate, Delete -->
+        {#if donation.is_completed == false}
+          <td>
             <a href="/livingLibrary/donation/{donation.id}/bookPlate">Book Plate Form</a>
-          {/if}
-        </td>
+          </td>
+          <td>
+            <a href="#" data-record-id={donation.id} on:click|preventDefault={onDeleteRecord}>Delete</a>
+          </td>
+        {:else}
+          <td></td>
+          <td></td>
+        {/if}
       </tr>
     {/each}
   {:else}

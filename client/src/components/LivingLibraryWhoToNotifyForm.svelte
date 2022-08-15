@@ -17,8 +17,6 @@ var inputPointerEvents = args.inputPointerEvents;
 var validationLabelDisplay = args.validationLabelDisplay;
 var index = args.index ?? 0;
 
-console.log("WTND", whoToNotifyData)
-
 var validationRules = {
   notify_title: {
     name: "notify_title",

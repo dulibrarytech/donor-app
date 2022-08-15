@@ -20,7 +20,7 @@
     if(enableCompleteAction) {
       enableCompleteAction = false;
       statusUpdate = donationId;
-      dispatch('message', donationId ?? null);
+      dispatch('message', {data: donationId ?? null, eventName: "complete-action"});
     }
   }
 </script>

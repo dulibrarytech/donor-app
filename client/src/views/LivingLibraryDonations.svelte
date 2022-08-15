@@ -5,7 +5,7 @@
  * Display donation table and data filters
  */
 
-import { fetchData } from '../libs/ajax.js';
+import { ajaxRequest, fetchData } from '../libs/ajax.js';
 import { Configuration } from '../config';
 import DataDisplay from "../components/DataDisplay.svelte";
 import NewItemLink from "../components/NewItemLink.svelte";
@@ -13,6 +13,7 @@ import LivingLibraryTable from "../components/LivingLibraryTable.svelte";
 import DataFilterMultiField from "../components/DataFilterMultiField.svelte";
 import DaterangeFilter from "../components/DaterangeFilter.svelte";
 import TextFilter from "../components/TextFilter.svelte";
+import MessageDisplay from "../components/MessageDisplay.svelte";
 
 export let params;
 
@@ -27,6 +28,7 @@ var dataFilter;
 var textFilter;
 var daterangeFilter;
 var donationFilterFormDisplay = true;
+var messageDisplay;
 
 const apiKey  = $Configuration.livingLibraryApiKey;
 var donationsUrl = `${$Configuration.livingLibraryApiDomain}/donations?api_key=${apiKey}`;
@@ -69,22 +71,18 @@ var filters = [
   }
 ];
 
-/*
- * Init page
- */
-const init = async () => {
+const init = () => {
+  refreshData();
+}
+
+const refreshData = async () => {
   let data = await fetchData(donationsUrl);
   donations = parseViewData(data);
-
-  // Apply default filters
   setDataDisplay(dataFilter.filterData(donations));
 }
-/*
- * End Init page
- */
 
 /*
- * Data display init functions
+ * Data display functions
  */
 const parseViewData = (data) => {
   let viewData = [], viewItem;
@@ -146,6 +144,25 @@ const onTextFilter = (event) => {
 /*
  * End Data display user options
  */
+const onDeleteRecord = async (event) => {
+  let id = event.detail;
+  deleteRecord(id);
+}
+
+const deleteRecord = (donationId) => {
+  ajaxRequest("delete", donationsUrl, (error, response, status) => {
+    if(error) {
+      messageDisplay.displayTimeoutMessage("Error");
+    }
+    else if(status != 204) {
+      messageDisplay.displayTimeoutMessage("Error");
+    }
+    else {
+      messageDisplay.displayTimeoutMessage("Record deleted");
+      refreshData();
+    }
+  }, null, null, {id: donationId});
+}
 
 init();
 </script>
@@ -166,7 +183,8 @@ init();
 
       <div class="col-md-9">
         <NewItemLink text="New donation" href="/livingLibrary/donation" />
-        <svelte:component this={DataDisplay} items={donationDisplay} Table={LivingLibraryTable} />
+        <svelte:component this={DataDisplay} items={donationDisplay} Table={LivingLibraryTable} on:delete-record={onDeleteRecord}/>
+        <MessageDisplay bind:this={messageDisplay} />
       </div>
 
     </div>

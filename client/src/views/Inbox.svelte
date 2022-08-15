@@ -73,7 +73,7 @@
   <div class="page-section">
     <h1>Inbox</h1>
     <div>
-      <DataDisplay items={donationDisplay} Table={NewDonationTable} on:message={completeLetterAction}/>
+      <DataDisplay items={donationDisplay} Table={NewDonationTable} on:complete-action={completeLetterAction}/>
       <MessageDisplay bind:this={messageDisplay} />
     </div>
   </div>

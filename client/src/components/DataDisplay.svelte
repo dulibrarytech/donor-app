@@ -10,7 +10,7 @@
 
 <div class="data-display">
   <table class="table">
-    <svelte:component this={Table} items={items} {args} on:message={(event) => dispatch('message', event.detail)}/>
+    <svelte:component this={Table} items={items} {args} on:message={(event) => dispatch(event.detail.eventName, event.detail.data)}/>
   </table>
 </div>
 
