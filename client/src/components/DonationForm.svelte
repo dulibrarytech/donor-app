@@ -79,6 +79,7 @@ const onSubmitForm = () => {
       else {
         let message = method == "post" ? "New donation created" : "Donation record updated";
         messageDisplay.displayTimeoutMessage(message);
+        data = {};
       }
     }, data);
   }

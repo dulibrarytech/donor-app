@@ -130,6 +130,7 @@ const onSubmitForm = () => {
       else {
         let message = method == "post" ? "New donor created" : "Donor record updated";
         messageDisplay.displayTimeoutMessage(message);
+        data = {};
       }
     }, data);
   }

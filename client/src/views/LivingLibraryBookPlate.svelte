@@ -12,11 +12,14 @@ var data = {
   donor: {}
 };
 var donationUrl = `${baseUrl}?api_key=${apiKey}`;
-if(donationId) donationUrl += `&id=${donationId}`;
+var form;
 
 const init = async () => {
   if(!donationId) window.location.replace("/notfound");
-  data = getDonationData();
+  else {
+    donationUrl += `&id=${donationId}`;
+    data = getDonationData();
+  }
 }
 
 const getDonationData = () => {
@@ -48,7 +51,10 @@ const onSubmitForm = (event) => {
   ajaxRequest('PUT', donationUrl, function(error, response, status) {
     if(error) console.error(error)
     else if(status != 200 && status != 201) console.error(`Form post receives response status of ${status}`);
-    else console.log("Book plate request created sucessfully.");
+    else {
+      console.log("Book plate request created sucessfully.");
+      form.reset();
+    }
   }, bookSubmitData);
 }
 
@@ -62,7 +68,7 @@ init()
       <h6>Loading data...</h6>
     {:then data}
       {#if data}
-        <svelte:component this={LivingLibraryBookplateForm} args={{donationId: null, submitButtonVisible:true}} {data} on:form-submit={onSubmitForm}/>
+        <svelte:component this={LivingLibraryBookplateForm} args={{donationId: null, submitButtonVisible:true}} {data} on:form-submit={onSubmitForm} bind:this={form}/>
       {:else}
         <h6>Error retrieving data</h6>
       {/if}

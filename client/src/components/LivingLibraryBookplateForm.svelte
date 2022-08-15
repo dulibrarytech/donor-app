@@ -29,11 +29,8 @@ let bookData = data.book || {
 }
 let recipientData = data.recipient || {};
 let whoToNotifyData = data.who_to_notify || [];
-
-// $: donorTitleString = `${donationData.donor_title} ${donationData.donor_first_name} ${donationData.donor_last_name}`;
-// $: recipientTitleString = `${recipientData.recipient_title} ${recipientData.recipient_first_name} ${recipientData.recipient_last_name}`;
-var donorTitleString;
-var recipientTitleString;
+let donorTitleString;
+let recipientTitleString;
 
 var validationRules = {
   name: "book_bibliographic_number",
@@ -60,6 +57,15 @@ const init = () => {
   submitButtonVisible = args.submitButtonVisible || true;
   donorTitleString = `${donationData.donor_title} ${donationData.donor_first_name} ${donationData.donor_last_name}`;
   recipientTitleString = `${recipientData.recipient_title} ${recipientData.recipient_first_name} ${recipientData.recipient_last_name}`;
+}
+
+export const reset = () => {
+  bookData = {
+    book_author_name: "",
+    book_title: "",
+    book_bibliographic_number: "",
+    book_call_number: ""
+  }
 }
 
 const onSubmit = (event) => {

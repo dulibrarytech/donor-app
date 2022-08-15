@@ -13,6 +13,7 @@ export let params;
 const donationId = params.id ?? null;
 
 var pageLabel;
+var form;
 var formData = {};
 
 const baseUrl = `${$Configuration.livingLibraryApiDomain}/donations`;
@@ -107,7 +108,10 @@ const onSubmitForm = (event) => {
   ajaxRequest('POST', donationUrl, function(error, response, status) {
     if(error) console.error(error)
     else if(status != 200 && status != 201) console.error(`Form post receives response status of ${status}`);
-    else console.log("Donation created sucessfully.");
+    else {
+      console.log("Donation created sucessfully.");
+      form.resetToDefaultValues();
+    }
   }, formSubmitData);
 }
 
@@ -122,7 +126,7 @@ init()
       <h6>Loading data...</h6>
     {:then formData}
       <!-- <h6>{getDonorInfoLabel(donationData)}</h6> -->
-      <svelte:component this={LivingLibraryDonationForm} args={{donationId}} data={formData.donationData} fieldData={formData.fieldData} on:form-submit={onSubmitForm}/>
+      <svelte:component this={LivingLibraryDonationForm} args={{donationId}} data={formData.donationData} fieldData={formData.fieldData} on:form-submit={onSubmitForm} bind:this={form}/>
 
       {#if donationId && formData.donationData.book}
         <h5>Book Plate Record</h5>

@@ -25,51 +25,11 @@ var inputPointerEvents;
 var validationLabelDisplay;
 var messageDisplay;
 
-let donorData = data.donor;
-let recipientData = data.recipient;
-let whoToNotifyData = data.who_to_notify;
+let donorData = data.donor || {donor_subject_areas: []};
+let recipientData = data.recipient || {};
+let whoToNotifyData = data.who_to_notify || [];
 let bookData = data.book;
 let status;
-
-if(!donorData) {
-  donorData = {
-    donor_title: "",
-    donor_first_name: "",
-    donor_last_name: "",
-    donor_address: "",
-    donor_city: "",
-    donor_state: "",
-    donor_zip: "",
-    donor_amount_of_donation: "",
-    donor_date_of_donation: "",
-    donor_notes: "",
-    donor_subject_areas: []
-  }
-}
-
-if(!recipientData) {
-  recipientData = {
-    recipient_title: "",
-    recipient_first_name: "",
-    recipient_last_name: "",
-    recipient_donation_type: ""
-  }
-}
-
-if(!whoToNotifyData) {
-  whoToNotifyData = [
-    {
-      notify_title: "",
-      notify_first_name: "",
-      notify_last_name: "",
-      notify_address: "",
-      notify_city: "",
-      notify_state: "",
-      notify_zip: "",
-      notify_relation_to_donor: ""
-    }
-  ]
-}
 
 var validationRules = {
   donor_first_name: {
@@ -132,7 +92,12 @@ var validationRules = {
 
 const init = () => {
   formState = donationId ? "data_display" : "data_entry";
+
+  // Format form data
   $: status = data.is_completed ? "Completed" : "Queued";
+
+  // Default values
+  if(!donationId) resetToDefaultValues();
 
   if(formState == "data_display") {
     toggleInputEnabled(false);
@@ -142,6 +107,42 @@ const init = () => {
     toggleInputEnabled(true);
     validationLabelDisplay = "inline";
   }
+}
+
+export const resetToDefaultValues = () => {
+  donorData = {
+    donor_title: "",
+    donor_first_name: "",
+    donor_last_name: "",
+    donor_address: "",
+    donor_city: "",
+    donor_state: "",
+    donor_zip: "",
+    donor_amount_of_donation: "",
+    donor_date_of_donation: "",
+    donor_notes: "",
+    donor_subject_areas: []
+  }
+
+  recipientData = {
+    recipient_title: "",
+    recipient_first_name: "",
+    recipient_last_name: "",
+    recipient_donation_type: "In Honor of"
+  }
+
+  whoToNotifyData = [
+    {
+      notify_title: "",
+      notify_first_name: "",
+      notify_last_name: "",
+      notify_address: "",
+      notify_city: "",
+      notify_state: "",
+      notify_zip: "",
+      notify_relation_to_donor: ""
+    }
+  ]
 }
 
 const addPersonToNotify = () => {
@@ -169,6 +170,7 @@ const onSubmit = () => {
   let whoToNotifyRules = whoToNotifyForm.getValidationRules();
   let whoToNotifyFormValidator = new FormValidator('living-library-donation-who-to-notify-form', whoToNotifyRules, "#ced4da");
   let whoToNotifyFormValid = true;
+
   for(let data of whoToNotifyData) {
     if(whoToNotifyFormValidator.validate(data) == false) {
       whoToNotifyFormValid = false;
@@ -269,9 +271,9 @@ init();
 
       <label for="recipient_donation_type">Donation Type</label>
       <div class="form-check" id="recipient_donation_type">
-        <input type="radio" class="form-check-input" id="recipient_donationTypeHonor" bind:group={recipientData.recipient_donation_type} style="pointer-events:{inputPointerEvents}" value="In Honor of">
+        <input type="radio" class="form-check-input" id="recipient_donationTypeHonor" bind:group={recipientData.recipient_donation_type} style="pointer-events:{inputPointerEvents}" value="In Honor of"/>
         <label for="recipient_donationTypeHonor">In Honor of</label>
-        <input type="radio" class="form-check-input" id="recipient_donationTypeMemory" bind:group={recipientData.recipient_donation_type} style="pointer-events:{inputPointerEvents}" value="In Memory of">
+        <input type="radio" class="form-check-input" id="recipient_donationTypeMemory" bind:group={recipientData.recipient_donation_type} style="pointer-events:{inputPointerEvents}" value="In Memory of"/>
         <label for="recipient_donationTypeMemory">In Memory of</label>
       </div>
     </div>
