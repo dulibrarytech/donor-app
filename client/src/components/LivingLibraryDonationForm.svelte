@@ -10,6 +10,7 @@
 import {createEventDispatcher} from 'svelte';
 import LivingLibraryWhoToNotifyForm from "../components/LivingLibraryWhoToNotifyForm.svelte";
 import FormValidator from '../libs/FormValidator.js';
+import MessageDisplay from "../components/MessageDisplay.svelte";
 
 export let args;
 export let data;
@@ -22,6 +23,7 @@ var whoToNotifyForm;
 var formState;
 var inputPointerEvents;
 var validationLabelDisplay;
+var messageDisplay;
 
 let donorData = data.donor;
 let recipientData = data.recipient;
@@ -180,6 +182,9 @@ const onSubmit = () => {
       recipient: recipientData
     });
   }
+  else {
+    messageDisplay.displayTimeoutMessage("Form has validation errors");
+  }
 }
 
 init();
@@ -322,6 +327,7 @@ init();
     <button type="submit" on:click|preventDefault={onSubmit} style="pointer-events:{inputPointerEvents}">Send to queue</button>
   {/if}
 </form>
+<MessageDisplay bind:this={messageDisplay} />
 
 <style>
   form {
