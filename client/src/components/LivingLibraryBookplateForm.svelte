@@ -38,6 +38,7 @@ var recipientTitleString;
 var validationRules = {
   name: "book_bibliographic_number",
   book_bibliographic_number: {
+    name: "book_bibliographic_number",
     required: true,
     maxlength: 30
   },
