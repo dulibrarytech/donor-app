@@ -63,6 +63,7 @@ module.exports = {
 	devtool: prod ? false : 'source-map',
 	devServer: {
 		hot: true,
-		historyApiFallback: true
+		historyApiFallback: true,
+		public: process.env.DOMAIN
 	}
 };
