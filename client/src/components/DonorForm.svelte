@@ -97,23 +97,23 @@ const onSubmitForm = () => {
   else if(data.lastName) {
     validationRules['lastName'] = {
       name: "lastName",
-      maxlength: 20
+      maxlength: 50
     };
     validationRules['organization'] = {
       name: "organization",
       required: false,
-      maxlength: 20
+      maxlength: 100
     };
   }
   else if(data.organization) {
     validationRules['organization'] = {
       name: "organization",
-      maxlength: 20
+      maxlength: 100
     };
     validationRules['lastName'] = {
       name: "lastName",
       required: false,
-      maxlength: 20
+      maxlength: 50
     };
   }
   //formValidator.setRules(validationRules);
@@ -130,7 +130,7 @@ const onSubmitForm = () => {
       else {
         let message = method == "post" ? "New donor created" : "Donor record updated";
         messageDisplay.displayTimeoutMessage(message);
-        data = {};
+        if(method == 'post') data = {};
       }
     }, data);
   }
