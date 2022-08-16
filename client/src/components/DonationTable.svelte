@@ -31,7 +31,7 @@
 </thead>
 <tbody>
   {#if items.length > 0}
-    {#each items as donation (donation.id)}
+    {#each items as donation}
       <tr>
         <td>{donation.dateOfGift?.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/) ?? "No date"}</td>
 
