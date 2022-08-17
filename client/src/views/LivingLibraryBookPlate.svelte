@@ -2,17 +2,19 @@
 import { ajaxRequest, fetchData } from '../libs/ajax.js';
 import { Configuration } from '../config';
 import LivingLibraryBookplateForm from "../components/LivingLibraryBookplateForm.svelte";
+import MessageDisplay from "../components/MessageDisplay.svelte";
 
 export let params;
 
 const baseUrl = `${$Configuration.livingLibraryApiDomain}/donations`;
 const apiKey  = $Configuration.livingLibraryApiKey;
 const donationId = params.donationId ?? null;
-var data = {
+let data = {
   donor: {}
 };
-var donationUrl = `${baseUrl}?api_key=${apiKey}`;
-var form;
+let donationUrl = `${baseUrl}?api_key=${apiKey}`;
+let form;
+let messageDisplay;
 
 const init = async () => {
   if(!donationId) window.location.replace("/notfound");
@@ -49,10 +51,10 @@ const onSubmitForm = (event) => {
   }
 
   ajaxRequest('PUT', donationUrl, function(error, response, status) {
-    if(error) console.error(error)
+    if(error) messageDisplay.displayTimeoutMessage(message, error);
     else if(status != 200 && status != 201) console.error(`Form post receives response status of ${status}`);
     else {
-      console.log("Book plate request created sucessfully.");
+      messageDisplay.displayTimeoutMessage(message, "Book plate request created.");
       form.reset();
     }
   }, bookSubmitData);
@@ -73,6 +75,7 @@ init()
         <h6>Error retrieving data</h6>
       {/if}
     {/await}
+    <MessageDisplay bind:this={messageDisplay} />
   </div>
 </div>
 

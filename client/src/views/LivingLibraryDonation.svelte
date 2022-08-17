@@ -8,18 +8,20 @@ import { ajaxRequest, fetchData } from '../libs/ajax.js';
 import { Configuration } from '../config';
 import LivingLibraryDonationForm from "../components/LivingLibraryDonationForm.svelte";
 import LivingLibraryBookplateForm from "../components/LivingLibraryBookplateForm.svelte";
+import MessageDisplay from "../components/MessageDisplay.svelte";
 
 export let params;
 const donationId = params.id ?? null;
 
-var pageLabel;
-var form;
-var formData = {};
+let pageLabel;
+let form;
+let formData = {};
+let messageDisplay;
 
 const baseUrl = `${$Configuration.livingLibraryApiDomain}/donations`;
 const apiKey  = $Configuration.livingLibraryApiKey;
 
-var donationUrl = `${baseUrl}?api_key=${apiKey}`;
+let donationUrl = `${baseUrl}?api_key=${apiKey}`;
 if(donationId) donationUrl += `&id=${donationId}`;
 
 const fieldDataUrls = [
@@ -106,10 +108,10 @@ const onSubmitForm = (event) => {
   }
 
   ajaxRequest('POST', donationUrl, function(error, response, status) {
-    if(error) console.error(error)
-    else if(status != 200 && status != 201) console.error(`Form post receives response status of ${status}`);
+    if(error) messageDisplay.displayTimeoutMessage(message, error);
+    else if(status != 200 && status != 201) messageDisplay.displayTimeoutMessage(message, `Form post receives response status of ${status}`);
     else {
-      console.log("Donation created sucessfully.");
+      messageDisplay.displayTimeoutMessage(message, "Donation created.");
       form.resetToDefaultValues();
     }
   }, formSubmitData);
@@ -125,9 +127,8 @@ init()
     {#await formData}
       <h6>Loading data...</h6>
     {:then formData}
-      <!-- <h6>{getDonorInfoLabel(donationData)}</h6> -->
       <svelte:component this={LivingLibraryDonationForm} args={{donationId}} data={formData.donationData} fieldData={formData.fieldData} on:form-submit={onSubmitForm} bind:this={form}/>
-
+      <MessageDisplay bind:this={messageDisplay} />
       {#if donationId && formData.donationData.book}
         <h5>Book Plate Record</h5>
         <svelte:component this={LivingLibraryBookplateForm} args={{donationId, submitButtonVisible:false}} data={formData.donationData}/>
