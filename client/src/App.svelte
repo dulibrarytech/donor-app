@@ -183,7 +183,7 @@
 
 <style>
 /*
- * Move the global styles to external stylesheet
+ * TODO: Move the global styles to external stylesheet
  */
 @media (min-width: 1600px) {
 	:global(.container) {
@@ -231,6 +231,10 @@
 
 :global(form label:not(> span)) {
 	font-weight: bold;
+}
+
+:global(.data-display td) {
+	vertical-align: middle;
 }
 /*
  * End global styles
