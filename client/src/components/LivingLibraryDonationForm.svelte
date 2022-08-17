@@ -184,9 +184,7 @@ const onSubmit = () => {
       recipient: recipientData
     });
   }
-  else {
-    messageDisplay.displayTimeoutMessage("Form has validation errors");
-  }
+  else messageDisplay.displayTimeoutMessage("Form has validation errors");
 }
 
 init();

@@ -83,6 +83,7 @@ const onSubmitForm = () => {
       }
     }, data);
   }
+  else messageDisplay.displayTimeoutMessage("Form has validation errors");
 }
 
 const onViewDonorInfo = () => {
