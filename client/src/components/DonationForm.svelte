@@ -71,7 +71,7 @@ const init = () => {
     buttonText = "Update";
     buttonDisabled = true;
     formatFormFields();
-    showValidationLabels(false);
+    //showValidationLabels(false);
   }
   /* New donation */
   else {

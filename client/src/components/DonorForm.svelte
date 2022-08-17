@@ -69,7 +69,7 @@ const init = () => {
     action = `${$Configuration.donorApiDomain}/donor/${donorId}`;
     buttonText = "Update";
     buttonDisabled = true;
-    showValidationLabels(false);
+    //showValidationLabels(false);
   }
 }
 
