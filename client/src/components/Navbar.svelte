@@ -6,31 +6,26 @@
 
   export let userData;
 
+  var routes = [];
   const dispatch = createEventDispatcher();
 
-  if(Session.isSession("donor_db")) {
-    userData = Session.getData("donor_db");
-  }
-  else {
-    userData = null;
-  }
+  if(Session.isSession("donor_db")) userData = Session.getData("donor_db");
+  else userData = null;
 
-  var routes = [];
-  if(userData || $Configuration.runtimeEnv == "development") {
-    routes = [
-      {"label": "Donors", "path": "/donors", "default": true},
-      {"label": "Donations", "path": "/donations"},
-      {"label": "Living Library", "path": "/livingLibrary/donations"}
-    ]
-  }
   if(userData) {
     if(userData.roleId == 2 || userData.roleId == 3) {
         routes.push({"label": "Inbox", "path": "/inbox"})
     }
+  }
+
+  if(userData || $Configuration.runtimeEnv == "development") {
+    routes.push({"label": "Donors", "path": "/donors", "default": true})
+    routes.push({"label": "Donations", "path": "/donations"})
+    routes.push({"label": "Living Library", "path": "/livingLibrary/donations"})
     routes.push({"label": "Logout", "path": "/logout"})
   }
 
-  // Set the clicked nav link to active, remove active state from previously active link
+  /* Sets the clicked nav link to active, remove active state from previously active link */
   const onClickNavItem = function(event) {
     let activeLink = document.querySelector(".nav-item.active");
     if(activeLink) { activeLink.classList.remove("active") }
