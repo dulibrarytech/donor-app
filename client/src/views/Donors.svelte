@@ -78,7 +78,7 @@ init();
       <div class="col-md-3">
         <h6>Filter:</h6>
         <div class="filter-form">
-          <TextFilter data={donors} on:filter-text={onFilter} on:text-filter-change-option={onFilter} filterFields={["lastName", "organization"]} placeholderText="Last name or organization" />
+          <TextFilter data={donors} on:filter-text={onFilter} on:text-filter-change-option={onFilter} filterFields={["lastName", "organization", "firstName"]} placeholderText="Last name, organization, first name" />
         </div>
       </div>
 
