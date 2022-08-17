@@ -7,11 +7,14 @@
 
 import {Configuration} from '../config';
 import {ajaxRequest} from '../libs/ajax.js';
+import {createEventDispatcher} from 'svelte';
 import FormValidator from '../libs/FormValidator.js';
 import MessageDisplay from "../components/MessageDisplay.svelte";
 
 export let args;
 export let data={};
+
+const dispatch = createEventDispatcher();
 
 let donorId = args.donorId;
 let donationId = args.donationId;
@@ -24,6 +27,8 @@ let buttonDisabled = false;
 let validationLabelDisplay = "inline";
 let messageDisplay;
 let typeSelect;
+let deleteButtonText = "Delete";
+let confirmDelete = false;
 
 /* Formatted fields: default values */
 let statusDisplay = null;
@@ -51,6 +56,35 @@ let validationRules = {
   }
 }
 let formValidator = new FormValidator('donation-form', validationRules, "#ced4da");
+
+const init = () => {
+  donorId = data.donorId || data.id || null;
+  if(donorId) data['donorId'] = donorId;
+
+  /* Set select/radio control state */
+  typeSelect = data.important && data.important == 1 ? "important" : "standard";
+
+  /* Display data for donation */
+  if(donationId) {
+    method = "put";
+    action = `${$Configuration.donorApiDomain}/donation/${donationId}`;
+    buttonText = "Update";
+    buttonDisabled = true;
+    formatFormFields();
+    showValidationLabels(false);
+  }
+  /* New donation */
+  else {
+    /* Set letter flag on all new donations, except for anonymous donations */
+    data.letter = donorId == 1 ? 0 : 1;
+  }
+
+  /* Anonymous donation: hide the 'Status' and 'Gift Type' fields */
+  if(donorId == 1) {
+    statusDisplay = false;
+    displayGiftTypeSelect = false;
+  }
+}
 
 const formatFormFields = () => {
   /* Convert status to text */
@@ -100,33 +134,23 @@ const onChangeFormValue = (event) => {
   buttonDisabled = false;
 }
 
-const init = () => {
-  donorId = data.donorId || data.id || null;
-  if(donorId) data['donorId'] = donorId;
-
-  /* Set select/radio control state */
-  typeSelect = data.important && data.important == 1 ? "important" : "standard";
-
-  /* Display data for donation */
-  if(donationId) {
-    method = "put";
-    action = `${$Configuration.donorApiDomain}/donation/${donationId}`;
-    buttonText = "Update";
-    buttonDisabled = true;
-    formatFormFields();
-    showValidationLabels(false);
-  }
-  /* New donation */
+const onDeleteDonation = () => {
+  if(confirmDelete) deleteDonation();
   else {
-    /* Set letter flag on all new donations, except for anonymous donations */
-    data.letter = donorId == 1 ? 0 : 1;
+    deleteButtonText = "Click to Confirm";
+    confirmDelete = true;
+    setTimeout(() => {
+      deleteButtonText = "Delete";
+      confirmDelete = false;
+    }, 3000);
   }
+}
 
-  /* Anonymous donation: hide the 'Status' and 'Gift Type' fields */
-  if(donorId == 1) {
-    statusDisplay = false;
-    displayGiftTypeSelect = false;
-  }
+const deleteDonation = () => {
+  deleteButtonText = "Delete";
+  confirmDelete = false;
+  messageDisplay.displayMessage("Deleting record...");
+  dispatch('delete-donation', donationId);
 }
 
 init();
@@ -178,12 +202,13 @@ init();
   </div>
 
   <button class="btn btn-default" type="submit" on:click|preventDefault={onSubmitForm} disabled={buttonDisabled}>{buttonText}</button>
-    {#if donationId && donorId > 1}
-      {#if roleId == 2 || roleId == 3}
-        <button class="btn btn-default" type="button" on:click={onClickLetter}>Letter</button>
-      {/if}
-      <button class="btn btn-default" type="button" on:click={onViewDonorInfo}>View Donor Info</button>
+  {#if donationId && donorId > 1}
+    {#if roleId == 2 || roleId == 3}
+      <button class="btn btn-default" type="button" on:click={onClickLetter}>Letter</button>
     {/if}
+    <button class="btn btn-default" type="button" on:click={onViewDonorInfo}>View Donor Info</button>
+  {/if}
+  <button class="btn btn-default" type="button" on:click={onDeleteDonation}>{deleteButtonText}</button>
 </form>
 <MessageDisplay bind:this={messageDisplay} />
 

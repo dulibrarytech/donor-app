@@ -270,7 +270,7 @@ module.exports = (() => {
 
   const deleteDonation = (id) => {
     return new Promise((resolve, reject) => {
-      DonationModel.execute_query('delete_donation', [id])
+      DonationModel.execute_query('delete_donation', [id, id])
       .then(
         (response) => {
           resolve(response.data)

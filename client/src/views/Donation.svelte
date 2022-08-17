@@ -64,6 +64,16 @@
     return label;
   }
 
+  const onDeleteDonation = (event) => {
+    setTimeout(() => {
+      ajaxRequest('DELETE', donationUrl, function(error, response, status) {
+        if(error) console.error(error);
+        else if(status != 200) console.error(`Delete donation request receives response status of ${status}`);
+        else window.location.replace("/donations");
+      });
+    }, 2000);
+  }
+
   init();
 </script>
 
@@ -75,7 +85,7 @@
       <h6>Loading data...</h6>
     {:then donationData}
       <h6>{getDonorInfoLabel(donationData)}</h6>
-      <svelte:component this={DonationForm} args={{donationId, donorId, roleId}} data={donationData} />
+      <svelte:component this={DonationForm} args={{donationId, donorId, roleId}} data={donationData} on:delete-donation={onDeleteDonation}/>
     {/await}
   </div>
 </div>
