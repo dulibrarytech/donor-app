@@ -15,12 +15,12 @@
 
 <thead class="header">
   <tr>
-    <th scope="col">Date of Gift</th>
+    <th scope="col">Date of Donation</th>
     {#if !donorId}
       <th scope="col">Last Name/Organization</th>
       <th scope="col">First Name</th>
     {/if}
-    <th scope="col">Gift Type</th>
+    <th scope="col">Donation Type</th>
     <th scope="col">Status</th>
     <th scope="col">Description</th>
     <th scope="col"></th>

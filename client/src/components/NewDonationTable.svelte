@@ -27,10 +27,10 @@
 
 <thead>
   <tr>
-    <th scope="col">Date of Gift</th>
+    <th scope="col">Date of Donation</th>
     <th scope="col">Last Name/Organization</th>
     <th scope="col">First Name</th>
-    <th scope="col">Gift Type</th>
+    <th scope="col">Donation Type</th>
     <th scope="col">Status</th>
     <th scope="col"></th>
     <th scope="col"></th>
@@ -50,7 +50,7 @@
 
         <td>{#if statusUpdate == donation.id}Updating...{:else}{formatStatusField(donation.letter) || "Unknown"}{/if}</td>
 
-        <td><a href="/donation/{donation.id}">View Gift</a></td>
+        <td><a href="/donation/{donation.id}">View Donation</a></td>
 
         <td><a href="/donor/{donation.donorId}">View Donor</a></td>
 

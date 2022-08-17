@@ -20,7 +20,7 @@
           <td width="30%">{donor.organization}</td>
           <td width="25%">{donor.firstName}</td>
           <td width="12.5%"><a href="/donor/{donor.id}">View</a></td>
-          <td width="12.5%"><a href="/donation/donor/{donor.id}">Add Gift</a></td>
+          <td width="12.5%"><a href="/donation/donor/{donor.id}">Add Donation</a></td>
         </tr>
       {/if}
     {/each}

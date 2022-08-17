@@ -183,7 +183,7 @@ init();
       </div>
       <div class="col-md-3">
         {#if displayGiftTypeSelect}
-          <label class="form-check-label">Gift Type</label>
+          <label class="form-check-label">Donation Type</label>
           <div class="form-check">
             <input class="form-check-input" type="radio" bind:group={typeSelect} value="standard" id="type-standard" checked={typeSelect=='standard'} on:change={onChangeFormValue}>
             <label class="form-check-label" for="type-standard">
