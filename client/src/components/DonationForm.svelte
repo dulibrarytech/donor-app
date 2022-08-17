@@ -57,7 +57,7 @@ const formatFormFields = () => {
   statusDisplay = data.letter && data.letter == 1 ? "Pending" : "Complete";
 
   /* Format to yyyy-mm-dd. Formatted value should be submitted with the form. */
-  data.dateOfGift = data.dateOfGift ? dateOfGift.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g)[0] : "No date";
+  data.dateOfGift = data.dateOfGift ? data.dateOfGift.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g)[0] : "No date";
 }
 
 const showValidationLabels = (isVisible) => {
