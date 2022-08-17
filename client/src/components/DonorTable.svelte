@@ -4,9 +4,9 @@
 
 <thead class="header">
   <tr>
-    <th scope="col">Last Name/Organization</th>
+    <th scope="col">Last Name</th>
+    <th scope="col">Organization</th>
     <th scope="col">First Name</th>
-    <!-- <th scope="col">Organization</th> -->
     <th scope="col"></th>
     <th scope="col"></th>
   </tr>
@@ -16,11 +16,11 @@
     {#each items as donor (donor.id)}
       {#if donor.id > 1} <!-- donor id 1 is reserved for anonymous donations -->
         <tr>
-          <td>{donor.lastName.length > 1 ? donor.lastName : donor.organization}</td>
-          <td>{donor.firstName}</td>
-          <!-- <td>{donor.organization ?? ""}</td> -->
-          <td><a href="/donor/{donor.id}">View</a></td>
-          <td><a href="/donation/donor/{donor.id}">Add Gift</a></td>
+          <td width="20%">{donor.lastName}</td>
+          <td width="30%">{donor.organization}</td>
+          <td width="25%">{donor.firstName}</td>
+          <td width="12.5%"><a href="/donor/{donor.id}">View</a></td>
+          <td width="12.5%"><a href="/donation/donor/{donor.id}">Add Gift</a></td>
         </tr>
       {/if}
     {/each}
