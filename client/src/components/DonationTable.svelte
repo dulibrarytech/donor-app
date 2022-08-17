@@ -24,7 +24,7 @@
     <th scope="col">Status</th>
     <th scope="col">Description</th>
     <th scope="col"></th>
-    {#if donorId}
+    {#if donorId && roleId == 2}
       <th scope="col"></th>
     {/if}
   </tr>
@@ -56,10 +56,8 @@
 
         <td width="12.5%"><a href="/donation/{donation.id}">View</a></td>
 
-        {#if donorId}
-          {#if roleId == 2 || roleId == 3}
-            <td><a href="/letter/{donorId}/{donation.id}">Letter</a></td>
-          {/if}
+        {#if donorId && roleId == 2}
+          <td><a href="/letter/{donorId}/{donation.id}">Letter</a></td>
         {/if}
       </tr>
     {/each}
