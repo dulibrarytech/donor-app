@@ -31,9 +31,6 @@ const init = async () => {
     data = {...donationData, ...donorData};
   }
 
-  console.log("D", data)
-  console.log("TD", donorTitles)
-
   if(data.title) {
     data.title = donorTitles.filter((item) => {
       return item.titleId == data.title;

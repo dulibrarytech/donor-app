@@ -3,8 +3,8 @@ import { Configuration } from '../../config';
 import { getNormalDateString } from '../../libs/dateFormatter.js';
 
 export let data;
-const signatureName = "Michael Levine-Clark"; // TODO: To config
-const signatureTitle = "Dean"; // TODO: To config
+const signatureName = $Configuration.letterSignatureName;
+const signatureTitle = $Configuration.letterSignatureTitle;
 const currentDate = getNormalDateString(new Date())
 
 $: {
@@ -38,7 +38,11 @@ $: {
   <br>
   <br>
   <br>
-  <span>Dear {data.title} {data.lastName},</span>
+  {#if data.lastName}
+    <span>Dear {data.title || ""} {data.lastName},</span>
+  {:else}
+    <span>Dear Sir or Madam,</span>
+  {/if}
   <br>
   <br>
   <p>I would like to thank you for your generous donation to the University Library. Your gift of {data.giftDescription}, which we received on {data.dateOfGift}, is much appreciated. The University Library has not provided you with any payment, or services in exchange for your gift; we do, however, convey our sincere appreciation for your contribution - it has enhanced the library's resources.</p>
