@@ -11,14 +11,17 @@ var donationId = params.donationId ?? null;
 
 const donorUrl = `${$Configuration.donorApiDomain}/donor/${donorId ?? ""}`;
 const donationUrl = `${$Configuration.donorApiDomain}/donation/${donationId ?? ""}`;
+const donorTitlesUrl = `${$Configuration.donorApiDomain}/donor/titles/list`;
 
 const init = async () => {
   let donationData = null;
   let donorData = null;
+  let donorTitles = null;
 
   try {
     donationData = await fetchData(donationUrl);
     donorData = await fetchData(donorUrl);
+    donorTitles = await fetchData(donorTitlesUrl);
   }
   catch(error) {
     console.error(`Error retrieving data for letter template: ${error}`)
@@ -26,6 +29,15 @@ const init = async () => {
 
   if(donationData && donorData) {
     data = {...donationData, ...donorData};
+  }
+
+  console.log("D", data)
+  console.log("TD", donorTitles)
+
+  if(data.title) {
+    data.title = donorTitles.filter((item) => {
+      return item.titleId == data.title;
+    })[0].titleString;
   }
 }
 
