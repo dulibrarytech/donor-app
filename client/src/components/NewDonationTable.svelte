@@ -5,6 +5,7 @@
   export let args;
 
   const dispatch = createEventDispatcher();
+  const roleId = args.roleId;
   var statusUpdate = "";
   var enableCompleteAction = true;
 
@@ -32,9 +33,9 @@
     <th scope="col">Organization</th>
     <th scope="col">Donation Type</th>
     <th scope="col">Status</th>
-    <th scope="col"></th>
-    <th scope="col"></th>
-    <th scope="col"></th>
+    <th scope="col"></th><!-- View Donation -->
+    {#if roleId == 2}<th scope="col"></th>{/if}<!-- Letter -->
+    <th scope="col"></th><!-- Mark as Complete -->
   </tr>
 </thead>
 <tbody>
@@ -52,7 +53,7 @@
 
         <td width="10%"><a href="/donation/{donation.id}">View Donation</a></td>
 
-        <td width="10%" style="text-align: center"><a href="/letter/{donation.donorId}/{donation.id}">Letter</a></td>
+        {#if roleId == 2}<td width="10%" style="text-align: center"><a href="/letter/{donation.donorId}/{donation.id}">Letter</a></td>{/if}
 
         <td width="15%"><a href="#" on:click|preventDefault={(event) => onClickComplete(donation.id)} value={donation.id}>Mark as Complete</a></td>
       </tr>
