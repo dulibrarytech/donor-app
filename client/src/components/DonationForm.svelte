@@ -170,7 +170,7 @@ init();
       <div class="col-md-3">
         {#if statusDisplay}
           <label for="status">Status</label>
-          <input type="text" class="form-control" id="status" bind:value={statusDisplay} on:input={onChangeFormValue}>
+          <input type="text" class="form-control" id="status" style="pointer-events: none" bind:value={statusDisplay} on:input={onChangeFormValue}>
         {/if}
       </div>
     </div>
