@@ -64,7 +64,7 @@
 	 * Session validation middleware
 	 */
 	const validateSession = async (ctx, next) => {
-		if($Configuration.runtimeEnv == "production") {
+		if($Configuration.runtimeEnv == "production"|| $Configuration.runtimeEnv == "testing") {
 			let path = null;
 			if(ctx.path != '/' && ctx.path != $Configuration.landingPagePath) path = ctx.path;
 			if(Session.isSession("donor_db")) {
@@ -163,7 +163,7 @@
 		next();
 	}, () => page = LivingLibraryBookPlate);
 
-	router('/*', () => {
+	router('/*', (ctx, next) => {
 		page = NotFound;
 	});
 
@@ -183,7 +183,7 @@
 
 <style>
 /*
- * TODO: Move the global styles to external stylesheet
+ * TODO: Move the global styles to global.css
  */
 @media (min-width: 1600px) {
 	:global(.container) {

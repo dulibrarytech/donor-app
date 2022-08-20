@@ -17,7 +17,6 @@ module.exports = {
 		mainFields: ['svelte', 'browser', 'module', 'main']
 	},
 	output: {
-		publicPath: "/",
 		path: path.join(__dirname, '/public'),
 		filename: '[name].js',
 		chunkFilename: '[name].[id].js'
@@ -64,6 +63,6 @@ module.exports = {
 	devServer: {
 		hot: true,
 		historyApiFallback: true,
-		public: process.env.DOMAIN
+		allowedHosts: [`${process.env.DOMAIN}`]
 	}
 };
