@@ -111,7 +111,7 @@ const onSubmitForm = () => {
         messageDisplay.displayMessage("Error", `Response status: ${status}`);
       }
       else {
-        let message = method == "post" ? "New donation created" : "Donation record updated";
+        let message = method == "post" ? "New donation created. Notification email sent." : "Donation record updated";
         messageDisplay.displayTimeoutMessage(message);
         if(method == 'post') data = {};
       }

@@ -108,10 +108,10 @@ const onSubmitForm = (event) => {
   }
 
   ajaxRequest('POST', donationUrl, function(error, response, status) {
-    if(error) messageDisplay.displayTimeoutMessage(message, error);
-    else if(status != 200 && status != 201) messageDisplay.displayTimeoutMessage(message, `Form post receives response status of ${status}`);
+    if(error) messageDisplay.displayTimeoutMessage("Error", error);
+    else if(status != 200 && status != 201) messageDisplay.displayTimeoutMessage("Error", `Form post receives response status of ${status}`);
     else {
-      messageDisplay.displayTimeoutMessage(message, "Donation created.");
+      messageDisplay.displayTimeoutMessage("Donation created. Notification email sent.");
       form.resetToDefaultValues();
     }
   }, formSubmitData);

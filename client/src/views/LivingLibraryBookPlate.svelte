@@ -50,11 +50,11 @@ const onSubmitForm = (event) => {
     book: JSON.stringify(event.detail.book)
   }
 
-  ajaxRequest('PUT', donationUrl, function(error, response, status) {
-    if(error) messageDisplay.displayTimeoutMessage(message, error);
-    else if(status != 200 && status != 201) console.error(`Form post receives response status of ${status}`);
+  ajaxRequest('PUT', donationUrl, async function(error, response, status) {
+    if(error) messageDisplay.displayTimeoutMessage("Error", error);
+    else if(status != 200 && status != 201) messageDisplay.displayTimeoutMessage("Error", `Form post receives response status of ${status}`);
     else {
-      messageDisplay.displayTimeoutMessage(message, "Book plate request created.");
+      messageDisplay.displayTimeoutMessage("Book plate request created. Notification email sent.");
       form.reset();
     }
   }, bookSubmitData);
