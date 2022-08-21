@@ -67,7 +67,9 @@ const onFilter = (event) => {
  * End Data display user options
  */
 
-init();
+onMount(() => {
+  init();
+})
 </script>
 
 <div class="page">

@@ -1,4 +1,5 @@
 <script>
+import { onMount } from 'svelte';
 import { Configuration } from '../config';
 import { ajaxRequest } from '../libs/ajax.js';
 import Letter from "./partials/Letter.svelte";
@@ -51,7 +52,9 @@ const fetchData = (url) => {
   });
 }
 
-init();
+onMount(() => {
+  init();
+})
 </script>
 
 <div id="letter-view">

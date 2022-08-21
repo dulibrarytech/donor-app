@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte';
   import {Configuration} from '../config';
   import {ajaxRequest} from '../libs/ajax.js';
   import {Session} from '../libs/session.js';
@@ -46,7 +47,9 @@
     }, data);
   }
 
-  init();
+  onMount(() => {
+    init();
+  })
 </script>
 
 <div class="page">
