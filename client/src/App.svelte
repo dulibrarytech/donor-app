@@ -1,5 +1,4 @@
 <script>
-
 	import router from "page.js";
 	import lscache from 'client-cache';
 
@@ -34,7 +33,7 @@
 	}
 
 	/*
-	 * Session control functions
+	 * Session functions
 	 */
 	const login = (data) => {
 		Session.create("donor_db", data.sessionData.token, data.sessionData.userData);
@@ -57,7 +56,7 @@
 		logout();
 	}
 	/*
-	 * End Session control functions
+	 * End Session functions
 	 */
 
 	/*
@@ -182,61 +181,5 @@
 <Footer />
 
 <style>
-/*
- * TODO: Move the global styles to global.css
- */
-@media (min-width: 1600px) {
-	:global(.container) {
-	    max-width: 1500px;
-	}
-}
-@media (min-width: 1500px) {
-	:global(.container) {
-	    max-width: 1400px;
-	}
-}
 
-:global(.filter-form label.group-label) {
-	font-weight: 500;
-}
-
-:global(.form-group) {
-	border-style: solid;
-	border-width: 1px;
-	border-color: #e5e3e1;
-	border-radius: 3px;
-	margin-bottom: 10px;
-	padding: 7px 12px 7px 12px;
-}
-
-:global(.filter-form .form-group) {
-	padding-left: 12px;
-	padding-right: 12px;
-}
-
-:global(.page-section) {
-	margin-top: 25px;
-}
-
-:global(.page-section > h3) {
-	margin-bottom: 30px;
-}
-
-:global(form label span) {
-	margin-left: 15px;
-	font-size: 0.85em;
-	font-style: italic;
-	color: #808080;
-}
-
-:global(form label:not(> span)) {
-	font-weight: bold;
-}
-
-:global(.data-display td) {
-	vertical-align: middle;
-}
-/*
- * End global styles
- */
 </style>
