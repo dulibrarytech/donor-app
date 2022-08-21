@@ -62,7 +62,7 @@ const init = () => {
   if(donorId) data['donorId'] = donorId;
 
   /* Set select/radio control state */
-  typeSelect = data.important && data.important == 1 ? "important" : "standard";
+  $: typeSelect = data.important && data.important == 1 ? "important" : "standard";
 
   /* Display data for donation */
   if(donationId) {
@@ -71,7 +71,6 @@ const init = () => {
     buttonText = "Update";
     buttonDisabled = true;
     formatFormFields();
-    //showValidationLabels(false);
   }
   /* New donation */
   else {
@@ -98,6 +97,11 @@ const showValidationLabels = (isVisible) => {
   validationLabelDisplay = isVisible ? "inline" : "none";
 }
 
+const reset = () => {
+  data = {...data, ...{dateOfGift: "", numberOfGifts: "", giftDescription: "", giftDetails: "", important: 0}};
+  typeSelect = "standard";
+}
+
 const onSubmitForm = () => {
   $: data.important = typeSelect == "important" ? 1 : 0;
 
@@ -113,7 +117,7 @@ const onSubmitForm = () => {
       else {
         let message = method == "post" ? "New donation created. Notification email sent." : "Donation record updated";
         messageDisplay.displayTimeoutMessage(message);
-        if(method == 'post') data = {};
+        if(method == 'post') reset();
       }
     }, data);
   }
