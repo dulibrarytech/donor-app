@@ -180,6 +180,7 @@ const setDataDisplay = (data) => {
 const onKeywordSearch = (event) => {
   searchResults = event.detail.results;
   searchField = event.detail.field;
+  console.log("SF from search", searchField)
   lscache.set('donation_search_results', {
     results: searchResults,
     field: searchField
@@ -264,7 +265,7 @@ onMount(() => {
 
         <div style="display:{donationSearchResultsDisplay}">
           <!-- <button on:click={clearSearchResults}>Exit Search</button> -->
-          <DataDisplay items={searchResults} Table={DonationSearchResultsTable} args={searchField} />
+          <DataDisplay items={searchResults} Table={DonationSearchResultsTable} args={{searchField}} />
         </div>
       </div>
     </div>
