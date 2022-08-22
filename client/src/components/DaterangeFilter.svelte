@@ -1,3 +1,10 @@
+<script context="module">
+  export function iso(date) {
+    const pad = n => n < 10 ? "0" + n : n;
+    return date.getFullYear() + "-" + pad(date.getMonth()+1) + "-" + pad(date.getDate());
+  }
+</script>
+
 <script>
 'use strict'
 
@@ -9,24 +16,25 @@ export let data;
 export let dateField;
 
 const dispatch = createEventDispatcher();
+const INIT_FROM_DATE = "1970-01-01";
 
 var fromDate = "";
 var toDate = "";
+var toDateDisplay = "";
+var fromDateDisplay = "";
 var fromDatePickerDisplay = "none";
 var toDatePickerDisplay = "none";
 var filteredData = [];
 
 let validationRules = {
-  fromDate: {
-    name: "fromDate",
-    required: true,
+  fromDateDisplay: {
+    name: "toDateDisplay",
     maxlength: 10,
     pattern: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
     patternFormat: "yyyy-mm-dd"
   },
-  toDate: {
-    name: "toDate",
-    required: true,
+  toDateDisplay: {
+    name: "toDateDisplay",
     maxlength: 10,
     pattern: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
     patternFormat: "yyyy-mm-dd"
@@ -34,15 +42,23 @@ let validationRules = {
 }
 let formValidator = new FormValidator('daterange', validationRules, "#ced4da");
 
-const onClear = () => {
-  fromDate = "";
-  toDate = "";
+const init = () => {
+  fromDateDisplay = "";
+  toDateDisplay = "";
   filteredData = [];
+  fromDate = INIT_FROM_DATE;
+  toDate = iso(new Date());
+}
+
+const onClear = () => {
+  init();
   dispatch('clear-daterange', null);
 }
 
 const onSet = () => {
-  if(formValidator.validate({fromDate, toDate})) {
+  if(formValidator.validate({fromDateDisplay, toDateDisplay})) {
+    if(fromDateDisplay.length > 0) fromDate = fromDateDisplay;
+    if(toDateDisplay.length > 0) toDate = toDateDisplay;
     let filteredData = filterDaterange(data);
     dispatch('daterange-select', filteredData);
   }
@@ -51,7 +67,6 @@ const onSet = () => {
 export const filterDaterange = (currentData) => {
   if(fromDate?.length > 0 && toDate?.length > 0) {
     filteredData = [];
-
     let from = new Date(fromDate + "T00:00:00");
     let to = new Date(toDate + "T23:59:59");
 
@@ -87,22 +102,14 @@ const onDateSelect = (event) => {
   toDatePickerDisplay = "none";
 }
 
+init();
 </script>
 
 <form id="daterange">
   <div class="form-group">
     <label class="group-label">Daterange:</label>
-
-    <input type="text" id="fromDate" placeholder="From" bind:value={fromDate} on:click={onClickFromDateInput}/>
-    <!-- <div class="datepicker" style="display:{fromDatePickerDisplay}">
-      <DatePicker bind:value={fromDate}  on:date-select={onDateSelect} />
-    </div> -->
-
-    <input type="text" id="toDate" placeholder="To" bind:value={toDate} on:click={onClickToDateInput}/>
-    <!-- <div class="datepicker" style="display:{toDatePickerDisplay}">
-      <DatePicker bind:value={toDate}  on:date-select={onDateSelect} />
-    </div> -->
-
+    <input type="text" id="fromDateDisplay" placeholder="From" bind:value={fromDateDisplay} on:click={onClickFromDateInput}/>
+    <input type="text" id="toDateDisplay" placeholder="To" bind:value={toDateDisplay} on:click={onClickToDateInput}/>
     <button type="button" on:click|preventDefault={onSet}>Apply</button>
     <button type="button" on:click|preventDefault={onClear}>Clear</button>
   </div>

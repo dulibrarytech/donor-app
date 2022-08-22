@@ -180,7 +180,6 @@ const setDataDisplay = (data) => {
 const onKeywordSearch = (event) => {
   searchResults = event.detail.results;
   searchField = event.detail.field;
-  console.log("SF from search", searchField)
   lscache.set('donation_search_results', {
     results: searchResults,
     field: searchField
@@ -208,8 +207,6 @@ const clearSearchResults = () => {
 /* Standard filter functions */
 const onFilter = (event) => {
   setDataDisplay(daterangeFilter.filterDaterange(event.detail));
-  // donationDisplay = daterangeFilter.filterDaterange(event.detail)
-  // setDataDisplay(textFilter.filterText(donationDisplay) || donationDisplay);
 }
 /* End standard filter functions */
 
@@ -217,14 +214,10 @@ const onFilter = (event) => {
 const onDaterangeSelect = (event) => {
   donationDisplay = dataFilter.filterData(donations)
   setDataDisplay(daterangeFilter.filterDaterange(donationDisplay));
-  // donationDisplay = daterangeFilter.filterDaterange(donationDisplay)
-  // setDataDisplay(textFilter.filterText(donationDisplay) || donationDisplay);
 }
 
 const onClearDaterange = () => {
   setDataDisplay(dataFilter.filterData(donations));
-  // donationDisplay = dataFilter.filterData(donations)
-  // setDataDisplay(textFilter.filterText(donationDisplay) || donationDisplay);
 }
 /* End daterange filter functions */
 /*
