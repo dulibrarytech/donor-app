@@ -66,6 +66,14 @@ var filters = [
         "function": (item) => {
           return item.is_completed == 1;
         }
+      },
+      {
+        "field": "status",
+        "value": "2",
+        "label": "Show All",
+        "function": (item) => {
+          return 1;
+        }
       }
     ]
   }
@@ -79,6 +87,26 @@ const refreshData = async () => {
   let data = await fetchData(donationsUrl);
   donations = parseViewData(data);
   setDataDisplay(dataFilter.filterData(donations));
+}
+
+const onDeleteRecord = async (event) => {
+ let id = event.detail;
+ deleteRecord(id);
+}
+
+const deleteRecord = (donationId) => {
+ ajaxRequest("delete", donationsUrl, (error, response, status) => {
+   if(error) {
+     messageDisplay.displayTimeoutMessage("Error");
+   }
+   else if(status != 204) {
+     messageDisplay.displayTimeoutMessage("Error");
+   }
+   else {
+     messageDisplay.displayTimeoutMessage("Record deleted");
+     refreshData();
+   }
+ }, null, null, {id: donationId});
 }
 
 /*
@@ -141,29 +169,9 @@ const onTextFilter = (event) => {
   setDataDisplay(daterangeFilter.filterDaterange(donationDisplay));
 }
 /* End Filter functions */
-
 /*
  * End Data display user options
  */
-const onDeleteRecord = async (event) => {
-  let id = event.detail;
-  deleteRecord(id);
-}
-
-const deleteRecord = (donationId) => {
-  ajaxRequest("delete", donationsUrl, (error, response, status) => {
-    if(error) {
-      messageDisplay.displayTimeoutMessage("Error");
-    }
-    else if(status != 204) {
-      messageDisplay.displayTimeoutMessage("Error");
-    }
-    else {
-      messageDisplay.displayTimeoutMessage("Record deleted");
-      refreshData();
-    }
-  }, null, null, {id: donationId});
-}
 
 init();
 </script>

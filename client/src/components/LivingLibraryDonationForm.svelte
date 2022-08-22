@@ -94,7 +94,7 @@ const init = () => {
   formState = donationId ? "data_display" : "data_entry";
 
   // Format form data
-  $: status = data.is_completed ? "Completed" : "Queued";
+  status = data.is_completed ? "Completed" : "Queued";
 
   // Default values
   if(!donationId) resetToDefaultValues();
