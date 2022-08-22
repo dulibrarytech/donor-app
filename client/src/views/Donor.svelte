@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { ajaxRequest } from '../libs/ajax.js';
+  import { ajaxRequest, fetchData } from '../libs/ajax.js';
   import { Configuration } from '../config';
   import { Session } from '../libs/session.js';
   import PageTitleLabel from "../components/PageTitleLabel.svelte";
@@ -60,19 +60,6 @@
     }
   }
 
-  const fetchData = (url) => {
-    return new Promise((resolve, reject) => {
-      ajaxRequest('GET', url, function(error, response, status) {
-        if(error) {
-          console.error(error);
-          resolve([]);
-        }
-        else if(status != 200) resolve([]);
-        else resolve(response.json());
-      });
-    });
-  }
-
   const getPageLabel = ({firstName="", lastName="", organization=""}) => {
     let label = "Donor";
     if(lastName.length > 0) {
@@ -101,6 +88,21 @@
     }
   }
 
+  const completeLetterAction = (event) => {
+    let donationId = event.detail;
+    let url = `${$Configuration.donorApiDomain}/donation/${donationId}/letter`;
+
+    console.log("Updating donation status...");
+    ajaxRequest("post", url, function(error, response, status) {
+      if(error) console.error(`Ajax error: ${error}`);
+      else if(status != 200) console.error(`Response status: ${status}`);
+      else {
+        console.log("Donation record updated.");
+        init();
+      }
+    });
+  }
+
   onMount(() => {
     init();
   })
@@ -115,7 +117,7 @@
     <div class="page-section">
       <h3>Donations</h3>
       <NewItemLink text="Add new donation" href={addDonationPath} />
-      <svelte:component this={DataDisplay} items={donationDisplay} Table={DonationTable} args={{donorId, roleId}}/>
+      <svelte:component this={DataDisplay} items={donationDisplay} Table={DonationTable} args={{donorId, roleId}} on:complete-action={completeLetterAction}/>
     </div>
   {/if}
 </div>

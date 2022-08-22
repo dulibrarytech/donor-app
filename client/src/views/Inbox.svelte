@@ -49,20 +49,13 @@
     let donationId = event.detail;
     let url = `${$Configuration.donorApiDomain}/donation/${donationId}/letter`;
 
-    messageDisplay.displayMessage("Updating status...");
+    console.log("Updating donation status...");
     ajaxRequest("post", url, function(error, response, status) {
-      if(error) {
-        messageDisplay.displayMessage("Error", `Ajax error: ${error}`);
-      }
-      else if(status != 200) {
-        messageDisplay.displayMessage("Error", `Response status: ${status}`);
-      }
+      if(error) console.error(`Ajax error: ${error}`);
+      else if(status != 200) console.error(`Response status: ${status}`);
       else {
-        messageDisplay.displayMessage("Donation record updated.");
-        setTimeout(() => {
-          messageDisplay.displayMessage("");
-          init();
-        }, 3000)
+        console.log("Donation record updated.");
+        init();
       }
     });
   }
