@@ -58,9 +58,11 @@ const onClear = () => {
 const onSet = () => {
   if(formValidator.validate({fromDateDisplay, toDateDisplay})) {
     if(fromDateDisplay.length > 0) fromDate = fromDateDisplay;
+    else fromDateDisplay = fromDate;
     if(toDateDisplay.length > 0) toDate = toDateDisplay;
+    else toDateDisplay = toDate;
     let filteredData = filterDaterange(data);
-    dispatch('daterange-select', filteredData);
+    dispatch('daterange-select', {data: filteredData, daterange: {fromDate, toDate}});
   }
 }
 

@@ -14,6 +14,7 @@ import NewItemLink from "../components/NewItemLink.svelte";
 import DataFilterMultiField from "../components/DataFilterMultiField.svelte";
 import DaterangeFilter from "../components/DaterangeFilter.svelte";
 import SearchBox from "../components/SearchBox.svelte";
+import StateDisplay from "../components/StateDisplay.svelte";
 
 var roleId;
 var donations = [];
@@ -26,6 +27,7 @@ var searchField = "";
 var dataFilter;
 var filters = [];
 var daterangeFilter;
+var dateRange = null;
 var donationListDisplay = "block";
 var donationFilterFormDisplay = "block";
 var donationSearchResultsDisplay = "none";
@@ -206,17 +208,22 @@ const clearSearchResults = () => {
 
 /* Standard filter functions */
 const onFilter = (event) => {
-  setDataDisplay(daterangeFilter.filterDaterange(event.detail));
+  let data = event.detail;
+  if(dateRange) {data = daterangeFilter.filterDaterange(event.detail)}
+  setDataDisplay(data);
 }
 /* End standard filter functions */
 
 /* Daterange filter functions */
 const onDaterangeSelect = (event) => {
+  dateRange = event.detail.daterange || null;
   donationDisplay = dataFilter.filterData(donations)
+  //setDataDisplay(event.detail.data);
   setDataDisplay(daterangeFilter.filterDaterange(donationDisplay));
 }
 
 const onClearDaterange = () => {
+  dateRange = null;
   setDataDisplay(dataFilter.filterData(donations));
 }
 /* End daterange filter functions */
@@ -248,16 +255,17 @@ onMount(() => {
 
       <div class="col-md-9">
         <div style="display:{donationListDisplay}">
-          <span class="statistics-display">
-            <label>Donations:</label><span>{donationCount}</span><label>Total Items:</label><span>{donationItemCount}</span>
-          </span>
+          <div style="display: grid">
+            <StateDisplay data={[{label: "Donations", value: donationCount || ""}, {label: "Total Items", value: donationItemCount || ""}]} displayClass="statistics-display" />
+            {#if dateRange}
+              <StateDisplay data={[{label: "From", value: dateRange.fromDate || ""}, {label: "To", value: dateRange.toDate || ""}]} displayClass="daterange-display" />
+            {/if}
+          </div>
           <NewItemLink text="Add anonymous donation" href="/donation/donor/1" />
           <DataDisplay items={donationDisplay} Table={DonationTable} args={{roleId}}/>
-          <!-- <DataDisplay items={donationDisplay} Table={DonationTable} args={{searchResultsDisplay: searchResultsDisplay}}/> -->
         </div>
 
         <div style="display:{donationSearchResultsDisplay}">
-          <!-- <button on:click={clearSearchResults}>Exit Search</button> -->
           <DataDisplay items={searchResults} Table={DonationSearchResultsTable} args={{searchField}} />
         </div>
       </div>
@@ -266,25 +274,25 @@ onMount(() => {
 </div>
 
 <style>
-  .statistics-display {
+  .state-data {
     float: left;
     margin-bottom: 10px;
   }
 
-  .statistics-display * {
+  .state-data * {
     display: inline-flex;
     flex-direction: row;
   }
 
-  .statistics-display > span {
+  .state-data > span {
     margin: 0 8px;
   }
 
-  .statistics-display label {
+  .state-data label {
     font-weight: 500;
   }
 
-  .statistics-display label:not(:first-child) {
+  .state-data label:not(:first-child) {
     margin-left: 30px
   }
 
