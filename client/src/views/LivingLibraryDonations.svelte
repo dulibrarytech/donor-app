@@ -14,13 +14,13 @@ import DataFilterMultiField from "../components/DataFilterMultiField.svelte";
 import DaterangeFilter from "../components/DaterangeFilter.svelte";
 import TextFilter from "../components/TextFilter.svelte";
 import MessageDisplay from "../components/MessageDisplay.svelte";
+import StateDisplay from "../components/StateDisplay.svelte";
 
 export let params;
 
 var donations = [];
 var donationDisplay = [];
 var donationCount = 0;
-var donationItemCount = 0;
 var searchBox;
 var searchResults = [];
 var searchField = "";
@@ -96,6 +96,7 @@ const parseViewData = (data) => {
 const setDataDisplay = (data=null) => {
   donationDisplay = data == null ? donations : data;
   sortDataDisplay();
+  donationCount = donationDisplay.length;
 }
 /*
  * End Data display init functions
@@ -182,6 +183,7 @@ init();
       </div>
 
       <div class="col-md-9">
+        <StateDisplay data={[{label: "Donations", value: donationCount || ""}]} displayClass="statistics-display" />
         <NewItemLink text="New donation" href="/livingLibrary/donation" />
         <svelte:component this={DataDisplay} items={donationDisplay} Table={LivingLibraryTable} on:delete-record={onDeleteRecord}/>
         <MessageDisplay bind:this={messageDisplay} />
