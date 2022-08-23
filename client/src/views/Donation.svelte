@@ -69,7 +69,7 @@
       ajaxRequest('DELETE', donationUrl, function(error, response, status) {
         if(error) console.error(error);
         else if(status != 200) console.error(`Delete donation request receives response status of ${status}`);
-        else window.location.replace("/donations");
+        else history.back();
       });
     }, 2000);
   }
