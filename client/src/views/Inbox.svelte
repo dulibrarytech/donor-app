@@ -14,6 +14,11 @@
 
   const donationsUrl = `${$Configuration.donorApiDomain}/donation/pending/all`;
 
+  var sortOptions = {
+    field: "dateOfRecord",
+    type: "desc"
+  };
+
   const init = async () => {
     donations = await getDonationList();
 
@@ -30,6 +35,8 @@
         return item.important == 1;
       });
     }
+
+    sortDataDisplay();
   }
 
   const getDonationList = async () => {
@@ -58,6 +65,20 @@
         init();
       }
     });
+  }
+
+  const sortDataDisplay = () => {
+    let {type, field} = sortOptions;
+    if(type == "asc") {
+      donationDisplay = donationDisplay.sort(function(a, b) {
+        return a[field]?.localeCompare(b[field]);
+      });
+    }
+    else if(type == "desc") {
+      donationDisplay = donationDisplay.sort(function(b, a) {
+        return a[field]?.localeCompare(b[field]);
+      });
+    }
   }
 
   onMount(() => {

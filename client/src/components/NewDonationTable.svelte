@@ -38,6 +38,7 @@
 
 <thead>
   <tr>
+    <th scope="col">Date of Record</th>
     <th scope="col">Date of Donation</th>
     <th scope="col">Last Name</th>
     <th scope="col">Organization</th>
@@ -52,6 +53,7 @@
   {#if items.length > 0}
     {#each items as donation}
       <tr>
+        <td width="10%">{donation.dateOfRecord?.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/) ?? "No date"}</td>
         <td width="10%">{donation.dateOfGift?.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/) ?? "No date"}</td>
         <td width="17.5%">{donation.lastName || ""}</td>
         <td width="17.5%">{donation.organization || ""}</td>
