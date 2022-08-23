@@ -16,7 +16,6 @@ import DaterangeFilter from "../components/DaterangeFilter.svelte";
 import SearchBox from "../components/SearchBox.svelte";
 import StateDisplay from "../components/StateDisplay.svelte";
 
-var roleId;
 var donations = [];
 var donationDisplay = [];
 var donationCount = 0;
@@ -31,6 +30,8 @@ var dateRange = null;
 var donationListDisplay = "block";
 var donationFilterFormDisplay = "block";
 var donationSearchResultsDisplay = "none";
+
+const roleId = Session.getDataItem("donor_db", 'roleId');
 
 /*
  * Page configuration
@@ -112,7 +113,6 @@ filters.push({
  * Init page
  */
 const init = async () => {
-  roleId = Session.getDataItem("donor_db", 'roleId');
   donations = await getDonationList();
   setDataDisplay(donations);
 
@@ -262,7 +262,7 @@ onMount(() => {
             {/if}
           </div>
           <NewItemLink text="Add anonymous donation" href="/donation/donor/1" />
-          <DataDisplay items={donationDisplay} Table={DonationTable} args={{roleId}}/>
+          <svelte:component this={DataDisplay} items={donationDisplay} Table={DonationTable} args={{roleId}}/>
         </div>
 
         <div style="display:{donationSearchResultsDisplay}">

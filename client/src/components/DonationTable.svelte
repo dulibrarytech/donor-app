@@ -7,12 +7,21 @@
   const dispatch = createEventDispatcher();
   let donorId = args?.donorId || null;
   let roleId = args?.roleId;
+
   var completeActionStatusUpdate;
   var enableCompleteAction;
+  var isDonorPage;
+  var isAdminUser;
+  var isExtRelUser;
 
   const init = () => {
-    completeActionStatusUpdate = "";
+    console.log("Init, args", args)
+    completeActionStatusUpdate = false;
     enableCompleteAction = true;
+    isDonorPage = donorId ? true : false;
+    isAdminUser = roleId == 2;
+    isExtRelUser = roleId == 3;
+    console.log("Is Admin", isAdminUser)
   }
 
   const formatGiftTypeField = (value=false) => {
@@ -20,7 +29,20 @@
   }
 
   const formatStatusField = (value=false) => {
-    return value == true ? "Pending letter" : "Complete";
+    return value == true ? "Pending Letter" : "Complete";
+  }
+
+  const isAnonymousDonation = (donation) => {
+    return donation.donorId == 1;
+  }
+
+  const isPendingLetter = (donation) => {
+    //return (isAdminUser || isExtRelUser) && donation.letter == 1;
+    return isAdminUser && isImportantGift(donation) == false || isExtRelUser && isImportantGift(donation) == true
+  }
+
+  const isImportantGift = (donation) => {
+    return donation.important == 1;
   }
 
   const onClickComplete = (donationId) => {
@@ -40,19 +62,19 @@
 <thead class="header">
   <tr>
     <th scope="col">Date of Donation</th>
-    {#if !donorId}
+    {#if !isDonorPage}
       <th scope="col">Last Name/Organization</th>
       <th scope="col">First Name</th>
     {/if}
     <th scope="col">Donation Type</th>
     <th scope="col">Status</th>
     <th scope="col">Description</th>
-    <th scope="col"></th>
-    {#if donorId && roleId == 2}
-      <th scope="col"></th>
+    <th scope="col"></th><!-- View link -->
+    {#if isAdminUser}
+      <th scope="col"></th><!-- Letter link -->
     {/if}
-    {#if donorId && (roleId == 2 || roleId == 3)}
-      <th scope="col"></th>
+    {#if isDonorPage && (isAdminUser || isExtRelUser)}
+      <th scope="col"></th><!-- Mark As Complete link -->
     {/if}
   </tr>
 </thead>
@@ -60,28 +82,49 @@
   {#if items.length > 0}
     {#each items as donation}
       <tr>
+        <!-- Date of Donation -->
         <td width="12.5%">{donation.dateOfGift?.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/) ?? "No date"}</td>
-        {#if !donorId}
+
+        {#if !isDonorPage}
+          <!-- Last Name/Organization -->
           <td width="20%">{donation.lastName || donation.organization || ""}</td>
+
+          <!-- First Name -->
           <td width="10%">{donation.firstName || ""}</td>
         {/if}
-        {#if donation.donorId != 1}
+
+        <!-- Donation Type -->
+        {#if !isAnonymousDonation(donation)}
           <td width="12.5%">{formatGiftTypeField(donation.important) || "Unknown"}</td>
         {:else}
           <td width="12.5%">n/a</td>
         {/if}
-        {#if donation.donorId != 1}
+
+        <!-- Status -->
+        {#if !isAnonymousDonation(donation)}
           <td width="12.5%">{#if completeActionStatusUpdate == donation.id}Updating...{:else}{formatStatusField(donation.letter) || "Unknown"}{/if}</td>
         {:else}
           <td width="12.5%">n/a</td>
         {/if}
+
+        <!-- Description -->
         <td width="20%">{donation.giftDescription}</td>
+
+        <!-- View link -->
         <td width="10%"><a href="/donation/{donation.id}">View</a></td>
-        {#if donorId && roleId == 2}
-          <td  width="10%"><a href="/letter/{donorId}/{donation.id}">Letter</a></td>
+
+        <!-- Letter link -->
+        {#if isAdminUser}
+          <td width="10%"><a href="/letter/{donorId}/{donation.id}">Letter</a></td>
         {/if}
-        {#if donorId && (donation.letter == 1) && (roleId == 2 || roleId == 3)}
-          <td width="10%"><a href="#" on:click|preventDefault={(event) => onClickComplete(donation.id)} value={donation.id}>Mark as Complete</a></td>
+
+        <!-- Mark as Complete link -->
+        {#if isDonorPage && (isAdminUser || isExtRelUser)}
+          {#if isPendingLetter(donation)}
+            <td width="10%"><a href="#" on:click|preventDefault={(event) => onClickComplete(donation.id)} value={donation.id}>Mark as Complete</a></td>
+          {:else}
+            <td></td>
+          {/if}
         {/if}
       </tr>
     {/each}
