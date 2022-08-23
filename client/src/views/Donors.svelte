@@ -12,17 +12,11 @@ var donorDisplay = [];
 
 var donorsUrl = `${$Configuration.donorApiDomain}/donor`;
 
-/*
- * Init page
- */
 const init = async () => {
   donors = await getDonorList();
   setDataDisplay(donors);
 }
 
-/*
- * Data display init functions
- */
 const getDonorList = async () => {
   return new Promise((resolve, reject) => {
     ajaxRequest('GET', donorsUrl, function(error, response, status) {
@@ -40,13 +34,7 @@ const setDataDisplay = (data) => {
   donorDisplay = data;
   sortDataDisplay();
 }
-/*
- * End Data display init functions
- */
 
-/*
- * Data display user options
- */
 const sortDataDisplay = () => {
   // If last name has a value, sort descending on that value. If not, use the organization value
   donorDisplay = donorDisplay.sort(function(a, b) {
@@ -58,14 +46,9 @@ const sortDataDisplay = () => {
   });
 }
 
-/* Standard filter functions */
 const onFilter = (event) => {
   setDataDisplay(event.detail ? event.detail : donors);
 }
-/* End standard filter functions */
-/*
- * End Data display user options
- */
 
 onMount(() => {
   init();

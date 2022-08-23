@@ -33,9 +33,6 @@ var donationSearchResultsDisplay = "none";
 
 const roleId = Session.getDataItem("donor_db", 'roleId');
 
-/*
- * Page configuration
- */
 var sortOptions = {
   field: "dateOfGift",
   type: "desc"
@@ -105,13 +102,7 @@ filters.push({
     }
   }
 ]});
-/*
- * End Page configuration
- */
 
-/*
- * Init page
- */
 const init = async () => {
   donations = await getDonationList();
   setDataDisplay(donations);
@@ -122,13 +113,7 @@ const init = async () => {
     showSearchResults();
   }
 }
-/*
- * End Init page
- */
 
-/*
- * Data display init functions
- */
 const getDonationList = async () => {
   let list = [],
       url = `${$Configuration.donorApiDomain}/donation`;
@@ -157,28 +142,21 @@ const setDataDisplay = (data) => {
   })
   donationItemCount = totalItems;
 }
-/*
- * End Data display init functions
- */
 
-/*
- * Data display user options
- */
- const sortDataDisplay = () => {
-   let {type, field} = sortOptions;
-   if(type == "asc") {
-     donationDisplay = donationDisplay.sort(function(a, b) {
-       return a[field]?.localeCompare(b[field]);
-     });
-   }
-   else if(type == "desc") {
-     donationDisplay = donationDisplay.sort(function(b, a) {
-       return a[field]?.localeCompare(b[field]);
-     });
-   }
+const sortDataDisplay = () => {
+ let {type, field} = sortOptions;
+ if(type == "asc") {
+   donationDisplay = donationDisplay.sort(function(a, b) {
+     return a[field]?.localeCompare(b[field]);
+   });
  }
+ else if(type == "desc") {
+   donationDisplay = donationDisplay.sort(function(b, a) {
+     return a[field]?.localeCompare(b[field]);
+   });
+ }
+}
 
-/* Keyword search functions */
 const onKeywordSearch = (event) => {
   searchResults = event.detail.results;
   searchField = event.detail.field;
@@ -204,17 +182,13 @@ const clearSearchResults = () => {
   donationFilterFormDisplay = "block";
   donationSearchResultsDisplay = "none";
 }
-/* End keyword search functions */
 
-/* Standard filter functions */
 const onFilter = (event) => {
   let data = event.detail;
   if(dateRange) {data = daterangeFilter.filterDaterange(event.detail)}
   setDataDisplay(data);
 }
-/* End standard filter functions */
 
-/* Daterange filter functions */
 const onDaterangeSelect = (event) => {
   dateRange = event.detail.daterange || null;
   donationDisplay = dataFilter.filterData(donations)
@@ -226,10 +200,6 @@ const onClearDaterange = () => {
   dateRange = null;
   setDataDisplay(dataFilter.filterData(donations));
 }
-/* End daterange filter functions */
-/*
- * End Data display user options
- */
 
 onMount(() => {
  init();
