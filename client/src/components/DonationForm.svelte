@@ -211,8 +211,8 @@ init();
       <button class="btn btn-default" type="button" on:click={onClickLetter}>Letter</button>
     {/if}
     <button class="btn btn-default" type="button" on:click={onViewDonorInfo}>View Donor Info</button>
+    <button class="btn btn-default" type="button" on:click={onDeleteDonation}>{deleteButtonText}</button>
   {/if}
-  <button class="btn btn-default" type="button" on:click={onDeleteDonation}>{deleteButtonText}</button>
 </form>
 <MessageDisplay bind:this={messageDisplay} />
 

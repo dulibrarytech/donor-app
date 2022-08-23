@@ -15,13 +15,11 @@
   var isExtRelUser;
 
   const init = () => {
-    console.log("Init, args", args)
     completeActionStatusUpdate = false;
     enableCompleteAction = true;
     isDonorPage = donorId ? true : false;
     isAdminUser = roleId == 2;
     isExtRelUser = roleId == 3;
-    console.log("Is Admin", isAdminUser)
   }
 
   const formatGiftTypeField = (value=false) => {
@@ -37,7 +35,6 @@
   }
 
   const isPendingLetter = (donation) => {
-    //return (isAdminUser || isExtRelUser) && donation.letter == 1;
     return isAdminUser && isImportantGift(donation) == false || isExtRelUser && isImportantGift(donation) == true
   }
 
