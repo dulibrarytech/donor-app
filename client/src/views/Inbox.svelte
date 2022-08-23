@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import {Configuration} from '../config';
-  import {ajaxRequest} from '../libs/ajax.js';
+  import {ajaxRequest, fetchData} from '../libs/ajax.js';
   import {Session} from '../libs/session.js';
   import DataDisplay from "../components/DataDisplay.svelte";
   import NewDonationTable from "../components/NewDonationTable.svelte";
@@ -20,7 +20,7 @@
   };
 
   const init = async () => {
-    donations = await getDonationList();
+    donations = await fetchData(donationsUrl);
 
     /* If user role is 'admin' show the standard donations */
     if(userData.roleId == 2) {
@@ -39,25 +39,12 @@
     sortDataDisplay();
   }
 
-  const getDonationList = async () => {
-    return new Promise((resolve, reject) => {
-      ajaxRequest('GET', donationsUrl, function(error, response, status) {
-        if(error) {
-          console.error(error);
-          resolve([]);
-        }
-        else if(status != 200) resolve([]);
-        else resolve(response.json());
-      });
-    });
-  }
-
   const completeLetterAction = (event) => {
     let donationId = event.detail;
     let url = `${$Configuration.donorApiDomain}/donation/${donationId}/letter`;
 
     console.log("Updating donation status...");
-    ajaxRequest("post", url, function(error, response, status) {
+    ajaxRequest("post", completeLetterUrl, function(error, response, status) {
       if(error) console.error(`Ajax error: ${error}`);
       else if(status != 200) console.error(`Response status: ${status}`);
       else {
