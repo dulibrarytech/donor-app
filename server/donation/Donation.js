@@ -148,7 +148,7 @@ module.exports = (() => {
         Gifts.bypassLetter AS             ${map.bypassLetter}
       FROM tbl_donorgifts Gifts
       NATURAL JOIN tbl_donorinfo Donors
-      WHERE letter=1`
+      WHERE letter=1 AND bypassLetter=0`
   }
 
   const DonationModel = new Model(database, queries);
