@@ -103,9 +103,46 @@ filters.push({
   }
 ]});
 
+filters.push({
+  "groupLabel": "Status:",
+  "options": [
+  {
+    "field": "status",
+    "value": "0",
+    "label": "Show All",
+    "function": (item) => {
+      return true;
+    },
+    "isDefault": true
+  },
+  {
+    "field": "status",
+    "value": "1",
+    "label": "Complete",
+    "function": (item) => {
+      return item.letter == 0 && item.bypassLetter == 0;
+    }
+  },
+  {
+    "field": "status",
+    "value": "2",
+    "label": "Pending Letter",
+    "function": (item) => {
+      return item.letter == 1 && item.bypassLetter == 0;
+    }
+  },
+  {
+    "field": "status",
+    "value": "3",
+    "label": "Letter Bypassed",
+    "function": (item) => {
+      return item.bypassLetter == 1;
+    }
+  }
+]});
+
 const init = async () => {
   donations = await getDonationList();
-  console.log("Donations", donations)
   setDataDisplay(donations);
 
   if(lscache.get('donation_search_results')) {

@@ -16,12 +16,12 @@
     isAdminUser = roleId == 2;
   }
 
-  const formatGiftTypeField = (value=false) => {
-    return value == true ? "Important" : "Standard";
+  const formatGiftTypeField = (donation) => {
+    return donation.important == 1 ? "Important" : "Standard";
   }
 
-  const formatStatusField = (value=false) => {
-    return value == true ? "Pending letter" : "Complete";
+  const formatStatusField = (donation) => {
+    return donation.letter == 1 ? "Pending Letter" : "Complete";
   }
 
   const onClickComplete = (donationId) => {
@@ -59,8 +59,8 @@
         <td width="10%">{donation.dateOfGift?.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/) ?? "No date"}</td>
         <td width="17.5%">{donation.lastName || ""}</td>
         <td width="17.5%">{donation.organization || ""}</td>
-        <td width="10%">{formatGiftTypeField(donation.important) || "Unknown"}</td>
-        <td width="10%">{#if completeActionStatusUpdate == donation.id}Updating...{:else}{formatStatusField(donation.letter) || "Unknown"}{/if}</td>
+        <td width="10%">{formatGiftTypeField(donation) || "Unknown"}</td>
+        <td width="10%">{#if completeActionStatusUpdate == donation.id}Updating...{:else}{formatStatusField(donation) || "Unknown"}{/if}</td>
         <td width="10%"><a href="/donation/{donation.id}">View Donation</a></td>
         {#if isAdminUser}<td width="10%" style="text-align: center"><a href="/letter/{donation.donorId}/{donation.id}">Letter</a></td>{/if}
         <td width="15%"><a href="#" on:click|preventDefault={(event) => onClickComplete(donation.id)} value={donation.id}>Mark as Complete</a></td>
