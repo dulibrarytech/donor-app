@@ -274,6 +274,7 @@ onMount(() => {
         </div>
 
         <div style="display:{donationSearchResultsDisplay}">
+          <DescriptionList data={[{label: "Result Count", value: searchResults.length || ""}]} displayClass="statistics-display" />
           <DataDisplay items={searchResults} Table={DonationSearchResultsTable} args={{searchField}} />
         </div>
       </div>
