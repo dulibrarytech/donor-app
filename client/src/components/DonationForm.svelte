@@ -29,6 +29,7 @@ let deleteButtonText = "Delete";
 let confirmDelete = false;
 
 /* Formatted fields: default values */
+let dateDisplay = null;
 let statusDisplay = null;
 
 /* Toggle visibility of controls */
@@ -62,7 +63,11 @@ const init = () => {
   isAnonymousDonation = donorId == 1;
 
   /* Set select/radio control state */
-  $: typeSelect = data.important && data.important == 1 ? "important" : "standard";
+  typeSelect = data.important && data.important == 1 ? "important" : "standard";
+
+  statusDisplay = formatStatusField(data);
+
+  dateDisplay = formatDateField(data);
 
   /* If there is an active donation, use the 'PUT' configuration (update donation form) */
   if(donationId) {
@@ -70,7 +75,8 @@ const init = () => {
     action = `${$Configuration.donorApiDomain}/donation/${donationId}`;
     buttonText = "Update";
     buttonDisabled = true;
-    formatFormFields();
+    // formatFormFields();
+    //formatStatusField();
   }
   /* If there is no active donation, use the default 'POST' configuration (new donation form) */
   else {
@@ -90,12 +96,25 @@ const init = () => {
   }
 }
 
-const formatFormFields = () => {
-  /* Convert status to text */
-  statusDisplay = data.letter && data.letter == 1 ? "Pending Letter" : "Complete";
+// const formatFormFields = () => {
+//   /* Convert status to text */
+//   statusDisplay = data.letter && data.letter == 1 ? "Pending Letter" : "Complete";
+//
+//   /* Format to yyyy-mm-dd. Formatted value should be submitted with the form. */
+//   data.dateOfGift = data.dateOfGift ? data.dateOfGift.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g)[0] : "No date";
+// }
 
-  /* Format to yyyy-mm-dd. Formatted value should be submitted with the form. */
-  data.dateOfGift = data.dateOfGift ? data.dateOfGift.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g)[0] : "No date";
+const formatStatusField = (data) => {
+  let status;
+  if(data.bypassLetter == 1) status = "Letter Bypassed";
+  else if(data.letter == 1) status = "Pending Letter";
+  else status = "Complete";
+  return status;
+  //statusDisplay = status;
+}
+
+const formatDateField = (data) => {
+  return data.dateOfGift ? data.dateOfGift.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g)[0] : "No date";
 }
 
 const showValidationLabels = (isVisible) => {
@@ -170,7 +189,7 @@ init();
     <div class="form-group row">
       <div class="col-md-3">
         <label for="dateOfGift">Date<span style="display:{validationLabelDisplay}">(Required yyyy-mm-dd)</span></label>
-        <input type="text" class="form-control" id="dateOfGift" bind:value={data.dateOfGift} on:input={onChangeFormValue}>
+        <input type="text" class="form-control" id="dateOfGift" bind:value={dateDisplay} on:input={onChangeFormValue}>
       </div>
       <div class="col-md-6">
         <label for="numberOfGifts">Item Count<span style="display:{validationLabelDisplay}">(Required)</span></label>

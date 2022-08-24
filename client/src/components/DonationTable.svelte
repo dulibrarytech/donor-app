@@ -22,12 +22,16 @@
     isExtRelUser = roleId == 3;
   }
 
-  const formatGiftTypeField = (value=false) => {
-    return value == true ? "Important" : "Standard";
+  const formatGiftTypeField = (donation) => {
+    return donation.important == 1 ? "Important" : "Standard";
   }
 
-  const formatStatusField = (value=false) => {
-    return value == true ? "Pending Letter" : "Complete";
+  const formatStatusField = (donation) => {
+    let status;
+    if(donation.bypassLetter == 1) status = "Letter Bypassed";
+    else if(donation.letter == 1) status = "Pending Letter";
+    else status = "Complete";
+    return status;
   }
 
   const isAnonymousDonation = (donation) => {
@@ -35,7 +39,7 @@
   }
 
   const isPendingLetter = (donation) => {
-    return isAdminUser && isImportantGift(donation) == false || isExtRelUser && isImportantGift(donation) == true
+    return (donation.letter == 1) && (isAdminUser && isImportantGift(donation) == false || isExtRelUser && isImportantGift(donation) == true)
   }
 
   const isImportantGift = (donation) => {
@@ -92,14 +96,14 @@
 
         <!-- Donation Type -->
         {#if !isAnonymousDonation(donation)}
-          <td width="12.5%">{formatGiftTypeField(donation.important) || "Unknown"}</td>
+          <td width="12.5%">{formatGiftTypeField(donation) || "Unknown"}</td>
         {:else}
           <td width="12.5%">n/a</td>
         {/if}
 
         <!-- Status -->
         {#if !isAnonymousDonation(donation)}
-          <td width="12.5%">{#if completeActionStatusUpdate == donation.id}Updating...{:else}{formatStatusField(donation.letter) || "Unknown"}{/if}</td>
+          <td width="12.5%">{#if completeActionStatusUpdate == donation.id}Updating...{:else}{formatStatusField(donation) || "Unknown"}{/if}</td>
         {:else}
           <td width="12.5%">n/a</td>
         {/if}
