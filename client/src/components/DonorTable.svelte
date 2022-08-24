@@ -1,5 +1,9 @@
 <script>
   export let items;
+
+  const isAnonymousDonor = (donor) => {
+    return donor.id == 1;
+  }
 </script>
 
 <thead class="header">
@@ -14,7 +18,7 @@
 <tbody>
   {#if items.length > 0}
     {#each items as donor (donor.id)}
-      {#if donor.id > 1} <!-- donor id 1 is reserved for anonymous donations -->
+      {#if !isAnonymousDonor(donor)}
         <tr>
           <td width="20%">{donor.lastName}</td>
           <td width="30%">{donor.organization}</td>

@@ -8,10 +8,12 @@
   const roleId = args.roleId;
   var completeActionStatusUpdate;
   var enableCompleteAction;
+  var isAdminUser;
 
   const init = () => {
-    completeActionStatusUpdate = "";
+    completeActionStatusUpdate = false;
     enableCompleteAction = true;
+    isAdminUser = roleId == 2;
   }
 
   const formatGiftTypeField = (value=false) => {
@@ -45,7 +47,7 @@
     <th scope="col">Donation Type</th>
     <th scope="col">Status</th>
     <th scope="col"></th><!-- View Donation -->
-    {#if roleId == 2}<th scope="col"></th>{/if}<!-- Letter -->
+    {#if isAdminUser}<th scope="col"></th>{/if}<!-- Letter -->
     <th scope="col"></th><!-- Mark as Complete -->
   </tr>
 </thead>
@@ -60,7 +62,7 @@
         <td width="10%">{formatGiftTypeField(donation.important) || "Unknown"}</td>
         <td width="10%">{#if completeActionStatusUpdate == donation.id}Updating...{:else}{formatStatusField(donation.letter) || "Unknown"}{/if}</td>
         <td width="10%"><a href="/donation/{donation.id}">View Donation</a></td>
-        {#if roleId == 2}<td width="10%" style="text-align: center"><a href="/letter/{donation.donorId}/{donation.id}">Letter</a></td>{/if}
+        {#if isAdminUser}<td width="10%" style="text-align: center"><a href="/letter/{donation.donorId}/{donation.id}">Letter</a></td>{/if}
         <td width="15%"><a href="#" on:click|preventDefault={(event) => onClickComplete(donation.id)} value={donation.id}>Mark as Complete</a></td>
       </tr>
     {/each}

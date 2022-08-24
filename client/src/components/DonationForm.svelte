@@ -1,8 +1,4 @@
 <script>
-/*
- * Living Library Donation Data Form
- *
- */
 'use-strict'
 
 import {Configuration} from '../config';
@@ -16,14 +12,16 @@ export let data={};
 
 const dispatch = createEventDispatcher();
 
+var isAnonymousDonation;
+
 let donorId = args.donorId;
 let donationId = args.donationId;
 let roleId = args.roleId || 1;
 
-let method = "post";
-let action = `${$Configuration.donorApiDomain}/donation`;
-let buttonText = "Add Donation";
-let buttonDisabled = false;
+let method;
+let action;
+let buttonText;
+let buttonDisabled;
 let validationLabelDisplay = "inline";
 let messageDisplay;
 let typeSelect;
@@ -59,12 +57,14 @@ let formValidator = new FormValidator('donation-form', validationRules, "#ced4da
 
 const init = () => {
   donorId = data.donorId || data.id || null;
-  if(donorId) data['donorId'] = donorId;
+  //if(donorId) data['donorId'] = donorId;
+
+  isAnonymousDonation = donorId == 1;
 
   /* Set select/radio control state */
   $: typeSelect = data.important && data.important == 1 ? "important" : "standard";
 
-  /* Display data for donation */
+  /* If there is an active donation, use the 'PUT' configuration (update donation form) */
   if(donationId) {
     method = "put";
     action = `${$Configuration.donorApiDomain}/donation/${donationId}`;
@@ -72,14 +72,19 @@ const init = () => {
     buttonDisabled = true;
     formatFormFields();
   }
-  /* New donation */
+  /* If there is no active donation, use the default 'POST' configuration (new donation form) */
   else {
-    /* Set letter flag on all new donations, except for anonymous donations */
+    method = "post";
+    action = `${$Configuration.donorApiDomain}/donation`;
+    buttonText = "Add Donation";
+    buttonDisabled = false;
+
+    /* New donations have 'pending letter' state by default */
     data.letter = donorId == 1 ? 0 : 1;
   }
 
-  /* Anonymous donation: hide the 'Status' and 'Gift Type' fields */
-  if(donorId == 1) {
+  /* If anonymous donation hide the 'Status' and 'Gift Type' fields */
+  if(isAnonymousDonation) {
     statusDisplay = false;
     displayGiftTypeSelect = false;
   }

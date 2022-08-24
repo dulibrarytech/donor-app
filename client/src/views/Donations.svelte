@@ -105,7 +105,6 @@ filters.push({
 
 const init = async () => {
   donations = await getDonationList();
-  console.log("TEST Data init", donations, donations.length)
   setDataDisplay(donations);
 
   if(lscache.get('donation_search_results')) {
@@ -134,7 +133,6 @@ const getDonationList = async () => {
 /* Update data display and item count display */
 const setDataDisplay = (data) => {
   donationDisplay = data;
-  console.log("TEST setDataDisplay updates", donationDisplay, donationDisplay.length)
   sortDataDisplay();
 
   let totalItems = 0;

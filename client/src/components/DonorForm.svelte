@@ -1,8 +1,4 @@
 <script>
-/*
- * Living Library Donor Data Form
- *
- */
 'use-strict'
 
 import {Configuration} from '../config';
@@ -14,10 +10,10 @@ export let donorId;
 export let data = {};
 export let titles = [];
 
-let method = "post";
-let action = `${$Configuration.donorApiDomain}/donor`;
-let buttonText = "Add Donor";
-let buttonDisabled = false;
+let method;
+let action;
+let buttonText;
+let buttonDisabled;
 let validationLabelDisplay = "inline";
 let messageDisplay;
 
@@ -64,12 +60,19 @@ let validationRules = {
 let formValidator = new FormValidator('donor-form', validationRules, "#ced4da");
 
 const init = () => {
+  /* If there is an active donaor, use the 'PUT' configuration (update donor form) */
   if(donorId) {
     method = "put";
     action = `${$Configuration.donorApiDomain}/donor/${donorId}`;
     buttonText = "Update";
     buttonDisabled = true;
-    //showValidationLabels(false);
+  }
+  /* If there is no active donor, use the default 'POST' configuration (new donor form) */
+  else {
+    method = "post";
+    action = `${$Configuration.donorApiDomain}/donor`;
+    buttonText = "Add Donor";
+    buttonDisabled = false;
   }
 }
 
