@@ -14,7 +14,7 @@ import NewItemLink from "../components/NewItemLink.svelte";
 import DataFilterMultiField from "../components/DataFilterMultiField.svelte";
 import DaterangeFilter from "../components/DaterangeFilter.svelte";
 import SearchBox from "../components/SearchBox.svelte";
-import StateDisplay from "../components/StateDisplay.svelte";
+import DescriptionList from "../components/DescriptionList.svelte";
 
 var donations = [];
 var donationDisplay = [];
@@ -90,7 +90,7 @@ filters.push({
     "value": "1",
     "label": "Standard",
     "function": (item) => {
-      return item.important == 0 && item.donorId != 1;
+      return item.important == 0;
     }
   },
   {
@@ -105,6 +105,7 @@ filters.push({
 
 const init = async () => {
   donations = await getDonationList();
+  console.log("TEST Data init", donations, donations.length)
   setDataDisplay(donations);
 
   if(lscache.get('donation_search_results')) {
@@ -133,6 +134,7 @@ const getDonationList = async () => {
 /* Update data display and item count display */
 const setDataDisplay = (data) => {
   donationDisplay = data;
+  console.log("TEST setDataDisplay updates", donationDisplay, donationDisplay.length)
   sortDataDisplay();
 
   let totalItems = 0;
@@ -226,9 +228,9 @@ onMount(() => {
       <div class="col-md-9">
         <div style="display:{donationListDisplay}">
           <div style="display: grid">
-            <StateDisplay data={[{label: "Donations", value: donationCount || ""}, {label: "Total Items", value: donationItemCount || ""}]} displayClass="statistics-display" />
+            <DescriptionList data={[{label: "Donations", value: donationCount || ""}, {label: "Total Items", value: donationItemCount || ""}]} displayClass="statistics-display" />
             {#if dateRange}
-              <StateDisplay data={[{label: "From", value: dateRange.fromDate || ""}, {label: "To", value: dateRange.toDate || ""}]} displayClass="daterange-display" />
+              <DescriptionList data={[{label: "From", value: dateRange.fromDate || ""}, {label: "To", value: dateRange.toDate || ""}]} displayClass="daterange-display" />
             {/if}
           </div>
           <NewItemLink text="Add anonymous donation" href="/donation/donor/1" />
