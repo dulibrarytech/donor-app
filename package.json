@@ -5,10 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon donor-app.js --ignore /client",
-    "client": "npm run dev --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "start": "concurrently \"npm run server\" \"npm run start --prefix client\""
+    "server-dev": "nodemon donor-app.js --ignore /client",
+    "client-dev": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
+    "start": "node donor-app.js --ignore /client"
   },
   "keywords": [],
   "author": "",
