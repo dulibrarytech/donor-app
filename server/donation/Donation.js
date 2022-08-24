@@ -200,9 +200,6 @@ module.exports = (() => {
   }
 
   const putDonation = (id, data) => {
-    // Default values
-    data[map.bypassLetter] = 0;
-
     // tbl_donorgifts fields
     let giftFields = [
       data[map.dateOfGift] ?? "None specified",
@@ -235,7 +232,6 @@ module.exports = (() => {
   const postDonation = (data) => {
     // Default values
     data[map.letter] = 1;
-    data[map.bypassLetter] = 0;
 
     // tbl_donorgifts field data
     let giftFields = [
@@ -245,7 +241,7 @@ module.exports = (() => {
       parseInt(data[map.numberOfGifts]) ?? null,  // numberOfGifts
       parseInt(data[map.important]) ?? 0,         // important
       parseInt(data[map.letter]),                 // letter
-      0                                           // bypassLetter
+      parseInt(data[map.bypassLetter]) ?? 0       // bypassLetter
     ]
 
     // tbl_donorgiftdescriptions field data

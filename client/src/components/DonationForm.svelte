@@ -13,9 +13,11 @@ export let data={};
 const dispatch = createEventDispatcher();
 
 var isAnonymousDonation;
-
-let donorId = args.donorId;
-let donationId = args.donationId;
+var isDataDisplayForm;
+var isAdminUser;
+var isAnonymousDonor
+let donorId = args.donorId || null;
+let donationId = args.donationId || null;
 let roleId = args.roleId || 1;
 
 let method;
@@ -25,15 +27,13 @@ let buttonDisabled;
 let validationLabelDisplay = "inline";
 let messageDisplay;
 let typeSelect;
+let bypassSelect;
 let deleteButtonText = "Delete";
 let confirmDelete = false;
 
 /* Formatted fields: default values */
 let dateDisplay = null;
 let statusDisplay = null;
-
-/* Toggle visibility of controls */
-let displayGiftTypeSelect = true;
 
 let validationRules = {
   dateOfGift: {
@@ -58,26 +58,28 @@ let formValidator = new FormValidator('donation-form', validationRules, "#ced4da
 
 const init = () => {
   donorId = data.donorId || data.id || null;
-  //if(donorId) data['donorId'] = donorId;
+  if(donorId) data['donorId'] = donorId;
 
   isAnonymousDonation = donorId == 1;
+  isDataDisplayForm = donationId != null;
+  isAdminUser = roleId == 2;
+  isAnonymousDonor = donorId != null && donorId == 1;
 
-  /* Set select/radio control state */
+  /* Set form displays */
   typeSelect = data.important && data.important == 1 ? "important" : "standard";
+  bypassSelect = data.bypassLetter || false;
 
-  statusDisplay = formatStatusField(data);
-
-  dateDisplay = formatDateField(data);
-
-  /* If there is an active donation, use the 'PUT' configuration (update donation form) */
-  if(donationId) {
+  /* If there is an active donation, use the 'PUT' configuration (update donation form). Format field data */
+  if(isDataDisplayForm) {
     method = "put";
     action = `${$Configuration.donorApiDomain}/donation/${donationId}`;
     buttonText = "Update";
     buttonDisabled = true;
-    // formatFormFields();
-    //formatStatusField();
+
+    statusDisplay = formatStatusField(data);
+    dateDisplay = formatDateField(data);
   }
+
   /* If there is no active donation, use the default 'POST' configuration (new donation form) */
   else {
     method = "post";
@@ -88,21 +90,7 @@ const init = () => {
     /* New donations have 'pending letter' state by default */
     data.letter = donorId == 1 ? 0 : 1;
   }
-
-  /* If anonymous donation hide the 'Status' and 'Gift Type' fields */
-  if(isAnonymousDonation) {
-    statusDisplay = false;
-    displayGiftTypeSelect = false;
-  }
 }
-
-// const formatFormFields = () => {
-//   /* Convert status to text */
-//   statusDisplay = data.letter && data.letter == 1 ? "Pending Letter" : "Complete";
-//
-//   /* Format to yyyy-mm-dd. Formatted value should be submitted with the form. */
-//   data.dateOfGift = data.dateOfGift ? data.dateOfGift.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g)[0] : "No date";
-// }
 
 const formatStatusField = (data) => {
   let status;
@@ -110,7 +98,6 @@ const formatStatusField = (data) => {
   else if(data.letter == 1) status = "Pending Letter";
   else status = "Complete";
   return status;
-  //statusDisplay = status;
 }
 
 const formatDateField = (data) => {
@@ -124,10 +111,14 @@ const showValidationLabels = (isVisible) => {
 const reset = () => {
   data = {...data, ...{dateOfGift: "", numberOfGifts: "", giftDescription: "", giftDetails: "", important: 0}};
   typeSelect = "standard";
+  bypassSelect = false;
+  dateDisplay = "";
 }
 
 const onSubmitForm = () => {
-  $: data.important = typeSelect == "important" ? 1 : 0;
+  data.important = typeSelect == "important" ? 1 : 0;
+  data.bypassLetter = bypassSelect ? 1 : 0;
+  data.dateOfGift = dateDisplay;
 
   if(formValidator.validate(data)) {
     messageDisplay.displayMessage("Submitting data...");
@@ -140,8 +131,12 @@ const onSubmitForm = () => {
       }
       else {
         let message = method == "post" ? "New donation created. Notification email sent." : "Donation record updated";
-        messageDisplay.displayTimeoutMessage(message);
-        if(method == 'post') reset();
+        messageDisplay.displayMessage(message);
+        setTimeout(() => {
+          messageDisplay.displayMessage("");
+          if(method == 'post') reset();
+          else if(method == 'put') location.reload();
+        }, 3000)
       }
     }, data);
   }
@@ -196,9 +191,11 @@ init();
         <input type="text" class="form-control" id="numberOfGifts" bind:value={data.numberOfGifts} on:input={onChangeFormValue}>
       </div>
       <div class="col-md-3">
-        {#if statusDisplay}
-          <label for="status">Status</label>
-          <input type="text" class="form-control" id="status" style="pointer-events: none" bind:value={statusDisplay} on:input={onChangeFormValue}>
+        {#if !isAnonymousDonor}
+          {#if isDataDisplayForm}
+            <label for="status">Status</label>
+            <input type="text" class="form-control" id="status" style="pointer-events: none" bind:value={statusDisplay} on:input={onChangeFormValue}>
+          {/if}
         {/if}
       </div>
     </div>
@@ -210,18 +207,27 @@ init();
         <textarea class="form-control" id="giftDetails" bind:value={data.giftDetails} on:input={onChangeFormValue}></textarea>
       </div>
       <div class="col-md-3">
-        {#if displayGiftTypeSelect}
-          <label class="form-check-label">Donation Type</label>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" bind:group={typeSelect} value="standard" id="type-standard" checked={typeSelect=='standard'} on:change={onChangeFormValue}>
-            <label class="form-check-label" for="type-standard">
-              Standard
-            </label>
+        {#if !isAnonymousDonation}
+          <div class="form-control-set">
+            <label class="form-check-label">Donation Type</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" bind:group={typeSelect} value="standard" id="type-standard" checked={typeSelect=='standard'} on:change={onChangeFormValue}>
+              <label class="form-check-label" for="type-standard">
+                Standard
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" bind:group={typeSelect} value="important" id="type-important" checked={typeSelect=='important'} on:change={onChangeFormValue}>
+              <label class="form-check-label" for="type-important">
+                Important
+              </label>
+            </div>
           </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" bind:group={typeSelect} value="important" id="type-important" checked={typeSelect=='important'} on:change={onChangeFormValue}>
-            <label class="form-check-label" for="type-important">
-              Important
+
+          <div class="form-control-set">
+            <label>
+              <input type="checkbox" bind:checked={bypassSelect} on:input={onChangeFormValue}>
+              Bypass Letter
             </label>
           </div>
         {/if}
@@ -230,8 +236,8 @@ init();
   </div>
 
   <button class="btn btn-default" type="submit" on:click|preventDefault={onSubmitForm} disabled={buttonDisabled}>{buttonText}</button>
-  {#if donationId && donorId > 1}
-    {#if roleId == 2}
+  {#if isDataDisplayForm && isAnonymousDonor}
+    {#if isAdminUser}
       <button class="btn btn-default" type="button" on:click={onClickLetter}>Letter</button>
     {/if}
     <button class="btn btn-default" type="button" on:click={onViewDonorInfo}>View Donor Info</button>
@@ -252,5 +258,9 @@ init();
   textarea {
     max-width: 75%;
     height: 120px;
+  }
+
+  .form-control-set:not(:first-child) {
+    margin-top: 30px;
   }
 </style>
