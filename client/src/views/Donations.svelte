@@ -105,6 +105,7 @@ filters.push({
 
 const init = async () => {
   donations = await getDonationList();
+  console.log("Donations", donations)
   setDataDisplay(donations);
 
   if(lscache.get('donation_search_results')) {
