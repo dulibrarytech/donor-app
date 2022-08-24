@@ -14,7 +14,7 @@ import DataFilterMultiField from "../components/DataFilterMultiField.svelte";
 import DaterangeFilter from "../components/DaterangeFilter.svelte";
 import TextFilter from "../components/TextFilter.svelte";
 import MessageDisplay from "../components/MessageDisplay.svelte";
-import StateDisplay from "../components/StateDisplay.svelte";
+import DescriptionList from "../components/DescriptionList.svelte";
 
 export let params;
 
@@ -191,7 +191,7 @@ init();
       </div>
 
       <div class="col-md-9">
-        <StateDisplay data={[{label: "Donations", value: donationCount || ""}]} displayClass="statistics-display" />
+        <DescriptionList data={[{label: "Donations", value: donationCount || ""}]} displayClass="statistics-display" />
         <NewItemLink text="New donation" href="/livingLibrary/donation" />
         <svelte:component this={DataDisplay} items={donationDisplay} Table={LivingLibraryTable} on:delete-record={onDeleteRecord}/>
         <MessageDisplay bind:this={messageDisplay} />

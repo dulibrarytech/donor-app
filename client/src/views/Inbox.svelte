@@ -10,6 +10,8 @@
   var donations = [];
   var donationDisplay = [];
   var userData = Session.getData("donor_db") || null;
+  var isAdminUser;
+  var isExtRelUser;
   let messageDisplay;
 
   const donationsUrl = `${$Configuration.donorApiDomain}/donation/pending/all`;
@@ -20,17 +22,19 @@
   };
 
   const init = async () => {
+    isAdminUser = userData.roleId == 2;
+    isExtRelUser = userData.roleId == 3;
     donations = await fetchData(donationsUrl);
 
     /* If user role is 'admin' show the standard donations */
-    if(userData.roleId == 2) {
+    if(isAdminUser) {
       donationDisplay = donations.filter((item) => {
         return item.important == 0;
       });
     }
 
     /* If user role is 'external relations' show the important donations */
-    else if(userData.roleId == 3) {
+    else if(isExtRelUser) {
       donationDisplay = donations.filter((item) => {
         return item.important == 1;
       });
@@ -44,7 +48,7 @@
     let url = `${$Configuration.donorApiDomain}/donation/${donationId}/letter`;
 
     console.log("Updating donation status...");
-    ajaxRequest("post", completeLetterUrl, function(error, response, status) {
+    ajaxRequest("post", url, function(error, response, status) {
       if(error) console.error(`Ajax error: ${error}`);
       else if(status != 200) console.error(`Response status: ${status}`);
       else {
