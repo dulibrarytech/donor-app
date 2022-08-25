@@ -63,6 +63,6 @@ module.exports = {
 	devServer: {
 		hot: true,
 		historyApiFallback: true,
-		allowedHosts: [`${process.env.DOMAIN}`]
+		allowedHosts: [`${process.env.DONOR_APP_CLIENT_DOMAIN}`]
 	}
 };
