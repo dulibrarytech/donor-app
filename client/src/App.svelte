@@ -88,76 +88,77 @@
   /*
  	 * Router
  	 */
-	router('/', () => {
-		window.location.replace($Configuration.landingPagePath);
+	let basePath = $Configuration.basePath || "";
+	router(`${basePath}/`, () => {
+		window.location.replace(`${basePath}${$Configuration.landingPagePath}`);
 	});
 
-	router('/login', (ctx, next) => {
+	router(`${basePath}/login`, (ctx, next) => {
 		params = ctx.params;
 		next();
 	}, () => page = Login);
 
-	router('/logout', (ctx, next) => {
+	router(`${basePath}/logout`, (ctx, next) => {
 		logout();
 		next();
 	}, () => page = Login);
 
-	router('/donors', validateSession, (ctx, next) => {
+	router(`${basePath}/donors`, validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
 	}, () => page = Donors); // <-- next()
 
-	router('/donor', validateSession, (ctx, next) => {
+	router(`${basePath}/donor`, validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
 	}, () => page = Donor); // <-- next()
 
-	router('/donor/:id', validateSession, (ctx, next) => {
+	router(`${basePath}/donor/:id`, validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
 	}, () => page = Donor);
 
-	router('/donations', validateSession, (ctx, next) => {
+	router(`${basePath}/donations`, validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
 	}, () => page = Donations);
 
-	router('/donation/donor/:donorId', validateSession, (ctx, next) => {
+	router(`${basePath}/donation/donor/:donorId`, validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
 	}, () => page = Donation);
 
-	router('/donation/:id', validateSession, (ctx, next) => {
+	router(`${basePath}/donation/:id`, validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
 	}, () => page = Donation);
 
-	router('/letter/:donorId/:donationId', validateSession, (ctx, next) => {
+	router(`${basePath}/letter/:donorId/:donationId`, validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
 	}, () => page = LetterView);
 
-	router('/inbox', validateSession, (ctx, next) => {
+	router(`${basePath}/inbox`, validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
 	}, () => page = Inbox);
 
-	router('/livingLibrary/donations', validateSession, (ctx, next) => {
+	router(`${basePath}/livingLibrary/donations`, validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
 	}, () => page = LivingLibraryDonations);
 
-	router('/livingLibrary/donation', validateSession, (ctx, next) => {
+	router(`${basePath}/livingLibrary/donation`, validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
 	}, () => page = LivingLibraryDonation);
 
-	router('/livingLibrary/donation/:id', validateSession, (ctx, next) => {
+	router(`${basePath}/livingLibrary/donation/:id`, validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
 	}, () => page = LivingLibraryDonation);
 
-	router('/livingLibrary/donation/:donationId/bookPlate', validateSession, (ctx, next) => {
+	router(`${basePath}/livingLibrary/donation/:donationId/bookPlate`, validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
 	}, () => page = LivingLibraryBookPlate);
