@@ -6,6 +6,7 @@
 
 const config = require(`../../config/${process.env.CONFIGURATION_FILE}`);
 const jwt = require('jsonwebtoken');
+const axios = require('axios').default;
 
 module.exports = (() => {
   const authServiceUrl = config.authServiceUrl;
@@ -14,26 +15,13 @@ module.exports = (() => {
 
   const authenticateUser = (username, password) => {
     return new Promise((resolve, reject) => {
-      let body = {
-        method: "post",
-        body: JSON.stringify({username, password}),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      };
-
-      fetch(authServiceUrl, body)
-        .then(response => response.json())
-        .then(data => {
-          let response = {
-            isAuthenticated: data.auth
-          }
-          resolve(response)
-        })
-        .catch(error => {
-          console.log("Authentication error:", error)
-          reject(error);
-        });
+      axios.post(authServiceUrl, {username, password})
+      .then(function (response) {
+        resolve({isAuthenticated: response.data.auth ?? false})
+      })
+      .catch(function (error) {
+        reject(error)
+      });
     });
   }
 

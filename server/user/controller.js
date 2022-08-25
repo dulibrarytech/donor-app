@@ -18,9 +18,6 @@ exports.userAuthenticate = async (req, res) => {
         let userData = (({ roleId, username, firstName, lastName }) => ({ roleId, username, firstName, lastName }))(response.data);
         let token = Service.createToken(userData);
 
-        // res.cookie('token', token);
-        // res.cookie('userData', response.data);
-
         let data = {"token": token, "userData": userData};
         console.log("Authentication successful: ", userData);
         res.send(JSON.stringify(data))
