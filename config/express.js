@@ -24,7 +24,7 @@ module.exports = function () {
   }
 
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded());
+  app.use(bodyParser.urlencoded({ extended: true }));
   app.use(morgan('tiny'));
 
   app.use('/donor', donorRoutes);
