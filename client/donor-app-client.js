@@ -15,5 +15,5 @@ app.get('*', (req, res) => {
 })
 
 app.listen(process.env.APP_PORT || 8080, () => {
-  console.log(`Donor App Client is running on port 8080 in ${process.env.RUNTIME_ENV} mode`);
+  console.log(`Donor App Client is running on port ${process.env.APP_PORT} in ${process.env.RUNTIME_ENV} mode`);
 })
