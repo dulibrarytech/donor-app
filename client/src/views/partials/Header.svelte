@@ -1,5 +1,7 @@
 <script>
-  const baseUrl = `${window.location.protocol}//${window.location.host}`;
+  import { Configuration } from '../../config';
+
+  const baseUrl = $Configuration.domain + $Configuration.basePath;
 </script>
 
 <header>
