@@ -139,6 +139,11 @@ form label:not(> span) {
 	font-weight: bold;
 }
 
+/* .form-group {
+	background-color: #e5e3e1;
+	padding: 1.15em;
+} */
+
 .data-display td {
 	vertical-align: middle;
 }
