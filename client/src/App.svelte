@@ -34,15 +34,19 @@
 
 	const login = (data) => {
 		Session.create("donor_db", data.sessionData.token, data.sessionData.userData);
-		let {roleId} = data.sessionData.userData;
-		if(roleId == 2 || roleId == 3) window.location.replace(data.loginRedirectPath || "/inbox");
-		else window.location.replace(data.loginRedirectPath || "/");
+		if (data.loginRedirectPath) window.location.replace(`${BASE_PATH}${data.loginRedirectPath}`);
+		else {
+			let {roleId} = data.sessionData.userData;
+			let homeRoute = (roleId == 2 || roleId == 3) ? "/inbox" : "/";
+			window.location.replace(`${BASE_PATH}${homeRoute}`);
+		}
 	}
 
-	const logout = (requestPath = null) => {
+	const logout = (requestPath=null) => {
 		if(Session.isSession("donor_db")) Session.destroy("donor_db");
 		lscache.flush();
-		window.location.replace(requestPath ? `${BASE_PATH}/login?redirect=${requestPath}` : `${BASE_PATH}/login`);
+		if(requestPath) window.location.replace(`${BASE_PATH}/login?redirect=${requestPath}`);
+		else window.location.replace(`${BASE_PATH}/login`);
 	}
 
 	const onLogin = (event) => {
