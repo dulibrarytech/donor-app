@@ -4,6 +4,7 @@ module.exports = {
     runtimeEnv: process.env.NODE_ENV,
     port: process.env.NODE_PORT || 3000,
     baseUrl: process.env.SERVER_DOMAIN,
+    corsAllowedOrigin: process.env.CORS_ALLOWED_ORIGIN,
     databaseHost: process.env.DATABASE_HOST,
     databaseUser: process.env.DATABASE_USER,
     databasePassword: process.env.DATABASE_PWD,

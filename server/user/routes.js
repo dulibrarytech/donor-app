@@ -3,12 +3,12 @@
 const { Router } = require("express");
 const { runtimeEnv } = require(`../../config/${process.env.CONFIGURATION_FILE}`);
 const { sanitizeData } = require('../libs/sanitize.js');
-const { validateToken } = require('../libs/validateToken');
+const { validateToken, validateOrigin } = require('../libs/validation');
 const userController = require("./controller");
 
 const router = Router();
 
-router.post('/authenticate', sanitizeData, async (req, res) => {
+router.post('/authenticate', sanitizeData, validateOrigin, async (req, res) => {
   userController.userAuthenticate(req, res);
 });
 

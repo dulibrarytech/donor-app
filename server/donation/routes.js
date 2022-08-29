@@ -3,7 +3,7 @@
 const { Router } = require("express");
 const { runtimeEnv } = require(`../../config/${process.env.CONFIGURATION_FILE}`);
 const { sanitizeData } = require('../libs/sanitize.js');
-const { validateToken } = require('../libs/validateToken');
+const { validateToken } = require('../libs/validation');
 const donationController = require("./controller");
 
 const router = Router();
