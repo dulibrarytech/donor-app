@@ -243,13 +243,17 @@ init();
   </div>
 
   <h5>Person(s) to be Notified of Donation</h5>
-  <div id="whoToNotify">
-    {#each whoToNotifyData as notify, index}
-      <div><svelte:component this={LivingLibraryWhoToNotifyForm} bind:this={whoToNotifyForm} args={{donationId, inputPointerEvents, validationLabelDisplay, index}} {fieldData} {whoToNotifyData} /></div>
-    {/each}
-  </div>
-  {#if formState == "data_entry"}
-    <button type="button" on:click={addPersonToNotify} style="pointer-events:{inputPointerEvents}">Add person to be notified</button>
+  {#if whoToNotifyData.length > 0}
+    <div id="whoToNotify">
+      {#each whoToNotifyData as notify, index}
+        <div><svelte:component this={LivingLibraryWhoToNotifyForm} bind:this={whoToNotifyForm} args={{donationId, inputPointerEvents, validationLabelDisplay, index}} {fieldData} {whoToNotifyData} /></div>
+      {/each}
+    </div>
+    {#if formState == "data_entry"}
+      <button type="button" on:click={addPersonToNotify} style="pointer-events:{inputPointerEvents}">Add person to be notified</button>
+    {/if}
+  {:else}
+    None specified
   {/if}
 
   <h5>Person Receiving Donation</h5>

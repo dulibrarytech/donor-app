@@ -48,7 +48,7 @@
         <!-- New Book Plate, Delete -->
         {#if donation.is_completed == false}
           <td width="15%">
-            <a href="/livingLibrary/donation/{donation.id}/bookPlate">Book Plate Form</a>
+            <a href="/livingLibrary/bookplate/{donation.id}">Book Plate Form</a>
           </td>
           <td width="11%">
             <a href="#" data-record-id={donation.id} on:click|preventDefault={onDeleteRecord}>Delete</a>

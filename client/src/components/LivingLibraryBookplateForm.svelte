@@ -12,6 +12,7 @@ const dispatch = createEventDispatcher();
 var submitButtonVisible = true;
 var validationLabelDisplay = "inline";
 const donationId = args.donationId;
+const IS_ENTRY_FORM = args.isEntryForm || false;
 
 let donationData = data.donor || {
   donor_title: "",
@@ -82,7 +83,7 @@ const onSubmit = (event) => {
 init();
 </script>
 
-{#if !donationId}
+{#if IS_ENTRY_FORM}
 <div class="donor-display">
   <table class="table">
     <tbody>
@@ -108,6 +109,7 @@ init();
       <tr><td>Notes</td><td>{donationData.donor_notes}</td></tr>
     </tbody>
   </table>
+  <a href="/livingLibrary/donation/{donationId}">View donation details</a>
 </div>
 {/if}
 

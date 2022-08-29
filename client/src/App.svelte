@@ -158,7 +158,7 @@
 		next();
 	}, () => page = LivingLibraryDonation);
 
-	router(`${basePath}/livingLibrary/donation/:donationId/bookPlate`, validateSession, (ctx, next) => {
+	router(`${basePath}/livingLibrary/bookplate/:donationId`, validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
 	}, () => page = LivingLibraryBookPlate);
