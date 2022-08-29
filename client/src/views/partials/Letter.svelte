@@ -3,9 +3,12 @@ import { Configuration } from '../../config';
 import { getNormalDateString } from '../../libs/dateFormatter.js';
 
 export let data;
+export let args;
+
+const BASE_PATH = args.basePath || "";
 const signatureName = $Configuration.letterSignatureName;
 const signatureTitle = $Configuration.letterSignatureTitle;
-const currentDate = getNormalDateString(new Date())
+const currentDate = getNormalDateString(new Date());
 
 $: {
   if(data.dateOfGift) {
@@ -18,7 +21,7 @@ $: {
 <div class="letter-content">
   <div class="header-logo-image">
     <div class="float-right" style="height: 100%">
-      <img src="/assets/img/private/lheader.png" alt="Dean's office logo" />
+      <img src="{BASE_PATH}/assets/img/private/{$Configuration.letterHeadImageFilename}" alt="Dean's office logo" />
     </div>
   </div>
   <span>{currentDate}</span>
@@ -53,7 +56,7 @@ $: {
   <span>Sincerely,</span>
   <br>
   <div class="signature-image">
-    <img src="/assets/img/private/{$Configuration.signatureImageFilename}" alt="Signature" />
+    <img src="{BASE_PATH}/assets/img/private/{$Configuration.signatureImageFilename}" alt="Signature" />
   </div>
   <br>
   <span>{signatureName}</span>

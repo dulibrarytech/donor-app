@@ -58,5 +58,5 @@ onMount(() => {
 </script>
 
 <div id="letter-view">
-  <svelte:component this={Letter} data={data}/>
+  <svelte:component this={Letter} data={data} args={{basePath: $Configuration.basePath || ""}}/>
 </div>
