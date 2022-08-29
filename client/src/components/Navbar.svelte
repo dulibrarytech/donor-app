@@ -8,6 +8,7 @@
 
   var routes = [];
   const dispatch = createEventDispatcher();
+  const BASE_PATH = $Configuration.basePath || "";
 
   if(Session.isSession("donor_db")) userData = Session.getData("donor_db");
   else userData = null;
@@ -43,15 +44,13 @@
     <ul class="navbar-nav">
       {#each routes as route}
         <li class="nav-item">
-          <a class="nav-link" href="{route.path}" on:click={onClickNavItem}>{route.label}</a>
+          <a class="nav-link" href="{BASE_PATH}{route.path}" on:click={onClickNavItem}>{route.label}</a>
         </li>
       {/each}
     </ul>
 
     {#if userData}
-      <!-- <div class="user-display-wrapper"> -->
-        <UserDisplay {userData} on:logout-user={onLogout} />
-      <!-- </div> -->
+      <UserDisplay {userData} on:logout-user={onLogout} />
     {/if}
   </div>
 </nav>
