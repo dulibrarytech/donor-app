@@ -1,4 +1,6 @@
 <script>
+  import { Configuration } from '../config';
+  
   export let items;
   export let args;
 
@@ -37,8 +39,8 @@
         <td width="15%">{donation.organization || donation.lastName || ""}</td>
         <td width="15%">{donation.firstName || ""}</td>
         <td width="25%">{donation[searchField]}</td>
-        <td width="15%">{#if donation.donorId > 1}<a href="/donor/{donation.donorId}">View Donor</a>{/if}</td>
-        <td width="15%"><a href="/donation/{donation.id}">View Donation</a></td>
+        <td width="15%">{#if donation.donorId > 1}<a href="{$Configuration.basePath}/donor/{donation.donorId}">View Donor</a>{/if}</td>
+        <td width="15%"><a href="{$Configuration.basePath}/donation/{donation.id}">View Donation</a></td>
       </tr>
     {/each}
   {:else}

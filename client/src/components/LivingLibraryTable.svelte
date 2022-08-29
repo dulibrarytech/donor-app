@@ -1,4 +1,5 @@
 <script>
+  import { Configuration } from '../config';
   import {createEventDispatcher} from 'svelte';
 
   export let items;
@@ -43,12 +44,12 @@
         <td width="7%">{formatStatusField(donation.is_completed)}</td>
 
         <!-- View Record -->
-        <td width="14%"><a href="/livingLibrary/donation/{donation.id}">View Record</a></td>
+        <td width="14%"><a href="{$Configuration.basePath}/livingLibrary/donation/{donation.id}">View Record</a></td>
 
         <!-- New Book Plate, Delete -->
         {#if donation.is_completed == false}
           <td width="15%">
-            <a href="/livingLibrary/bookplate/{donation.id}">Book Plate Form</a>
+            <a href="{$Configuration.basePath}/livingLibrary/bookplate/{donation.id}">Book Plate Form</a>
           </td>
           <td width="11%">
             <a href="#" data-record-id={donation.id} on:click|preventDefault={onDeleteRecord}>Delete</a>

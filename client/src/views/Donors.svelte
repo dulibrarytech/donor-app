@@ -68,7 +68,7 @@ onMount(() => {
       </div>
 
       <div class="col-md-9">
-        <NewItemLink text="Add new donor" href="/donor"/>
+        <NewItemLink text="Add new donor" href="{$Configuration.basePath}/donor"/>
         <svelte:component this={DataDisplay} items={donorDisplay} Table={DonorTable}/>
       </div>
     </div>

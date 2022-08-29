@@ -192,7 +192,7 @@ init();
 
       <div class="col-md-9">
         <DescriptionList data={[{label: "Donations", value: donationCount || ""}]} displayClass="statistics-display" />
-        <NewItemLink text="New donation" href="/livingLibrary/donation" />
+        <NewItemLink text="New donation" href="{$Configuration.basePath}/livingLibrary/donation" />
         <svelte:component this={DataDisplay} items={donationDisplay} Table={LivingLibraryTable} on:delete-record={onDeleteRecord}/>
         <MessageDisplay bind:this={messageDisplay} />
       </div>

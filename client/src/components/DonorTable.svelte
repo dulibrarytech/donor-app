@@ -1,4 +1,6 @@
 <script>
+  import { Configuration } from '../config';
+  
   export let items;
 
   const isAnonymousDonor = (donor) => {
@@ -23,8 +25,8 @@
           <td width="20%">{donor.lastName}</td>
           <td width="30%">{donor.organization}</td>
           <td width="25%">{donor.firstName}</td>
-          <td width="12.5%"><a href="/donor/{donor.id}">View</a></td>
-          <td width="12.5%"><a href="/donation/donor/{donor.id}">Add Donation</a></td>
+          <td width="12.5%"><a href="{$Configuration.basePath}/donor/{donor.id}">View</a></td>
+          <td width="12.5%"><a href="{$Configuration.basePath}/donation/donor/{donor.id}">Add Donation</a></td>
         </tr>
       {/if}
     {/each}

@@ -1,4 +1,5 @@
 <script>
+  import { Configuration } from '../config';
   import {createEventDispatcher} from 'svelte';
 
   export let items;
@@ -61,8 +62,8 @@
         <td width="17.5%">{donation.organization || ""}</td>
         <td width="10%">{formatGiftTypeField(donation) || "Unknown"}</td>
         <td width="10%">{#if completeActionStatusUpdate == donation.id}Updating...{:else}{formatStatusField(donation) || "Unknown"}{/if}</td>
-        <td width="10%"><a href="/donation/{donation.id}">View Donation</a></td>
-        {#if isAdminUser}<td width="10%" style="text-align: center"><a href="/letter/{donation.donorId}/{donation.id}">Letter</a></td>{/if}
+        <td width="10%"><a href="{$Configuration.basePath}/donation/{donation.id}">View Donation</a></td>
+        {#if isAdminUser}<td width="10%" style="text-align: center"><a href="{$Configuration.basePath}/letter/{donation.donorId}/{donation.id}">Letter</a></td>{/if}
         <td width="15%"><a href="#" on:click|preventDefault={(event) => onClickComplete(donation.id)} value={donation.id}>Mark as Complete</a></td>
       </tr>
     {/each}

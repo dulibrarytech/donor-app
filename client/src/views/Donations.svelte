@@ -269,7 +269,7 @@ onMount(() => {
               <DescriptionList data={[{label: "From", value: dateRange.fromDate || ""}, {label: "To", value: dateRange.toDate || ""}]} displayClass="daterange-display" />
             {/if}
           </div>
-          <NewItemLink text="Add anonymous donation" href="/donation/donor/1" />
+          <NewItemLink text="Add anonymous donation" href="{$Configuration.basePath}/donation/donor/1" />
           <svelte:component this={DataDisplay} items={donationDisplay} Table={DonationTable} args={{roleId}}/>
         </div>
 

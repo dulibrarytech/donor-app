@@ -1,4 +1,5 @@
 <script>
+  import { Configuration } from '../config';
   import {createEventDispatcher} from 'svelte';
 
   export let items;
@@ -112,11 +113,11 @@
         <td width="20%">{donation.giftDescription}</td>
 
         <!-- View link -->
-        <td width="10%"><a href="/donation/{donation.id}">View</a></td>
+        <td width="10%"><a href="{$Configuration.basePath}/donation/{donation.id}">View</a></td>
 
         <!-- Letter link -->
         {#if isAdminUser}
-          <td width="10%"><a href="/letter/{donorId}/{donation.id}">Letter</a></td>
+          <td width="10%"><a href="{$Configuration.basePath}/letter/{donorId}/{donation.id}">Letter</a></td>
         {/if}
 
         <!-- Mark as Complete link -->

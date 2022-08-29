@@ -2,6 +2,7 @@
 /*
  * Living Library bookplate request form
  */
+import { Configuration } from '../config';
 import {createEventDispatcher} from 'svelte';
 import FormValidator from '../libs/FormValidator.js';
 
@@ -109,7 +110,7 @@ init();
       <tr><td>Notes</td><td>{donationData.donor_notes}</td></tr>
     </tbody>
   </table>
-  <a href="/livingLibrary/donation/{donationId}">View donation details</a>
+  <a href="{$Configuration.basePath}/livingLibrary/donation/{donationId}">View donation details</a>
 </div>
 {/if}
 
