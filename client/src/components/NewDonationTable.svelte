@@ -43,8 +43,7 @@
   <tr>
     <th scope="col">Date of Record</th>
     <th scope="col">Date of Donation</th>
-    <th scope="col">Last Name</th>
-    <th scope="col">Organization</th>
+    <th scope="col">Last Name / Organization</th>
     <th scope="col">Donation Type</th>
     <th scope="col">Status</th>
     <th scope="col"></th><!-- View Donation -->
@@ -58,8 +57,7 @@
       <tr>
         <td width="10%">{donation.dateOfRecord?.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/) ?? "No date"}</td>
         <td width="10%">{donation.dateOfGift?.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/) ?? "No date"}</td>
-        <td width="17.5%">{donation.lastName || ""}</td>
-        <td width="17.5%">{donation.organization || ""}</td>
+        <td width="35%">{donation.lastName || donation.organization || ""}</td>
         <td width="10%">{formatGiftTypeField(donation) || "Unknown"}</td>
         <td width="10%">{#if completeActionStatusUpdate == donation.id}Updating...{:else}{formatStatusField(donation) || "Unknown"}{/if}</td>
         <td width="10%"><a href="{$Configuration.basePath}/donation/{donation.id}">View Donation</a></td>
