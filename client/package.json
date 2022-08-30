@@ -25,6 +25,7 @@
     "date-fns": "^2.29.1",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "html2pdf.js": "^0.10.1",
     "minisearch": "^5.0.0-beta2",
     "page.js": "^4.13.3",
     "svelte-icons": "^2.1.0"

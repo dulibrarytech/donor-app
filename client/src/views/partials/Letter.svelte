@@ -18,7 +18,7 @@ $: {
 
 </script>
 
-<div class="letter-content">
+<div id="letter-content">
   <div class="header-logo-image">
     <div class="float-right" style="height: 100%">
       <img src="{BASE_PATH}/assets/img/private/{$Configuration.letterHeadImageFilename}" alt="Dean's office logo" />
@@ -70,22 +70,21 @@ $: {
   }
 
   .header-logo-image {
-    height: 100px;
+    height: 96px;
   }
 
-  .header-logo-image img {
+  img {
     height: 100%;
+    width: 100%;
   }
 
-  .letter-content {
-    margin-top: 2em;
-    margin-bottom: 12em;
+  #letter-content {
+    background: white;
+    padding: 72px; /* 0.75 inch */
+    font-size: 16px;
   }
   .signature-image {
     padding: 18px 0 2px 0;
-  }
-
-  .signature-image img {
-    width: 425px;
+    width: 288px;
   }
 </style>
