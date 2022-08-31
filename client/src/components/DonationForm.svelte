@@ -236,11 +236,13 @@ init();
   </div>
 
   <button class="btn btn-default" type="submit" on:click|preventDefault={onSubmitForm} disabled={buttonDisabled}>{buttonText}</button>
-  {#if isDataDisplayForm && isAnonymousDonor}
+  {#if isDataDisplayForm}
     {#if isAdminUser}
       <button class="btn btn-default" type="button" on:click={onClickLetter}>Letter</button>
     {/if}
-    <button class="btn btn-default" type="button" on:click={onViewDonorInfo}>View Donor Info</button>
+    {#if !isAnonymousDonor}
+      <button class="btn btn-default" type="button" on:click={onViewDonorInfo}>View Donor Info</button>
+    {/if}
     <button class="btn btn-default" type="button" on:click={onDeleteDonation}>{deleteButtonText}</button>
   {/if}
 </form>
