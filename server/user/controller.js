@@ -3,6 +3,7 @@
 const {runtimeEnv} = require(`../../config/${process.env.CONFIGURATION_FILE}`);
 const Service = require("./service");
 const User = require("./User");
+const JWTHelper = require("../libs/jwt_helper");
 
 exports.userAuthenticate = async (req, res) => {
   let username = req.body.username || "";
@@ -16,10 +17,10 @@ exports.userAuthenticate = async (req, res) => {
 
       if(response.isAuthorized === true) {
         let userData = (({ roleId, username, firstName, lastName }) => ({ roleId, username, firstName, lastName }))(response.data);
-        let token = Service.createToken(userData);
+        let token = JWTHelper.createToken(userData);
 
         let data = {"token": token, "userData": userData};
-        console.log("Authentication successful: ", userData);
+        console.log("Authentication successful: ", userData.username);
         res.send(JSON.stringify(data))
       }
       else res.status(401).send();

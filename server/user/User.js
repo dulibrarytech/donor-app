@@ -10,12 +10,12 @@ const Model = require('../libs/Model.js');
 /* {database field} : {response data field} */
 module.exports = (() => {
   const map = {
-    "userID": "userId",
-    "username": "username",
-    "roleID": "roleId",
-    "firstname": "firstName",
-    "lastname": "lastName",
-    "email": "email"
+    "userID":     "userId",
+    "username":   "username",
+    "roleID":     "roleId",
+    "firstname":  "firstName",
+    "lastname":   "lastName",
+    "email":      "email"
   }
 
   const queries = {
@@ -28,7 +28,12 @@ module.exports = (() => {
         Users.lastname AS ${map.lastname},
         Users.email AS ${map.email}
       FROM tbl_donorusers Users
-      WHERE Users.username = ?`
+      WHERE Users.username = ?`,
+
+    'get_users_by_role': `
+      SELECT *
+      FROM tbl_donorusers Users
+      WHERE Users.roleID = ?`
   }
 
   const UserModel = new Model(database, queries);
@@ -54,7 +59,37 @@ module.exports = (() => {
     });
   }
 
+  const getUsersByRole = (roleId) => {
+    return new Promise((resolve, reject) => {
+      UserModel.execute_query('get_users_by_role', [roleId])
+      .then(
+        (response) => {
+          let users = [],
+              user = {};
+
+          for(let data of response.data) {
+            user = {};
+            user[map.userID] = data["userID"];
+            user[map.username] = data["username"];
+            user[map.roleID] = data["roleID"];
+            user[map.firstname] = data["firstname"];
+            user[map.lastname] = data["lastname"];
+            user[map.email] = data["email"];
+            users.push(user);
+          }
+
+          resolve(users);
+        },
+        (error) => {
+          console.log(`Error retrieving user data: ${error}`);
+          reject(error);
+        }
+      );
+    });
+  }
+
   return {
-    authorize
+    authorize,
+    getUsersByRole
   }
 })()

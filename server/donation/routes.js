@@ -2,8 +2,8 @@
 
 const { Router } = require("express");
 const { runtimeEnv } = require(`../../config/${process.env.CONFIGURATION_FILE}`);
-const { sanitizeData } = require('../libs/sanitize.js');
-const { validateToken } = require('../libs/validation');
+const { sanitizeData } = require('../libs/sanitize_middleware');
+const { validateToken } = require('../libs/request_middleware');
 const donationController = require("./controller");
 
 const router = Router();

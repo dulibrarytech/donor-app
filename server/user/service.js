@@ -4,14 +4,15 @@
 
 'use-strict'
 
+const User = require("./User");
+
 const config = require(`../../config/${process.env.CONFIGURATION_FILE}`);
 const jwt = require('jsonwebtoken');
 const axios = require('axios').default;
+const email = require('../libs/email_helper');
 
 module.exports = (() => {
   const authServiceUrl = config.authServiceUrl;
-  const tokenKey = config.tokenKey;
-  const jwtExpirySeconds = config.sessionTokenDuration;
 
   const authenticateUser = (username, password) => {
     return new Promise((resolve, reject) => {
@@ -19,21 +20,24 @@ module.exports = (() => {
       .then(function (response) {
         resolve({isAuthenticated: response.data.auth ?? false})
       })
-      .catch(function (error) {
-        reject(error)
-      });
+      .catch(function (error) {reject(error)});
     });
   }
 
-  const createToken = (data) => {
-    const token = jwt.sign(data, tokenKey, {
-  		expiresIn: jwtExpirySeconds
-  	});
-    return token;
+  const getUserEmailList = (roleId) => {
+    return new Promise((resolve, reject) => {
+      User.getUsersByRole(roleId)
+      .then(function (users) {
+        let list = [];
+        for(let user of users) list.push(user.email);
+        resolve(list);
+      })
+      .catch(function (error) {reject(error)});
+    });
   }
 
   return {
     authenticateUser,
-    createToken
+    getUserEmailList
   }
 })()

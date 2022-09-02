@@ -122,7 +122,7 @@ const onSubmitForm = () => {
 
   if(formValidator.validate(data)) {
     messageDisplay.displayMessage("Submitting data...");
-    ajaxRequest(method, action, function(error, response, status) {
+    ajaxRequest(method, action, async function(error, response, status) {
       if(error) {
         messageDisplay.displayMessage("Error", `Ajax error: ${error}`);
       }
@@ -130,7 +130,15 @@ const onSubmitForm = () => {
         messageDisplay.displayMessage("Error", `Response status: ${status}`);
       }
       else {
-        let message = method == "post" ? "New donation created. Notification email sent." : "Donation record updated";
+        // TODO: check response object for email flag. If email not sent, message => "Error sending notification email" conlog => [error from response object]
+        console.log("Response object pj", response)
+        response = await response.json()
+        console.log("Response object", response)
+        let notificationMessageFeedback = "";
+        if(response.emailSent == true) notificationMessageFeedback = "Notification emails sent."
+        if(response.message) console.log(response.message)
+        let message = method == "post" ? `New donation created. ${notificationMessageFeedback}` : "Donation record updated";
+
         messageDisplay.displayMessage(message);
         setTimeout(() => {
           messageDisplay.displayMessage("");

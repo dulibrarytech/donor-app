@@ -1,6 +1,10 @@
 'use strict'
 
 const Donation = require("./Donation");
+const Service = require("./service");
+const JWTHelper = require("../libs/jwt_helper");
+
+const config = require(`../../config/${process.env.CONFIGURATION_FILE}`);
 
 exports.donations = (req, res) => {
   Donation.getAllDonations()
@@ -56,10 +60,28 @@ exports.donationPut = (req, res) => {
 
 exports.donationPost = (req, res) => {
   let data = req.body;
+  let token = req.headers['authorization'];
+
   Donation.postDonation(data)
   .then(
-    function(data) {
-      res.send(JSON.stringify(data))
+    function(result) {
+      let response = {};
+      let donationId = result[0]?.insertId || null;
+      
+      response['emailSent'] = false;
+      response['donationId'] = donationId;
+
+      if(config.enableEmailNotifications == "true") {
+        Service.sendNewDonationNotifications({...data, donationId}, function(error) {
+          if(error) response['message'] = error;
+          else response['emailSent'] = true;
+          res.send(JSON.stringify(response))
+        });
+      }
+      else {
+        response['message'] = "Email notifications are disabled.";
+        res.send(JSON.stringify(response));
+      }
     },
     function(error) {
       res.status(500).send(error);
