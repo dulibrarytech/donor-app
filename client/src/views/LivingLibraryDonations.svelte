@@ -31,6 +31,10 @@ var textFilter;
 var daterangeFilter;
 var donationFilterFormDisplay;
 var messageDisplay;
+var dateRange = {
+  from: null,
+  to: null
+}
 
 const apiKey  = $Configuration.livingLibraryApiKey;
 var donationsUrl = `${$Configuration.livingLibraryApiDomain}/donations?api_key=${apiKey}`;
@@ -147,12 +151,16 @@ const onFilter = (event) => {
 }
 
 const onDaterangeFilter = (event) => {
+  dateRange.from = event.detail.daterange.fromDate;
+  dateRange.to = event.detail.daterange.toDate;
   donationDisplay = dataFilter.filterData(donations);
   donationDisplay = daterangeFilter.filterDaterange(donationDisplay);
   setDataDisplay(textFilter.filterText(donationDisplay) || donationDisplay);
 }
 
 const onClearDaterange = () => {
+  dateRange.from = null;
+  dateRange.to = null;
   donationDisplay = dataFilter.filterData(donations)
   setDataDisplay(textFilter.filterText(donationDisplay) || donationDisplay);
 }
@@ -175,10 +183,13 @@ const exportData = () => {
     });
   }
 
+  let filename = "living_library_donations";
+  if(dateRange.from && dateRange.to) filename += `__${dateRange.from}_to_${dateRange.to}`;
+
   const csvExporter = new ExportToCsv({
     showLabels: true,
     showTitle: false,
-    filename: 'living_library_donations',
+    filename,
     title: 'Living Library Donations',
     useKeysAsHeaders: false,
     headers: ['ID', 'Donor Name', 'Recipient Name', 'Donation Amount', 'Date of Donation']
