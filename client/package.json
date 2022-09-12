@@ -24,6 +24,7 @@
     "compression": "^1.7.4",
     "date-fns": "^2.29.1",
     "dotenv": "^16.0.1",
+    "export-to-csv": "^0.2.1",
     "express": "^4.18.1",
     "html2pdf.js": "^0.10.1",
     "minisearch": "^5.0.0-beta2",

@@ -1,12 +1,14 @@
 <script>
-'use-strict'
 /*
  * Living Library Donations page
  * Display donation table and data filters
  */
 
+'use-strict'
+
 import { ajaxRequest, fetchData } from '../libs/ajax.js';
 import { Configuration } from '../config';
+import { ExportToCsv } from 'export-to-csv';
 import DataDisplay from "../components/DataDisplay.svelte";
 import NewItemLink from "../components/NewItemLink.svelte";
 import LivingLibraryTable from "../components/LivingLibraryTable.svelte";
@@ -27,7 +29,7 @@ var searchField = "";
 var dataFilter;
 var textFilter;
 var daterangeFilter;
-var donationFilterFormDisplay = true;
+var donationFilterFormDisplay;
 var messageDisplay;
 
 const apiKey  = $Configuration.livingLibraryApiKey;
@@ -80,6 +82,7 @@ var filters = [
 ];
 
 const init = () => {
+  donationFilterFormDisplay = true;
   refreshData();
 }
 
@@ -109,9 +112,6 @@ const deleteRecord = (donationId) => {
  }, null, null, {id: donationId});
 }
 
-/*
- * Data display functions
- */
 const parseViewData = (data) => {
   let viewData = [], viewItem;
   for(let {id, is_completed, donor, recipient} of data) {
@@ -126,13 +126,7 @@ const setDataDisplay = (data=null) => {
   sortDataDisplay();
   donationCount = donationDisplay.length;
 }
-/*
- * End Data display init functions
- */
 
-/*
- * Data display user options
- */
 const sortDataDisplay = () => {
   let {type, field} = sortOptions;
   if(type == "asc") {
@@ -147,7 +141,6 @@ const sortDataDisplay = () => {
   }
 }
 
-/* Filter functions */
 const onFilter = (event) => {
   donationDisplay = daterangeFilter.filterDaterange(event.detail);
   setDataDisplay(textFilter.filterText(donationDisplay) || donationDisplay);
@@ -168,10 +161,31 @@ const onTextFilter = (event) => {
   donationDisplay = dataFilter.filterData(event.detail || donations);
   setDataDisplay(daterangeFilter.filterDaterange(donationDisplay));
 }
-/* End Filter functions */
-/*
- * End Data display user options
- */
+
+const exportData = () => {
+  let csvData = [];
+
+  for(let item of donationDisplay) {
+    csvData.push({
+      id: item.id,
+      donor: `${item.donor_title} ${item.donor_first_name} ${item.donor_last_name}`,
+      recipient: `${item.recipient_title} ${item.recipient_first_name} ${item.recipient_last_name}`,
+      amount: `${item.donor_amount_of_donation}`,
+      date: `${item.donor_date_of_donation}`
+    });
+  }
+
+  const csvExporter = new ExportToCsv({
+    showLabels: true,
+    showTitle: false,
+    filename: 'living_library_donations',
+    title: 'Living Library Donations',
+    useKeysAsHeaders: false,
+    headers: ['ID', 'Donor Name', 'Recipient Name', 'Donation Amount', 'Date of Donation']
+  });
+
+  csvExporter.generateCsv(csvData);
+}
 
 init();
 </script>
@@ -195,6 +209,7 @@ init();
         <NewItemLink text="New donation" href="{$Configuration.basePath}/livingLibrary/donation" />
         <svelte:component this={DataDisplay} items={donationDisplay} Table={LivingLibraryTable} on:delete-record={onDeleteRecord}/>
         <MessageDisplay bind:this={messageDisplay} />
+        <button type="button" on:click={exportData}>Export Records</button>
       </div>
 
     </div>
