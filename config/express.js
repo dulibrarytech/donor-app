@@ -4,7 +4,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const compress = require('compression');
-const { baseUrl } = require(`./${process.env.CONFIGURATION_FILE}`);
 
 const donorRoutes = require("../server/donor/routes");
 const donationRoutes = require("../server/donation/routes");
