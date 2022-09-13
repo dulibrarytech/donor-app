@@ -4,8 +4,10 @@
 
 'use strict'
 
+const config = require(`../../config/${process.env.CONFIGURATION_FILE}`);
 const database = require('../libs/database.js');
 const Model = require('../libs/Model.js');
+const Service = require("./service");
 
 /* {database field} : {response data field} */
 module.exports = (() => {
@@ -233,6 +235,10 @@ module.exports = (() => {
     // Default values
     data[map.letter] = 1;
 
+    // Flags
+    let isAnonymousDonation = parseInt(data[map.donorID]) == 1;
+    let isLetterBypassed = parseInt(data[map.bypassLetter]) == 1;
+
     // tbl_donorgifts field data
     let giftFields = [
       parseInt(data[map.donorID]) ?? 1,           // donorID
@@ -253,8 +259,26 @@ module.exports = (() => {
     return new Promise((resolve, reject) => {
       DonationModel.execute_query('post_donation', [...giftFields, ...giftDescriptionsFields])
       .then(
-        (response) => {
-          resolve(response.data)
+        (result) => {
+          let sendEmailNotifications = config.enableEmailNotifications == "true" && !isAnonymousDonation && !isLetterBypassed;
+          let response = {};
+          let donationId = result.data[0]?.insertId || null;
+
+          response['data'] = result.data;
+          response['emailSent'] = false;
+          response['donationId'] = donationId;
+
+          if(sendEmailNotifications) {
+            Service.sendNewDonationNotifications({...data, donationId}, function(error) {
+              if(error) response['message'] = error;
+              else response['emailSent'] = true;
+              resolve(response)
+            });
+          }
+          else {
+            response['message'] = "Email notifications are disabled.";
+            resolve(response)
+          }
         },
         (error) => {
           console.log(`Error creating donation record: ${error}`);
