@@ -130,10 +130,7 @@ const onSubmitForm = () => {
         messageDisplay.displayMessage("Error", `Response status: ${status}`);
       }
       else {
-        // TODO: check response object for email flag. If email not sent, message => "Error sending notification email" conlog => [error from response object]
-        console.log("Response object pj", response)
         response = await response.json()
-        console.log("Response object", response)
         let notificationMessageFeedback = "";
         if(response.emailSent == true) notificationMessageFeedback = "Notification emails sent."
         if(response.message) console.log(response.message)

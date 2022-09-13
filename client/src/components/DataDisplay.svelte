@@ -10,7 +10,7 @@
 
   $: {
     if(items) {
-      if(items.length == 0) message = "No results found.";
+      if(items.length == 0) message = args.emptySetMessage || "No results found.";
     }
     else items = [];
   }

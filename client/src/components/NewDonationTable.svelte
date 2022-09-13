@@ -65,8 +65,6 @@
         <td width="15%"><a href="#" on:click|preventDefault={(event) => onClickComplete(donation.id)} value={donation.id}>Mark as Complete</a></td>
       </tr>
     {/each}
-  {:else}
-    <h6>No new donations.</h6>
   {/if}
 </tbody>
 
