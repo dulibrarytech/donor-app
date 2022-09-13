@@ -60,8 +60,6 @@
         {/if}
       </tr>
     {/each}
-  {:else}
-    <h6>No results found.</h6>
   {/if}
 </tbody>
 

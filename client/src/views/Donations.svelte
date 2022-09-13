@@ -17,7 +17,7 @@ import SearchBox from "../components/SearchBox.svelte";
 import DescriptionList from "../components/DescriptionList.svelte";
 
 var donations = [];
-var donationDisplay = [];
+var donationDisplay = null;
 var donationCount = 0;
 var donationItemCount = 0;
 var searchBox;

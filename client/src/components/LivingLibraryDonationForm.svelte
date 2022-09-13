@@ -163,7 +163,7 @@ const toggleInputEnabled = (isEnabled) => {
   inputPointerEvents = isEnabled ? "all" : "none";
 }
 
-const onSubmit = () => {
+const submit = () => {
   let donationFormValidator = new FormValidator('living-library-donation-form', validationRules, "#ced4da");
   let donationFormValid = donationFormValidator.validate({...donorData, ...recipientData});
 
@@ -328,7 +328,7 @@ init();
   </div>
 
   {#if formState == "data_entry"}
-    <button type="submit" on:click|preventDefault={onSubmit} style="pointer-events:{inputPointerEvents}">Send to queue</button>
+    <button type="submit" on:click|preventDefault={submit} style="pointer-events:{inputPointerEvents}">Send to queue</button>
   {/if}
 </form>
 <MessageDisplay bind:this={messageDisplay} />

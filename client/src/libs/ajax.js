@@ -6,7 +6,7 @@
 
 import {Session} from './session.js';
 
-const TIMEOUT = 2000;
+const TIMEOUT = 12000;
 
 export const ajaxRequest = (type="get", url="", callback, data=null, options=null, query=null) => {
   let defaultOptions = {

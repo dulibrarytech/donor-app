@@ -8,7 +8,7 @@ import TextFilter from "../components/TextFilter.svelte";
 import NewItemLink from "../components/NewItemLink.svelte";
 
 var donors = [];
-var donorDisplay = [];
+var donorDisplay = null;
 
 var donorsUrl = `${$Configuration.donorApiDomain}/donor`;
 

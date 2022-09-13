@@ -1,6 +1,6 @@
 <script>
   import { Configuration } from '../config';
-  
+
   export let items;
 
   const isAnonymousDonor = (donor) => {
@@ -30,8 +30,6 @@
         </tr>
       {/if}
     {/each}
-  {:else}
-    <h6>No donors found.</h6> <!-- TODO: Abstract this in DataDisplay -->
   {/if}
 
 </tbody>

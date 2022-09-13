@@ -21,7 +21,7 @@ import DescriptionList from "../components/DescriptionList.svelte";
 export let params;
 
 var donations = [];
-var donationDisplay = [];
+var donationDisplay = null;
 var donationCount = 0;
 var searchBox;
 var searchResults = [];
@@ -220,7 +220,7 @@ init();
         <NewItemLink text="New donation" href="{$Configuration.basePath}/livingLibrary/donation" />
         <svelte:component this={DataDisplay} items={donationDisplay} Table={LivingLibraryTable} on:delete-record={onDeleteRecord}/>
         <MessageDisplay bind:this={messageDisplay} />
-        <button type="button" on:click={exportData}>Export Records</button>
+        {#if donationDisplay?.length > 0}<button type="button" on:click={exportData}>Export Records</button>{/if}
       </div>
 
     </div>

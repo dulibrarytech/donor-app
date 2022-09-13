@@ -4,14 +4,26 @@
   export let items={items};
   export let Table={Table};
   export let args;
+  let message = "Loading";
 
   const dispatch = createEventDispatcher();
+
+  $: {
+    if(items) {
+      if(items.length == 0) message = "No results found.";
+    }
+    else items = [];
+  }
 </script>
 
 <div class="data-display">
-  <table class="table">
-    <svelte:component this={Table} items={items} {args} on:message={(event) => dispatch(event.detail.eventName, event.detail.data)}/>
-  </table>
+  {#if items.length > 0}
+    <table class="table">
+      <svelte:component this={Table} items={items} {args} on:message={(event) => dispatch(event.detail.eventName, event.detail.data)}/>
+    </table>
+  {:else}
+    <div class="data-display-message"><h6>{message}</h6></div>
+  {/if}
 </div>
 
 <style>
@@ -23,14 +35,10 @@
   }
 
   table {
-    /* max-height: 375px; */
-    /* overflow: hidden;
-    overflow-y: scroll; */
     border-style: solid;
     border-width: 1px;
     border-color: #e5e3e1;
     border-radius: 5px;
-    /* width: 100% */
   }
 
   :global(.table:not(:first-child)) {
