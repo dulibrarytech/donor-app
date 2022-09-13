@@ -6,6 +6,8 @@
 
 import {Session} from './session.js';
 
+const TIMEOUT = 2000;
+
 export const ajaxRequest = (type="get", url="", callback, data=null, options=null, query=null) => {
   let defaultOptions = {
     method: type,
@@ -32,13 +34,20 @@ export const ajaxRequest = (type="get", url="", callback, data=null, options=nul
     options.headers['authorization'] = Session.getToken("donor_db");
   }
 
-  fetch(url, options)
+  let controller = new AbortController();
+  fetchTimeout(url, TIMEOUT, controller.signal, controller, options)
     .then(response => {
       callback(null, response, response.status);
     })
     .catch(error => {
-      callback(error, null);
-    });
+      if (error.name === "AbortError") {
+          error = `Connection timeout: Server did not respond in ${TIMEOUT/1000} seconds.`;
+          callback(error, null);
+      } else {
+          error = `Network error: ${error}`;
+          callback(error, null);
+      }
+  });
 }
 
 export const fetchData = (url) => {
@@ -53,3 +62,10 @@ export const fetchData = (url) => {
     });
   });
 }
+
+const fetchTimeout = (url, ms, signal, controller, options={}) => {
+  const promise = fetch(url, { signal, ...options });
+  if (signal) signal.addEventListener("abort", () => controller.abort());
+  const timeout = setTimeout(() => controller.abort(), ms);
+  return promise.finally(() => clearTimeout(timeout));
+};
