@@ -232,12 +232,13 @@ module.exports = (() => {
   }
 
   const postDonation = (data) => {
-    // Default values
-    data[map.letter] = 1;
 
     // Flags
     let isAnonymousDonation = parseInt(data[map.donorID]) == 1;
     let isLetterBypassed = parseInt(data[map.bypassLetter]) == 1;
+
+    // Default values
+    data[map.letter] = isAnonymousDonation ? 0 : 1; // Do not set letter flag on anonymous donations;
 
     // tbl_donorgifts field data
     let giftFields = [
