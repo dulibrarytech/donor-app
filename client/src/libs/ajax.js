@@ -7,6 +7,7 @@
 import {Session} from './session.js';
 
 const TIMEOUT = 12000;
+const SESSION_NAME = "donor_db";
 
 export const ajaxRequest = (type="get", url="", callback, data=null, options=null, query=null) => {
   let defaultOptions = {
@@ -30,8 +31,8 @@ export const ajaxRequest = (type="get", url="", callback, data=null, options=nul
     url += queryString;
   }
 
-  if(Session.isSession("donor_db")) {
-    options.headers['authorization'] = Session.getToken("donor_db");
+  if(Session.isSession(SESSION_NAME)) {
+    options.headers['authorization'] = Session.getToken(SESSION_NAME);
   }
 
   let controller = new AbortController();
