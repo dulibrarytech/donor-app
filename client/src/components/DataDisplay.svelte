@@ -3,7 +3,7 @@
 
   export let items={items};
   export let Table={Table};
-  export let args;
+  export let args={};
   let message = "Loading";
 
   const dispatch = createEventDispatcher();

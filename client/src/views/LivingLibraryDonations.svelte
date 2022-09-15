@@ -222,7 +222,6 @@ init();
         <MessageDisplay bind:this={messageDisplay} />
         {#if donationDisplay?.length > 0}<button type="button" on:click={exportData}>Export Records</button>{/if}
       </div>
-
     </div>
   </div>
 

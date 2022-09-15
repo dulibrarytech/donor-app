@@ -114,6 +114,7 @@ function onFocusOut(e) {
 function keydown(e) {
     /* UPDATE Disable keyboard input when datepicker is in use */
     e.preventDefault();
+    
     if (e.key === 'Escape' && visible) {
         visible = false;
         e.preventDefault();

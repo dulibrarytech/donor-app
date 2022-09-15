@@ -6,6 +6,8 @@ import {ajaxRequest} from '../libs/ajax.js';
 import {createEventDispatcher} from 'svelte';
 import FormValidator from '../libs/FormValidator.js';
 import MessageDisplay from "../components/MessageDisplay.svelte";
+import { DateInput } from '../libs/date-picker-svelte';
+import { getIsoDateString } from '../libs/dateFormatter.js';
 
 export let args;
 export let data={};
@@ -30,8 +32,6 @@ let typeSelect;
 let bypassSelect;
 let deleteButtonText = "Delete";
 let confirmDelete = false;
-
-/* Formatted fields: default values */
 let dateDisplay = null;
 let statusDisplay = null;
 
@@ -57,9 +57,11 @@ let validationRules = {
 let formValidator = new FormValidator('donation-form', validationRules, "#ced4da");
 
 const init = () => {
+  /* Set donor id */
   donorId = data.donorId || data.id || null;
   if(donorId) data['donorId'] = donorId;
 
+  /* Set flags */
   isAnonymousDonation = donorId == 1;
   isDataDisplayForm = donationId != null;
   isAdminUser = roleId == 2;
@@ -75,9 +77,8 @@ const init = () => {
     action = `${$Configuration.donorApiDomain}/donation/${donationId}`;
     buttonText = "Update";
     buttonDisabled = true;
-
     statusDisplay = formatStatusField(data);
-    dateDisplay = formatDateField(data);
+    dateDisplay = new Date(data.dateOfGift);
   }
 
   /* If there is no active donation, use the default 'POST' configuration (new donation form) */
@@ -86,6 +87,7 @@ const init = () => {
     action = `${$Configuration.donorApiDomain}/donation`;
     buttonText = "Add Donation";
     buttonDisabled = false;
+    dateDisplay = null;
 
     /* New donations have 'pending letter' state by default */
     data.letter = donorId == 1 ? 0 : 1;
@@ -112,13 +114,13 @@ const reset = () => {
   data = {...data, ...{dateOfGift: "", numberOfGifts: "", giftDescription: "", giftDetails: "", important: 0}};
   typeSelect = "standard";
   bypassSelect = false;
-  dateDisplay = "";
+  dateDisplay = null;
 }
 
 const onSubmitForm = () => {
   data.important = typeSelect == "important" ? 1 : 0;
   data.bypassLetter = bypassSelect ? 1 : 0;
-  data.dateOfGift = dateDisplay;
+  data.dateOfGift = getIsoDateString(dateDisplay);
 
   if(formValidator.validate(data)) {
     messageDisplay.displayMessage("Submitting data...");
@@ -189,7 +191,7 @@ init();
     <div class="form-group row">
       <div class="col-md-3">
         <label for="dateOfGift">Date<span style="display:{validationLabelDisplay}">(Required yyyy-mm-dd)</span></label>
-        <input type="text" class="form-control" id="dateOfGift" bind:value={dateDisplay} on:input={onChangeFormValue}>
+        <DateInput id="dateOfGift" format="yyyy-MM-dd" placeholder="" bind:value={dateDisplay} on:focus-out={onChangeFormValue}/>
       </div>
       <div class="col-md-6">
         <label for="numberOfGifts">Item Count<span style="display:{validationLabelDisplay}">(Required)</span></label>

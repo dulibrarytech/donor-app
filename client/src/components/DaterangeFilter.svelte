@@ -8,9 +8,9 @@
 <script>
 'use strict'
 
-//import DatePicker from "./DatePicker.svelte";
 import {createEventDispatcher} from 'svelte';
 import FormValidator from '../libs/FormValidator.js';
+import { DateInput } from '../libs/date-picker-svelte';
 
 export let data;
 export let dateField;
@@ -28,7 +28,7 @@ var filteredData = [];
 
 let validationRules = {
   fromDateDisplay: {
-    name: "toDateDisplay",
+    name: "fromDateDisplay",
     maxlength: 10,
     pattern: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
     patternFormat: "yyyy-mm-dd"
@@ -43,12 +43,18 @@ let validationRules = {
 let formValidator = new FormValidator('daterange', validationRules, "#ced4da");
 
 const init = () => {
-  fromDateDisplay = "";
-  toDateDisplay = "";
+  fromDateDisplay = null;
+  toDateDisplay = null;
   filteredData = [];
   fromDate = INIT_FROM_DATE;
   toDate = iso(new Date());
 }
+
+// $: {
+//   fromDate = fromDateDisplay ? iso(fromDateDisplay) : INIT_FROM_DATE;
+//   toDate = toDateDisplay ? iso(toDateDisplay) : iso(new Date());
+//   console.log("Converted dates:", fromDate, toDate)
+// }
 
 const onClear = () => {
   init();
@@ -56,11 +62,13 @@ const onClear = () => {
 }
 
 const onSet = () => {
-  if(formValidator.validate({fromDateDisplay, toDateDisplay})) {
-    if(fromDateDisplay.length > 0) fromDate = fromDateDisplay;
-    else fromDateDisplay = fromDate;
-    if(toDateDisplay.length > 0) toDate = toDateDisplay;
-    else toDateDisplay = toDate;
+  if(formValidator.validate({fromDateDisplay: fromDate, toDateDisplay: toDate})) {
+    if(fromDate.length > 0) fromDate = fromDateDisplay ? iso(fromDateDisplay) : INIT_FROM_DATE;
+    else fromDateDisplay = new Date(fromDate);
+
+    if(toDate.length > 0) toDate = toDateDisplay ? iso(toDateDisplay) : iso(new Date());
+    else toDateDisplay = new Date(toDate);
+
     let filteredData = filterDaterange(data);
     dispatch('daterange-select', {data: filteredData, daterange: {fromDate, toDate}});
   }
@@ -69,6 +77,7 @@ const onSet = () => {
 export const filterDaterange = (currentData) => {
   if(fromDate?.length > 0 && toDate?.length > 0) {
     filteredData = [];
+
     let from = new Date(fromDate + "T00:00:00");
     let to = new Date(toDate + "T23:59:59");
 
@@ -110,17 +119,23 @@ init();
 <form id="daterange">
   <div class="form-group">
     <label class="group-label">Daterange:</label>
-    <input type="text" id="fromDateDisplay" placeholder="From" bind:value={fromDateDisplay} on:click={onClickFromDateInput}/>
-    <input type="text" id="toDateDisplay" placeholder="To" bind:value={toDateDisplay} on:click={onClickToDateInput}/>
+
+    <input type="hidden" id="fromDateString" bind:value={fromDate} />
+    <input type="hidden" id="toDateString" bind:value={toDate} />
+    <div class="input"><DateInput id="fromDateDisplay" format="yyyy-MM-dd" placeholder="From" bind:value={fromDateDisplay} /></div>
+    <div class="input"><DateInput id="toDateDisplay" format="yyyy-MM-dd" placeholder="To" bind:value={toDateDisplay} /></div>
+
     <button type="button" on:click|preventDefault={onSet}>Apply</button>
     <button type="button" on:click|preventDefault={onClear}>Clear</button>
   </div>
 </form>
 
 <style>
-  input {
+  input,
+  .input {
     max-width: 37%;
   }
+
   .form-group {
     border-style: solid;
     border-width: 1px;

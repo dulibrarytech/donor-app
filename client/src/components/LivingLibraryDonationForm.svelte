@@ -11,6 +11,8 @@ import {createEventDispatcher} from 'svelte';
 import LivingLibraryWhoToNotifyForm from "../components/LivingLibraryWhoToNotifyForm.svelte";
 import FormValidator from '../libs/FormValidator.js';
 import MessageDisplay from "../components/MessageDisplay.svelte";
+import { DateInput } from '../libs/date-picker-svelte';
+import { getIsoDateString } from '../libs/dateFormatter.js';
 
 export let args;
 export let data;
@@ -30,6 +32,7 @@ let recipientData = data.recipient || {};
 let whoToNotifyData = data.who_to_notify || [];
 let bookData = data.book;
 let status;
+let dateDisplay;
 
 var validationRules = {
   donor_first_name: {
@@ -97,7 +100,11 @@ const init = () => {
   status = data.is_completed ? "Completed" : "Queued";
 
   // Default values
-  if(!donationId) resetToDefaultValues();
+  if(!donationId) {
+    resetToDefaultValues();
+    dateDisplay = null;
+  }
+  else dateDisplay = new Date(donorData.donor_date_of_donation);
 
   if(formState == "data_display") {
     toggleInputEnabled(false);
@@ -161,6 +168,10 @@ const addPersonToNotify = () => {
 
 const toggleInputEnabled = (isEnabled) => {
   inputPointerEvents = isEnabled ? "all" : "none";
+}
+
+const onSelectDateOfDonation = () => {
+  donorData.donor_date_of_donation = getIsoDateString(dateDisplay);
 }
 
 const submit = () => {
@@ -300,7 +311,9 @@ init();
 
     <div class="form-group">
       <label for="donor_date_of_donation">Date of Donation<span style="display:{validationLabelDisplay}">(Required e.g. yyyy-mm-dd)</span></label>
-      <input type="text" id="donor_date_of_donation" bind:value={donorData.donor_date_of_donation} style="pointer-events:{inputPointerEvents}"/>
+      <div style="pointer-events:{inputPointerEvents}">
+        <DateInput format="yyyy-MM-dd" placeholder="" bind:value={dateDisplay} on:select={onSelectDateOfDonation}/>
+      </div>
     </div>
 
     <div class="form-group">

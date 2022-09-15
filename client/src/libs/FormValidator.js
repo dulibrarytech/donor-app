@@ -53,7 +53,7 @@ class FormValidator {
   }
 
   #fail(id, message) {
-    // Get the input that failed validation
+    // Get the input that failed validation 
     let input = document.getElementById(id);
     input.style.borderColor = "red";
 
