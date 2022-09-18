@@ -187,14 +187,15 @@ init();
 </script>
 
 <form id="donation-form" class="form" method="{method}" action="{action}">
+  <br><label class="required">Required field</label><br>
   <div class="form-fields container">
     <div class="form-group row">
       <div class="col-md-3">
-        <label for="dateOfGift">Date<span style="display:{validationLabelDisplay}">(Required yyyy-mm-dd)</span></label>
+        <label for="dateOfGift" class="required">Date<span style="display:{validationLabelDisplay}">(e.g. yyyy-mm-dd)</span></label>
         <DateInput id="dateOfGift" format="yyyy-MM-dd" placeholder="" bind:value={dateDisplay} on:focus-out={onChangeFormValue}/>
       </div>
       <div class="col-md-6">
-        <label for="numberOfGifts">Item Count<span style="display:{validationLabelDisplay}">(Required)</span></label>
+        <label for="numberOfGifts" class="required">Item Count</label>
         <input type="text" class="form-control" id="numberOfGifts" bind:value={data.numberOfGifts} on:input={onChangeFormValue}>
       </div>
       <div class="col-md-3">
@@ -208,7 +209,7 @@ init();
     </div>
     <div class="form-group row">
       <div class="col-md-9">
-        <label for="giftDescription">Description<span style="display:{validationLabelDisplay}">(Required)</span></label>
+        <label for="giftDescription" class="required">Description</label>
         <textarea class="form-control" id="giftDescription" bind:value={data.giftDescription} on:input={onChangeFormValue}></textarea>
         <label for="giftDetails">Details</label>
         <textarea class="form-control" id="giftDetails" bind:value={data.giftDetails} on:input={onChangeFormValue}></textarea>

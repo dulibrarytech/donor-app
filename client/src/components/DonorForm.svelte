@@ -148,6 +148,7 @@ init();
 </script>
 
 <form id="donor-form" class="form" method="{method}" action="{action}">
+  <label class="required">Required field</label><br>
   <div class="form-fields">
     <div class="form-group">
 
@@ -159,7 +160,7 @@ init();
         {/each}
       </select>
 
-      <label for="organization">Organization<span style="display:{validationLabelDisplay}">(Required if no last name)</span></label>
+      <label for="organization" class="required">Organization<span style="display:{validationLabelDisplay}">(Required if no last name)</span></label>
       <input type="text" class="form-control" id="organization" name="organization" bind:value={data.organization} on:input={onChangeFormValue}>
 
       <label for="city">City</label>
@@ -169,7 +170,7 @@ init();
       <input type="text" class="form-control" id="country" name="country" bind:value={data.country} on:input={onChangeFormValue}>
     </div>
     <div class="form-group">
-      <label for="lastName">Last Name<span style="display:{validationLabelDisplay}">(Required if no organization)</span></label>
+      <label for="lastName" class="required">Last Name<span style="display:{validationLabelDisplay}">(Required if no organization)</span></label>
       <input type="text" class="form-control" id="lastName" name="lastName" bind:value={data.lastName} on:input={onChangeFormValue}>
 
       <label for="address1">Address 1</label>
@@ -201,17 +202,14 @@ init();
 <MessageDisplay bind:this={messageDisplay} />
 
 <style>
-  form {
+  form .form-fields {
+    display: flex;
+    justify-content: space-between;
     border-style: solid;
     border-width: 1px;
     border-color: #e5e3e1;
     border-radius: 5px;
     padding: 12px;
-  }
-
-  form .form-fields {
-    display: flex;
-    justify-content: space-between;
   }
 
   form > div + * {

@@ -202,6 +202,7 @@ init();
 </script>
 
 <form id="living-library-donation-form">
+  <label class="required">Required field</label><br>
   {#if formState == "data_display"}
     <label for="statusDisplay">Status:</label>
     <input type="text" id="statusDisplay" value={status}/>
@@ -222,24 +223,24 @@ init();
         </select>
       {/if}
 
-      <label for="donor_address">Address<span style="display:{validationLabelDisplay}">(Required)</span></label>
+      <label for="donor_address" class="required">Address</label>
       <input type="text" id="donor_address" bind:value={donorData.donor_address} style="pointer-events:{inputPointerEvents}" tabindex="4"/>
 
-      <label for="donor_zip">Zip Code<span style="display:{validationLabelDisplay}">(Required e.g. 80210 or 80210-4711)</span></label>
+      <label for="donor_zip" class="required">Zip Code<span style="display:{validationLabelDisplay}">(e.g. 80210 or 80210-4711)</span></label>
       <input type="text" id="donor_zip" bind:value={donorData.donor_zip} style="pointer-events:{inputPointerEvents}" tabindex="7"/>
     </div>
     <div class="form-group">
-      <label for="donor_first_name">First Name<span style="display:{validationLabelDisplay}">(Required)</span></label>
+      <label for="donor_first_name" class="required">First Name</label>
       <input type="text" id="donor_first_name" bind:value={donorData.donor_first_name} style="pointer-events:{inputPointerEvents}" tabindex="2"/>
 
-      <label for="donor_city">City<span style="display:{validationLabelDisplay}">(Required)</span></label>
+      <label for="donor_city" class="required">City</label>
       <input type="text" id="donor_city" bind:value={donorData.donor_city} style="pointer-events:{inputPointerEvents}" tabindex="5"/>
     </div>
     <div class="form-group">
-      <label for="donor_last_name">Last Name<span style="display:{validationLabelDisplay}">(Required)</span></label>
+      <label for="donor_last_name" class="required">Last Name</label>
       <input type="text" id="donor_last_name" bind:value={donorData.donor_last_name} style="pointer-events:{inputPointerEvents}" tabindex="3"/>
 
-      <label for="state">State<span style="display:{validationLabelDisplay}">(Required)</span></label>
+      <label for="state" class="required">State</label>
       {#if formState == "data_display" }
         <input type="text" id="donor_state" value={donorData.donor_state} style="pointer-events:{inputPointerEvents}" tabindex="6"/>
       {:else}
@@ -292,12 +293,12 @@ init();
     </div>
 
     <div class="form-group">
-      <label for="recipient_first_name">First Name<span style="display:{validationLabelDisplay}">(Required)</span></label>
+      <label for="recipient_first_name" class="required">First Name</label>
       <input type="text" id="recipient_first_name" bind:value={recipientData.recipient_first_name} style="pointer-events:{inputPointerEvents}"/>
     </div>
 
     <div class="form-group">
-      <label for="recipient_last_name">Last Name<span style="display:{validationLabelDisplay}">(Required)</span></label>
+      <label for="recipient_last_name" class="required">Last Name</label>
       <input type="text" id="recipient_last_name" bind:value={recipientData.recipient_last_name} style="pointer-events:{inputPointerEvents}"/>
     </div>
   </div>
@@ -305,12 +306,12 @@ init();
   <h5>Donation Information</h5>
   <div class="form-section">
     <div class="form-group">
-      <label for="donor_amount_of_donation">Amount of Donation<span style="display:{validationLabelDisplay}">(Required e.g. 1500.00)</span></label>
+      <label for="donor_amount_of_donation" class="required">Amount of Donation<span style="display:{validationLabelDisplay}">(e.g. 1500.00)</span></label>
       <input type="text" id="donor_amount_of_donation" bind:value={donorData.donor_amount_of_donation} style="pointer-events:{inputPointerEvents}"/>
     </div>
 
     <div class="form-group">
-      <label for="donor_date_of_donation">Date of Donation<span style="display:{validationLabelDisplay}">(Required e.g. yyyy-mm-dd)</span></label>
+      <label for="donor_date_of_donation" class="required">Date of Donation<span style="display:{validationLabelDisplay}">(e.g. yyyy-mm-dd)</span></label>
       <div style="pointer-events:{inputPointerEvents}">
         <DateInput format="yyyy-MM-dd" placeholder="" bind:value={dateDisplay} on:select={onSelectDateOfDonation}/>
       </div>

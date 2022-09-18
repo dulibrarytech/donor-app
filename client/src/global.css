@@ -153,6 +153,16 @@ form label:not(> span) {
 	pointer-events: none;
 } */
 
+label.required:before {
+	content: '*';
+	color: #EB0101;
+	margin-right: 5px;
+}
+
+/* .form-group label {
+	display: flex;
+} */
+
 @media (min-width: 1600px) {
 	.container {
 	    max-width: 1500px;
