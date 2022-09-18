@@ -6,6 +6,7 @@ import DataDisplay from "../components/DataDisplay.svelte";
 import DonorTable from "../components/DonorTable.svelte";
 import TextFilter from "../components/TextFilter.svelte";
 import NewItemLink from "../components/NewItemLink.svelte";
+import DescriptionList from "../components/DescriptionList.svelte";
 
 var donors = [];
 var donorDisplay = null;
@@ -68,7 +69,13 @@ onMount(() => {
       </div>
 
       <div class="col-md-9">
-        <NewItemLink text="Add new donor" href="{$Configuration.basePath}/donor"/>
+        <div>
+          <div style="float: left">
+            <DescriptionList data={[{label: "Donors", value: donorDisplay?.length ?? "0"}]} displayClass="statistics-display" />
+          </div>  
+          <NewItemLink text="Add anonymous donation" href="{$Configuration.basePath}/donation/donor/1"/>
+          <NewItemLink text="Add new donor" href="{$Configuration.basePath}/donor"/>
+        </div>
         <svelte:component this={DataDisplay} items={donorDisplay} Table={DonorTable}/>
       </div>
     </div>

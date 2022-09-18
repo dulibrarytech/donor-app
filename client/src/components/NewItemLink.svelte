@@ -26,6 +26,7 @@
   	float: right;
   	color: rgb(0,80,160);
   	margin-bottom: 5px;
+    margin-left: 25px;
   }
 
   .add-item-link a {
