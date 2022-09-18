@@ -263,7 +263,7 @@ onMount(() => {
 
       <div class="col-md-9">
         <div style="display:{donationListDisplay}">
-          <div style="display: grid">
+          <div style="display: grid; float: left">
             <DescriptionList data={[{label: "Donations", value: donationCount || ""}, {label: "Total Items", value: donationItemCount || ""}]} displayClass="statistics-display" />
             {#if dateRange}
               <DescriptionList data={[{label: "From", value: dateRange.fromDate || ""}, {label: "To", value: dateRange.toDate || ""}]} displayClass="daterange-display" />

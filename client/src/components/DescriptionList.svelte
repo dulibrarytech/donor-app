@@ -12,7 +12,6 @@
 
 <style>
   .description-list {
-    float: left;
     margin-bottom: 10px;
   }
 
