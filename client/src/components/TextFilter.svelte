@@ -28,18 +28,25 @@ export const filterText = (data, filter = filterValue, option = filterOption) =>
   let filtered = data;
 
   if(filterValue) {
+    let testString = "";
     filter = filter.toLowerCase();
     if(option == "begins_with") filter = '^' + filter;
 
     filtered = data.filter((item) => {
       let re = new RegExp(filter, "gi"), values="", matches = [];
-      for(let field of filterFields) {
-        if(typeof item[field]) item[field] = String(item[field])
 
-        if(item[field].length > 0) {
-          matches = item[field].toLowerCase().match(re);
-          if(matches) {
-            values = values.concat(matches);
+      for(let field of filterFields) {
+        testString = item[field];
+        if(typeof testString !='string') testString = String(testString)
+
+        if(testString.length > 0) {
+          testString = testString.split(" ");
+
+          for(let word of testString) {
+            matches = word.toLowerCase().match(re);
+            if(matches) {
+              values = values.concat(matches);
+            }
           }
         }
       }
