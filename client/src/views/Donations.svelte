@@ -13,8 +13,8 @@ import DonationSearchResultsTable from "../components/DonationSearchResultsTable
 import NewItemLink from "../components/NewItemLink.svelte";
 import DataFilterMultiField from "../components/DataFilterMultiField.svelte";
 import DaterangeFilter from "../components/DaterangeFilter.svelte";
-import SearchBox from "../components/SearchBox.svelte";
 import DescriptionList from "../components/DescriptionList.svelte";
+import TextFilter from "../components/TextFilter.svelte";
 
 var donations = [];
 var donationDisplay = null;
@@ -26,6 +26,7 @@ var searchField = "";
 var dataFilter;
 var filters = [];
 var daterangeFilter;
+var textFilter;
 var dateRange = null;
 var donationListDisplay = "block";
 var donationFilterFormDisplay = "block";
@@ -195,47 +196,34 @@ const sortDataDisplay = () => {
  }
 }
 
-const onKeywordSearch = (event) => {
-  searchResults = event.detail.results;
-  searchField = event.detail.field;
-  lscache.set('donation_search_results', {
-    results: searchResults,
-    field: searchField
-  });
-  showSearchResults();
+const filterDataDisplay = (data) => {
+  let filtered;
+  filtered = dataFilter.filterData(data);
+  filtered = daterangeFilter.filterDaterange(filtered);
+  return filtered;
 }
 
-const showSearchResults = () => {
-  donationListDisplay = "none";
-  donationFilterFormDisplay = "none";
-  donationSearchResultsDisplay = "block";
-}
-
-const clearSearchResults = () => {
-  lscache.flush();
-  searchBox.reset();
-  searchResults = [];
-  searchField = "";
-  donationListDisplay = "block";
-  donationFilterFormDisplay = "block";
-  donationSearchResultsDisplay = "none";
+const onTextFilter = (event) => {
+  setDataDisplay( filterDataDisplay(event.detail ? event.detail : donations) );
 }
 
 const onFilter = (event) => {
   let data = event.detail;
   if(dateRange) {data = daterangeFilter.filterDaterange(event.detail)}
+  textFilter.reset();
   setDataDisplay(data);
 }
 
 const onDaterangeSelect = (event) => {
   dateRange = event.detail.daterange || null;
-  donationDisplay = dataFilter.filterData(donations)
-  //setDataDisplay(event.detail.data);
+  donationDisplay = dataFilter.filterData(donations);
+  textFilter.reset();
   setDataDisplay(daterangeFilter.filterDaterange(donationDisplay));
 }
 
 const onClearDaterange = () => {
   dateRange = null;
+  textFilter.reset();
   setDataDisplay(dataFilter.filterData(donations));
 }
 
@@ -254,9 +242,8 @@ onMount(() => {
           <h6>Filter:</h6>
           <DataFilterMultiField data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/>
           <DaterangeFilter data={donationDisplay} dateField="dateOfGift" on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
-
           <h6>Keyword Search:</h6>
-          <SearchBox index={donationDisplay} searchFields={searchFields} on:search={onKeywordSearch} bind:this={searchBox} />
+          <TextFilter data={donations} bind:this={textFilter} on:filter-text={onTextFilter} on:text-filter-change-option={onTextFilter} filterFields={["giftDescription", "giftDetails"]} placeholderText="Search description or details" />
         </div>
         <button id="exit-search" on:click={clearSearchResults} style="display:{donationSearchResultsDisplay}">Exit Search</button>
       </div>
