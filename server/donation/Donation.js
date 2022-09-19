@@ -277,7 +277,7 @@ module.exports = (() => {
             });
           }
           else {
-            response['message'] = "Email notifications are disabled.";
+            response['message'] = config.enableEmailNotifications == false ? "Email notifications are disabled" : null;
             resolve(response)
           }
         },
