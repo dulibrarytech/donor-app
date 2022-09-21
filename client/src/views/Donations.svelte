@@ -243,9 +243,8 @@ onMount(() => {
           <DataFilterMultiField data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/>
           <DaterangeFilter data={donationDisplay} dateField="dateOfGift" on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
           <h6>Keyword Search:</h6>
-          <TextFilter data={donations} bind:this={textFilter} on:filter-text={onTextFilter} on:text-filter-change-option={onTextFilter} filterFields={["giftDescription", "giftDetails"]} placeholderText="Search description or details" />
+          <TextFilter data={donations} bind:this={textFilter} on:filter-text={onTextFilter} on:text-filter-change-option={onTextFilter} filterFields={["giftDescription"]} placeholderText="Search description" />
         </div>
-        <button id="exit-search" on:click={clearSearchResults} style="display:{donationSearchResultsDisplay}">Exit Search</button>
       </div>
 
       <div class="col-md-9">
@@ -258,11 +257,6 @@ onMount(() => {
           </div>
           <NewItemLink text="Add anonymous donation" href="{$Configuration.basePath}/donation/donor/1" />
           <svelte:component this={DataDisplay} items={donationDisplay} Table={DonationTable} args={{roleId}}/>
-        </div>
-
-        <div style="display:{donationSearchResultsDisplay}">
-          <DescriptionList data={[{label: "Result Count", value: searchResults.length || ""}]} displayClass="statistics-display" />
-          <DataDisplay items={searchResults} Table={DonationSearchResultsTable} args={{searchField}} />
         </div>
       </div>
     </div>
