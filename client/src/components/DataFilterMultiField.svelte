@@ -59,7 +59,7 @@ init();
 <form>
   {#each filters as filter }
   <div class="form-group">
-    {#if filter.groupLabel}<label class="group-label">{filter.groupLabel}</label>{/if}
+    {#if filter.groupLabel}<p class="group-label">{filter.groupLabel}</p>{/if}
     {#each filter.options as {field, value, label} }
       <div class="form-check">
         <input id={`${field}-${value}`} class="form-check-input" type="radio" value={value} bind:group={fields[field]} on:change={onFilter} >
@@ -78,5 +78,10 @@ init();
     border-width: 1px;
     border-color: #e5e3e1;
     border-radius: 3px;
+  }
+
+  p.group-label {
+    font-weight: 500;
+    margin-bottom: 5px;
   }
 </style>
