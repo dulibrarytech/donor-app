@@ -187,15 +187,15 @@ init();
 </script>
 
 <form id="donation-form" class="form" method="{method}" action="{action}">
-  <br><label class="required">Required field</label><br>
+  <br><p class="required">Required field</p><br>
   <div class="form-fields container">
     <div class="form-group row">
       <div class="col-md-3">
-        <label for="dateOfGift" class="required">Date<span style="display:{validationLabelDisplay}">(e.g. yyyy-mm-dd)</span></label>
+        <label for="dateOfGift" class="required input-label">Date<span style="display:{validationLabelDisplay}">(e.g. yyyy-mm-dd)</span></label>
         <DateInput id="dateOfGift" format="yyyy-MM-dd" placeholder="" bind:value={dateDisplay} on:focus-out={onChangeFormValue}/>
       </div>
       <div class="col-md-6">
-        <label for="numberOfGifts" class="required">Item Count</label>
+        <label for="numberOfGifts" class="required input-label">Item Count</label>
         <input type="text" class="form-control" id="numberOfGifts" bind:value={data.numberOfGifts} on:input={onChangeFormValue}>
       </div>
       <div class="col-md-3">
@@ -209,15 +209,15 @@ init();
     </div>
     <div class="form-group row">
       <div class="col-md-9">
-        <label for="giftDescription" class="required">Description</label>
+        <label for="giftDescription" class="required input-label">Description</label>
         <textarea class="form-control" id="giftDescription" bind:value={data.giftDescription} on:input={onChangeFormValue}></textarea>
-        <label for="giftDetails">Details</label>
+        <label for="giftDetails" class="input-label">Details</label>
         <textarea class="form-control" id="giftDetails" bind:value={data.giftDetails} on:input={onChangeFormValue}></textarea>
       </div>
       <div class="col-md-3">
         {#if !isAnonymousDonation}
           <div class="form-control-set">
-            <label class="form-check-label">Donation Type</label>
+            <p class="form-check-label">Donation Type</p>
             <div class="form-check">
               <input class="form-check-input" type="radio" bind:group={typeSelect} value="standard" id="type-standard" checked={typeSelect=='standard'} on:change={onChangeFormValue}>
               <label class="form-check-label" for="type-standard">
@@ -257,10 +257,6 @@ init();
 <MessageDisplay bind:this={messageDisplay} />
 
 <style>
-  input#dateOfGift {
-    max-width: 130px;
-  }
-
   input#numberOfGifts {
     max-width: 130px;
   }
@@ -272,5 +268,11 @@ init();
 
   .form-control-set:not(:first-child) {
     margin-top: 30px;
+  }
+
+  p.form-check-label,
+  .input-label {
+    font-weight: 500;
+    margin-bottom: 5px;
   }
 </style>
