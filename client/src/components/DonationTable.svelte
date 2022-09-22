@@ -123,7 +123,7 @@
         <!-- Mark as Complete link -->
         {#if isDonorPage && (isAdminUser || isExtRelUser)}
           {#if isPendingLetter(donation)}
-            <td width="10%"><a href="#" on:click|preventDefault={(event) => onClickComplete(donation.id)} value={donation.id}>Mark as Complete</a></td>
+            <td width="10%"><a href="/" on:click|preventDefault={(event) => onClickComplete(donation.id)} value={donation.id}>Mark as Complete</a></td>
           {:else}
             <td></td>
           {/if}
@@ -134,7 +134,5 @@
 </tbody>
 
 <style>
-td.link {
-  max-width: 15%;
-}
+
 </style>
