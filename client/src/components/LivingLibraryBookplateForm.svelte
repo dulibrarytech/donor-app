@@ -89,7 +89,7 @@ init();
 </script>
 
 <form id="living-library-bookplate-form">
-  <label class="required">Required field</label><br>
+  <p class="required">Required field</p><br>
   <div class="form-section">
     <div class="form-group">
       <label for="book_author_name">Author Name</label>

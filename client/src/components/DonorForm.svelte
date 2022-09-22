@@ -220,9 +220,4 @@ init();
     border-style: none;
     width: 400px
   }
-
-  p.group-label {
-    font-weight: 500;
-    margin-bottom: 5px;
-  }
 </style>

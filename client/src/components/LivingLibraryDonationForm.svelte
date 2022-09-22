@@ -202,7 +202,7 @@ init();
 </script>
 
 <form id="living-library-donation-form">
-  <label class="required">Required field</label><br>
+  <p class="required">Required field</p><br>
   {#if formState == "data_display"}
     <label for="statusDisplay">Status:</label>
     <input type="text" id="statusDisplay" value={status}/>
@@ -213,9 +213,9 @@ init();
     <div class="form-group">
       <label for="donor_title">Title</label>
       {#if formState == "data_display" }
-        <input type="text" id="donor_title" bind:value="{donorData.donor_title}" style="pointer-events:{inputPointerEvents}" tabindex="1"/>
+        <input type="text" id="donor_title" bind:value="{donorData.donor_title}" style="pointer-events:{inputPointerEvents}" />
       {:else}
-        <select class="form-select" id="donor_title" bind:value={donorData.donor_title} style="pointer-events:{inputPointerEvents}" tabindex="1">
+        <select class="form-select" id="donor_title" bind:value={donorData.donor_title} style="pointer-events:{inputPointerEvents}" >
           <option value="" selected disabled hidden>{#if fieldData.titles.length == 0}Error retrieving data{:else}-- Select a title --{/if}</option>
           {#each fieldData.titles as title}
             <option value="{title.term}" selected={donationId && donorData?.donor_title == title.term}>{title.term}</option>
@@ -224,27 +224,27 @@ init();
       {/if}
 
       <label for="donor_address" class="required">Address</label>
-      <input type="text" id="donor_address" bind:value={donorData.donor_address} style="pointer-events:{inputPointerEvents}" tabindex="4"/>
+      <input type="text" id="donor_address" bind:value={donorData.donor_address} style="pointer-events:{inputPointerEvents}" />
 
       <label for="donor_zip" class="required">Zip Code<span style="display:{validationLabelDisplay}">(e.g. 80210 or 80210-4711)</span></label>
-      <input type="text" id="donor_zip" bind:value={donorData.donor_zip} style="pointer-events:{inputPointerEvents}" tabindex="7"/>
+      <input type="text" id="donor_zip" bind:value={donorData.donor_zip} style="pointer-events:{inputPointerEvents}" />
     </div>
     <div class="form-group">
       <label for="donor_first_name" class="required">First Name</label>
-      <input type="text" id="donor_first_name" bind:value={donorData.donor_first_name} style="pointer-events:{inputPointerEvents}" tabindex="2"/>
+      <input type="text" id="donor_first_name" bind:value={donorData.donor_first_name} style="pointer-events:{inputPointerEvents}" />
 
       <label for="donor_city" class="required">City</label>
-      <input type="text" id="donor_city" bind:value={donorData.donor_city} style="pointer-events:{inputPointerEvents}" tabindex="5"/>
+      <input type="text" id="donor_city" bind:value={donorData.donor_city} style="pointer-events:{inputPointerEvents}" />
     </div>
     <div class="form-group">
       <label for="donor_last_name" class="required">Last Name</label>
-      <input type="text" id="donor_last_name" bind:value={donorData.donor_last_name} style="pointer-events:{inputPointerEvents}" tabindex="3"/>
+      <input type="text" id="donor_last_name" bind:value={donorData.donor_last_name} style="pointer-events:{inputPointerEvents}" />
 
       <label for="state" class="required">State</label>
       {#if formState == "data_display" }
-        <input type="text" id="donor_state" value={donorData.donor_state} style="pointer-events:{inputPointerEvents}" tabindex="6"/>
+        <input type="text" id="donor_state" value={donorData.donor_state} style="pointer-events:{inputPointerEvents}" />
       {:else}
-        <select class="form-select" id="donor_state" bind:value={donorData.donor_state} style="pointer-events:{inputPointerEvents}" tabindex="6">
+        <select class="form-select" id="donor_state" bind:value={donorData.donor_state} style="pointer-events:{inputPointerEvents}" >
           <option value="" selected disabled hidden>{#if fieldData.states.length == 0}Error retrieving data{:else}-- Select a state --{/if}</option>
           {#each fieldData.states as state}
             <option value="{state.term}" selected={donationId && donorData?.donor_state == state.term}>{state.term}</option>
