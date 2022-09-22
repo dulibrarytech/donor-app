@@ -118,7 +118,7 @@ init();
 
 <form id="daterange">
   <div class="form-group">
-    <label class="group-label">Daterange:</label>
+    <p class="group-label">Daterange:</p>
 
     <input type="hidden" id="fromDateString" bind:value={fromDate} />
     <input type="hidden" id="toDateString" bind:value={toDate} />
@@ -143,14 +143,12 @@ init();
     border-radius: 3px;
   }
 
-  .datepicker {
-    position: absolute;
-    background-color: #e5e3e1;
-    padding: 8px;
-    border-radius: 5px;
-  }
-
   :global(td.btn) {
     display: table-cell !important;
+  }
+
+  p.group-label {
+    font-weight: 500;
+    margin-bottom: 5px;
   }
 </style>
