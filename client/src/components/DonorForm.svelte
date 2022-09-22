@@ -148,7 +148,7 @@ init();
 </script>
 
 <form id="donor-form" class="form" method="{method}" action="{action}">
-  <label class="required">Required field</label><br>
+  <p class="required">Required field</p><br>
   <div class="form-fields">
     <div class="form-group">
 
@@ -219,5 +219,10 @@ init();
   .form-group {
     border-style: none;
     width: 400px
+  }
+
+  p.group-label {
+    font-weight: 500;
+    margin-bottom: 5px;
   }
 </style>
