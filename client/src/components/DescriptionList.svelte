@@ -20,14 +20,6 @@
     flex-direction: row;
   }
 
-  .description-list > dl {
-    margin: 0 8px;
-  }
-
-  .description-list label {
-    font-weight: 500;
-  }
-
   .description-list dt:not(:first-child) {
     margin-left: 20px;
   }
