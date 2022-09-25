@@ -28,13 +28,10 @@
 
 <style>
   .data-display {
-    margin-top: 25px;
+    margin: 25px 0;
     max-height: 75vh;
     overflow-y: auto;
     width: 100%;
-  }
-
-  table {
     border-style: solid;
     border-width: 1px;
     border-color: #e5e3e1;
