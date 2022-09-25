@@ -83,7 +83,6 @@ const onChangeOption = (event) => {
 
 <form>
   <div class="form-group">
-    <label class="group-label">Text Filter:</label>
     <div class="search-form">
       <input id="text-filter" type="text" on:keyup={onFilterInput} bind:value="{filterValue}" placeholder={placeholderText} />
     </div>

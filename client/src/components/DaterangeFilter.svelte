@@ -118,13 +118,12 @@ init();
 
 <form id="daterange">
   <div class="form-group">
-    <p class="group-label">Daterange:</p>
-
     <input type="hidden" id="fromDateString" bind:value={fromDate} />
     <input type="hidden" id="toDateString" bind:value={toDate} />
+
     <div class="input"><DateInput id="fromDateDisplay" format="yyyy-MM-dd" placeholder="From" bind:value={fromDateDisplay} /></div>
     <div class="input"><DateInput id="toDateDisplay" format="yyyy-MM-dd" placeholder="To" bind:value={toDateDisplay} /></div>
-
+    
     <button type="button" on:click|preventDefault={onSet}>Apply</button>
     <button type="button" on:click|preventDefault={onClear}>Clear</button>
   </div>
