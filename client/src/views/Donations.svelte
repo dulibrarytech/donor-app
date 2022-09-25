@@ -239,11 +239,12 @@ onMount(() => {
     <div class="row">
       <div class="col-md-3">
         <div class="filter-form" style="display:{donationFilterFormDisplay}">
+          <h6>Search:</h6>
+          <TextFilter data={donations} bind:this={textFilter} on:filter-text={onTextFilter} on:text-filter-change-option={onTextFilter} filterFields={["giftDescription"]} placeholderText="Search description" />
+          <h6>Daterange:</h6>
+          <DaterangeFilter data={donationDisplay} dateField="dateOfGift" on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
           <h6>Filter:</h6>
           <DataFilterMultiField data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/>
-          <DaterangeFilter data={donationDisplay} dateField="dateOfGift" on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
-          <h6>Keyword Search:</h6>
-          <TextFilter data={donations} bind:this={textFilter} on:filter-text={onTextFilter} on:text-filter-change-option={onTextFilter} filterFields={["giftDescription"]} placeholderText="Search description" />
         </div>
       </div>
 
