@@ -62,7 +62,7 @@ onMount(() => {
   <div class="container page-section">
     <div class="row">
       <div class="col-md-3">
-        <h6>Filter:</h6>
+        <h6>Search:</h6>
         <div class="filter-form">
           <TextFilter data={donors} on:filter-text={onFilter} on:text-filter-change-option={onFilter} filterFields={["lastName", "organization", "firstName"]} placeholderText="Last name, organization, first name" />
         </div>
@@ -72,7 +72,7 @@ onMount(() => {
         <div>
           <div style="float: left">
             <DescriptionList data={[{label: "Donors", value: donorDisplay?.length ?? "0"}]} displayClass="statistics-display" />
-          </div>  
+          </div>
           <NewItemLink text="Add anonymous donation" href="{$Configuration.basePath}/donation/donor/1"/>
           <NewItemLink text="Add new donor" href="{$Configuration.basePath}/donor"/>
         </div>
