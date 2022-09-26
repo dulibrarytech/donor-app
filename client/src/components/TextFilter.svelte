@@ -102,8 +102,4 @@ const onChangeOption = (event) => {
   div.search-form input {
     width: 100%
   }
-
-  .form-group {
-    padding-top: 12px;
-  }
 </style>

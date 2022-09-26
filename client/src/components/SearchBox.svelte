@@ -105,6 +105,5 @@ init();
     border-width: 1px;
     border-color: #e5e3e1;
     border-radius: 3px;
-    padding-top: 12px;
   }
 </style>

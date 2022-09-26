@@ -115,7 +115,7 @@ footer {
 	border-width: 1px;
 	border-color: #e5e3e1;
 	border-radius: 5px;
-	margin-bottom: 10px;
+	margin-bottom: 15px;
 	padding: 30px 40px;
 	background-color: rgb(248, 249,250);
 }
@@ -123,6 +123,10 @@ footer {
 .form-group-flex {
 	display: flex;
 	justify-content: space-between;
+}
+
+.filter-form .form-group {
+	padding: 15px;
 }
 
 form > div + * {
@@ -145,11 +149,6 @@ form input, select, textarea, .form-control-group {
 	padding: 5px;
 }
 
-.filter-form .form-group {
-	padding-left: 12px;
-	padding-right: 12px;
-}
-
 .page-section {
 	margin-top: 25px;
 }
@@ -169,29 +168,15 @@ form label:not(> span) {
 	font-weight: bold;
 }
 
-/* .form-group {
-	background-color: #e5e3e1;
-	padding: 1.15em;
-} */
-
 .data-display td {
 	vertical-align: middle;
 }
-
-/* nav li.active {
-	font-weight: bold;
-	pointer-events: none;
-} */
 
 .required:before {
 	content: '*';
 	color: #EB0101;
 	margin-right: 5px;
 }
-
-/* .form-group label {
-	display: flex;
-} */
 
 @media (min-width: 1600px) {
 	.container {
