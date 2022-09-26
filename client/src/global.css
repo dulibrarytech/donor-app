@@ -102,6 +102,10 @@ footer {
 		height: 150px;
 }
 
+.page h3 {
+	margin-bottom: 1.3em;
+}
+
 .filter-form label.group-label {
 	font-weight: 500;
 }

@@ -64,8 +64,8 @@ init()
 </script>
 
 <div class="page">
+  <h3>Living Library: Book Plate Form</h3>
   <div class="page-section donation-form">
-    <h3>Living Library: Book Plate Form</h3>
     {#await data}
       <h6>Loading data...</h6>
     {:then data}

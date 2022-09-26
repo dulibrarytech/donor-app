@@ -121,9 +121,8 @@ init()
 </script>
 
 <div class="page">
+  <h3>{pageLabel}</h3>
   <div id="livinglibrary-donation-form" class="page-section">
-    <h3>{pageLabel}</h3>
-
     {#await formData}
       <h6>Loading data...</h6>
     {:then formData}

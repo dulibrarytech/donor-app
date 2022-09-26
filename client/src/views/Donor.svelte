@@ -109,8 +109,8 @@
 </script>
 
 <div class="page">
+  <h3>{pageLabel}</h3>
   <div class="page-section donor-form">
-    <h3>{pageLabel}</h3>
     <svelte:component this={DonorForm} {donorId} data={donorData} titles={donorTitles}/>
   </div>
   {#if donorId}

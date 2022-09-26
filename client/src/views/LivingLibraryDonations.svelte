@@ -202,7 +202,7 @@ init();
 </script>
 
 <div class="page">
-  <h1>Living Library</h1>
+  <h3>Living Library</h3>
 
   <div class="container page-section">
     <div class="row">

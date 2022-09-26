@@ -57,7 +57,7 @@ onMount(() => {
 </script>
 
 <div class="page">
-  <h1>Donors</h1>
+  <h3>Donors</h3>
 
   <div class="container page-section">
     <div class="row">

@@ -233,7 +233,7 @@ onMount(() => {
 </script>
 
 <div class="page">
-  <h1>Donations</h1>
+  <h3>Donations</h3>
 
   <div class="container page-section">
     <div class="row">

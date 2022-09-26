@@ -53,9 +53,8 @@
 </script>
 
 <div class="page">
+  <h3>Login</h3>
   <div class="page-section">
-    <h3>Login</h3>
-
     <div class="login-form-wrapper">
       <LoginForm on:login-form-submit={onSubmitLogin} />
       <MessageDisplay bind:this={messageDisplay} />

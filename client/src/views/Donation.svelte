@@ -78,9 +78,8 @@
 </script>
 
 <div class="page">
+  <h3>{pageLabel}</h3>
   <div class="page-section donation-form">
-    <h3>{pageLabel}</h3>
-
     {#await donationData}
       <h6>Loading data...</h6>
     {:then donationData}

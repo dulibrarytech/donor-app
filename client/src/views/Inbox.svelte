@@ -78,8 +78,8 @@
 </script>
 
 <div class="page">
+  <h3>Inbox</h3>
   <div class="page-section">
-    <h1>Inbox</h1>
     <div>
       <DataDisplay items={donationDisplay} Table={NewDonationTable} args={{roleId: userData.roleId, emptySetMessage: 'No new donations.'}} on:complete-action={completeLetterAction}/>
       <MessageDisplay bind:this={messageDisplay} />
