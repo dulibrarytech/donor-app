@@ -20,10 +20,9 @@ const INIT_FROM_DATE = "1970-01-01";
 
 var fromDate = "";
 var toDate = "";
+var toDateMin = new Date(INIT_FROM_DATE);
 var toDateDisplay = "";
 var fromDateDisplay = "";
-var fromDatePickerDisplay = "none";
-var toDatePickerDisplay = "none";
 var filteredData = [];
 
 let validationRules = {
@@ -74,6 +73,10 @@ const onSet = () => {
   }
 }
 
+const onSelectFromDate = () => {
+  toDateMin = fromDateDisplay;
+}
+
 export const filterDaterange = (currentData) => {
   if(fromDate?.length > 0 && toDate?.length > 0) {
     filteredData = [];
@@ -100,18 +103,7 @@ export const filterDaterange = (currentData) => {
   }
 }
 
-const onClickToDateInput = (event) => {
-  toDatePickerDisplay = "block";
-}
-
-const onClickFromDateInput = (event) => {
-  fromDatePickerDisplay = "block";
-}
-
-const onDateSelect = (event) => {
-  fromDatePickerDisplay = "none";
-  toDatePickerDisplay = "none";
-}
+$: toDateMin = fromDateDisplay || new Date(INIT_FROM_DATE);
 
 init();
 </script>
@@ -122,7 +114,7 @@ init();
     <input type="hidden" id="toDateString" bind:value={toDate} />
 
     <div class="input"><DateInput id="fromDateDisplay" format="yyyy-MM-dd" placeholder="From" min={new Date(INIT_FROM_DATE)} bind:value={fromDateDisplay} /></div>
-    <div class="input"><DateInput id="toDateDisplay" format="yyyy-MM-dd" placeholder="To" min={new Date(INIT_FROM_DATE)} bind:value={toDateDisplay} /></div>
+    <div class="input"><DateInput id="toDateDisplay" format="yyyy-MM-dd" placeholder="To" min={toDateMin} bind:value={toDateDisplay} /></div>
 
     <button type="button" on:click|preventDefault={onSet}>Apply</button>
     <button type="button" on:click|preventDefault={onClear}>Clear</button>
