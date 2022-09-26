@@ -146,7 +146,7 @@ form input, select, textarea, .form-control-group {
 	border-width: 1px;
 	border-color: #ced4da;
 	border-radius: 3px;
-	padding: 5px;
+	padding: 10px 15px;
 }
 
 .page-section {
