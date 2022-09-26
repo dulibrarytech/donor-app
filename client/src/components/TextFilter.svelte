@@ -60,6 +60,7 @@ export const filterText = (data, filter = filterValue, option = filterOption) =>
 export const reset = () => {
   filterOption = "begins_with";
   filterValue = "";
+  dispatch('filter-text', null);
 }
 
 const onFilterInput = (event) => {
@@ -85,6 +86,7 @@ const onChangeOption = (event) => {
   <div class="form-group">
     <div class="search-form">
       <input id="text-filter" type="text" on:keyup={onFilterInput} bind:value="{filterValue}" placeholder={placeholderText} />
+      <!-- <button type="button" on:click={reset}>Clear</button> -->
     </div>
 
     <div class="radio-group">

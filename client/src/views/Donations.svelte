@@ -203,28 +203,33 @@ const filterDataDisplay = (data) => {
   return filtered;
 }
 
-const onTextFilter = (event) => {
-  setDataDisplay( filterDataDisplay(event.detail ? event.detail : donations) );
-}
-
 const onFilter = (event) => {
   let data = event.detail;
   if(dateRange) {data = daterangeFilter.filterDaterange(event.detail)}
-  textFilter.reset();
+  data = textFilter.filterText(data);
   setDataDisplay(data);
+}
+
+const onTextFilter = (event) => {
+  if(event.detail) setDataDisplay( filterDataDisplay(event.detail ? event.detail : donations) );
+  else setDataDisplay(filterDataDisplay(donations));
 }
 
 const onDaterangeSelect = (event) => {
   dateRange = event.detail.daterange || null;
-  donationDisplay = dataFilter.filterData(donations);
-  textFilter.reset();
-  setDataDisplay(daterangeFilter.filterDaterange(donationDisplay));
+  let data = donations;
+  data = dataFilter.filterData(data);
+  data = daterangeFilter.filterDaterange(data)
+  data = textFilter.filterText(data);
+  setDataDisplay(data);
 }
 
 const onClearDaterange = () => {
   dateRange = null;
-  textFilter.reset();
-  setDataDisplay(dataFilter.filterData(donations));
+  let data = donations;
+  data = dataFilter.filterData(data);
+  data = textFilter.filterText(data);
+  setDataDisplay(data);
 }
 
 onMount(() => {
@@ -242,7 +247,7 @@ onMount(() => {
           <h6>Search:</h6>
           <TextFilter data={donations} bind:this={textFilter} on:filter-text={onTextFilter} on:text-filter-change-option={onTextFilter} filterFields={["giftDescription"]} placeholderText="Search description" />
           <h6>Daterange:</h6>
-          <DaterangeFilter data={donationDisplay} dateField="dateOfGift" on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
+          <DaterangeFilter data={donations} dateField="dateOfGift" on:daterange-select={onDaterangeSelect} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
           <h6>Filter:</h6>
           <DataFilterMultiField data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/>
         </div>
