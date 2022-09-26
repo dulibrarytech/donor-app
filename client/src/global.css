@@ -110,9 +110,35 @@ footer {
 	border-style: solid;
 	border-width: 1px;
 	border-color: #e5e3e1;
-	border-radius: 3px;
+	border-radius: 5px;
 	margin-bottom: 10px;
-	padding: 7px 12px 7px 12px;
+	padding: 30px 40px;
+	background-color: rgb(248, 249,250);
+}
+
+.form-group-flex {
+	display: flex;
+	justify-content: space-between;
+}
+
+form > div + * {
+	margin-top: 10px;
+}
+
+form button {
+	margin-top: 30px !important;
+}
+
+form input, select, textarea, .form-control-group {
+	margin-bottom: 25px;
+}
+
+.form-control-group {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #ced4da;
+	border-radius: 3px;
+	padding: 5px;
 }
 
 .filter-form .form-group {

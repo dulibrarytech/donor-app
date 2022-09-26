@@ -148,9 +148,9 @@ init();
 </script>
 
 <form id="donor-form" class="form" method="{method}" action="{action}">
-  <p class="required">Required field</p><br>
-  <div class="form-fields">
-    <div class="form-group">
+  <div class="required">Required field</div>
+  <div class="form-group form-group-flex">
+    <div class="form-column">
 
       <label for="titleSelect">Title</label>
       <select class="form-select" name="title" id="titleSelect" bind:value={data.title} on:input={onChangeFormValue}>
@@ -169,7 +169,7 @@ init();
       <label for="country">Country</label>
       <input type="text" class="form-control" id="country" name="country" bind:value={data.country} on:input={onChangeFormValue}>
     </div>
-    <div class="form-group">
+    <div class="form-column">
       <label for="lastName" class="required">Last Name<span style="display:{validationLabelDisplay}">(Required if no organization)</span></label>
       <input type="text" class="form-control" id="lastName" name="lastName" bind:value={data.lastName} on:input={onChangeFormValue}>
 
@@ -182,7 +182,7 @@ init();
       <label for="phone">Phone</label>
       <input type="text" class="form-control" id="phone" name="phone" bind:value={data.phone} on:input={onChangeFormValue}>
     </div>
-    <div class="form-group">
+    <div class="form-column">
       <label for="firstName">First Name</label>
       <input type="text" class="form-control" id="firstName" name="firstName" bind:value={data.firstName} on:input={onChangeFormValue}>
 
@@ -202,22 +202,7 @@ init();
 <MessageDisplay bind:this={messageDisplay} />
 
 <style>
-  form .form-fields {
-    display: flex;
-    justify-content: space-between;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #e5e3e1;
-    border-radius: 5px;
-    padding: 12px;
-  }
-
-  form > div + * {
-    margin-top: 10px;
-  }
-
-  .form-group {
-    border-style: none;
-    width: 400px
+  .form-column {
+    width: 30%;
   }
 </style>

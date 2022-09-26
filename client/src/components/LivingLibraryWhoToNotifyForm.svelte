@@ -70,8 +70,8 @@ export const getValidationRules = () => {
 
 <form class="subform" id="living-library-donation-who-to-notify-form">
 <h6>Person {index+1}</h6>
-<div transition:fade class="form-section notify-section" id="notify_section_{index+1}">
-  <div class="form-group">
+<div transition:fade class="form-group form-group-flex" id="notify_section_{index+1}">
+  <div class="form-column">
     <label for="notify_title_{index+1}">Title</label>
     {#if donationId }
       <input type="text" id="notify_title_{index+1}" bind:value="{whoToNotifyData[index].last_name}" style="pointer-events:{inputPointerEvents}" tabindex="0"/>
@@ -90,7 +90,7 @@ export const getValidationRules = () => {
     <label for="notify_zip_{index+1}">Zip Code<span style="display:{validationLabelDisplay}">(e.g. 80210 or 80210-4711)</span></label>
     <input type="text" id="notify_zip_{index+1}" bind:value={whoToNotifyData[index].notify_zip} style="pointer-events:{inputPointerEvents}" tabindex="0"/>
   </div>
-  <div class="form-group">
+  <div class="form-column">
     <label for="notify_first_name_{index+1}">First Name</label>
     <input type="text" id="notify_first_name_{index+1}" bind:value={whoToNotifyData[index].notify_first_name} style="pointer-events:{inputPointerEvents}" tabindex="0"/>
 
@@ -110,7 +110,7 @@ export const getValidationRules = () => {
     {/if}
   </div>
 
-  <div class="form-group">
+  <div class="form-column">
     <label for="notify_last_name_{index+1}">Last Name</label>
     <input type="text" id="notify_last_name_{index+1}" bind:value={whoToNotifyData[index].notify_last_name} style="pointer-events:{inputPointerEvents}" tabindex="0"/>
 
@@ -130,22 +130,7 @@ export const getValidationRules = () => {
 </form>
 
 <style>
-.form-section {
-  border-style: solid;
-  border-width: 1px;
-  border-color: #e5e3e1;
-  border-radius: 5px;
-  padding: 12px;
-  display: flex;
-  justify-content: space-between;
-}
-
-form > div + * {
-  margin-top: 10px;
-}
-
-.form-group {
-  border-style: none;
-  width: 400px
-}
+  .form-column {
+    width: 30%;
+  }
 </style>

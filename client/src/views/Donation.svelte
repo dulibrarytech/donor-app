@@ -84,7 +84,7 @@
     {#await donationData}
       <h6>Loading data...</h6>
     {:then donationData}
-      <h6>{getDonorInfoLabel(donationData)}</h6>
+      <div id="donor-info"><h6>{getDonorInfoLabel(donationData)}</h6></div>
       <svelte:component this={DonationForm} args={{donationId, donorId, roleId}} data={donationData} on:delete-donation={onDeleteDonation}/>
     {/await}
   </div>
@@ -93,5 +93,9 @@
 <style>
   .donation-form {
     max-width: 75%;
+  }
+
+  #donor-info {
+    margin-bottom: 30px;
   }
 </style>

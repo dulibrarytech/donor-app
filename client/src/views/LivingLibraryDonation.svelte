@@ -121,7 +121,7 @@ init()
 </script>
 
 <div class="page">
-  <div id="livinglibrary-donation-form">
+  <div id="livinglibrary-donation-form" class="page-section">
     <h3>{pageLabel}</h3>
 
     {#await formData}

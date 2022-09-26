@@ -89,9 +89,9 @@ init();
 </script>
 
 <form id="living-library-bookplate-form">
-  <p class="required">Required field</p><br>
-  <div class="form-section">
-    <div class="form-group">
+  <div class="required">Required field</div>
+  <div class="form-group form-group-flex">
+    <div class="form-column">
       <label for="book_author_name">Author Name</label>
       <input type="text" id="book_author_name" bind:value={bookData.book_author_name}/>
 
@@ -99,7 +99,7 @@ init();
       <input type="text" id="book_bibliographic_number" bind:value={bookData.book_bibliographic_number}/>
     </div>
 
-    <div class="form-group">
+    <div class="form-column">
       <label for="book_title" class="required">Book title<span style="display:{validationLabelDisplay}">(Required)</span></label>
       <input type="text" id="book_title" bind:value={bookData.book_title}/>
 
@@ -145,23 +145,8 @@ init();
     padding: 12px;
   }
 
-  form .form-section {
-    border-style: solid;
-    border-width: 1px;
-    border-color: #e5e3e1;
-    border-radius: 5px;
-    padding: 12px;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  form > div + * {
-    margin-top: 10px;
-  }
-
-  .form-group {
-    border-style: none;
-    width: 400px
+  .form-column {
+    width: 48%;
   }
 
   .donor-display table {

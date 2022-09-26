@@ -187,7 +187,7 @@ init();
 </script>
 
 <form id="donation-form" class="form" method="{method}" action="{action}">
-  <br><p class="required">Required field</p><br>
+  <div class="required">Required field</div>
   <div class="form-fields container">
     <div class="form-group row">
       <div class="col-md-3">
@@ -216,8 +216,8 @@ init();
       </div>
       <div class="col-md-3">
         {#if !isAnonymousDonation}
-          <div class="form-control-set">
-            <p class="form-check-label">Donation Type</p>
+          <p class="form-check-label">Donation Type</p>
+          <div class="form-control-group">
             <div class="form-check">
               <input class="form-check-input" type="radio" bind:group={typeSelect} value="standard" id="type-standard" checked={typeSelect=='standard'} on:change={onChangeFormValue}>
               <label class="form-check-label" for="type-standard">
@@ -232,7 +232,7 @@ init();
             </div>
           </div>
 
-          <div class="form-control-set">
+          <div class="form-control-group">
             <label>
               <input type="checkbox" bind:checked={bypassSelect} on:input={onChangeFormValue}>
               Bypass Letter
@@ -266,13 +266,11 @@ init();
     height: 120px;
   }
 
-  .form-control-set:not(:first-child) {
-    margin-top: 30px;
-  }
+  /* .form-control-group {
+    margin-bottom: 30px;
+  } */
 
-  p.form-check-label,
-  .input-label {
-    font-weight: 500;
+  p.form-check-label {
     margin-bottom: 5px;
   }
 </style>
