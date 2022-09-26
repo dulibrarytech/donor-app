@@ -320,7 +320,7 @@ init();
       <div class="form-column">
         <label for="donor_date_of_donation" class="required">Date of Donation<span style="display:{validationLabelDisplay}">(e.g. yyyy-mm-dd)</span></label>
         <div style="pointer-events:{inputPointerEvents}">
-          <DateInput format="yyyy-MM-dd" placeholder="" bind:value={dateDisplay} on:select={onSelectDateOfDonation}/>
+          <DateInput format="yyyy-MM-dd" placeholder="" min={new Date("1970-01-01")} bind:value={dateDisplay} on:select={onSelectDateOfDonation}/>
         </div>
       </div>
 

@@ -192,7 +192,7 @@ init();
     <div class="form-group row">
       <div class="col-md-3">
         <label for="dateOfGift" class="required input-label">Date<span style="display:{validationLabelDisplay}">(e.g. yyyy-mm-dd)</span></label>
-        <DateInput id="dateOfGift" format="yyyy-MM-dd" placeholder="" bind:value={dateDisplay} on:focus-out={onChangeFormValue}/>
+        <DateInput id="dateOfGift" format="yyyy-MM-dd" placeholder=""  min={new Date("1970-01-01")} bind:value={dateDisplay} on:focus-out={onChangeFormValue}/>
       </div>
       <div class="col-md-6">
         <label for="numberOfGifts" class="required input-label">Item Count</label>

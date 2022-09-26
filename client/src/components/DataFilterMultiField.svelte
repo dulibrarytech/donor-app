@@ -56,7 +56,7 @@ export const resetFilters = () => {
 init();
 </script>
 
-<form>
+<form class="data-filter-multi-field">
   {#each filters as filter }
   <div class="form-group">
     {#if filter.groupLabel}<p class="group-label">{filter.groupLabel}</p>{/if}
