@@ -121,7 +121,7 @@ filters.push({
     "value": "1",
     "label": "Complete",
     "function": (item) => {
-      return item.letter == 0 && item.bypassLetter == 0;
+      return item.letter == 0 && item.bypassLetter == 0 && item.donorId != 1;
     }
   },
   {
@@ -129,7 +129,7 @@ filters.push({
     "value": "2",
     "label": "Pending Letter",
     "function": (item) => {
-      return item.letter == 1 && item.bypassLetter == 0;
+      return item.letter == 1 && item.bypassLetter == 0 && item.donorId != 1;
     }
   },
   {
@@ -137,7 +137,7 @@ filters.push({
     "value": "3",
     "label": "Letter Bypassed",
     "function": (item) => {
-      return item.bypassLetter == 1;
+      return item.bypassLetter == 1 && item.donorId != 1;
     }
   }
 ]});
