@@ -103,6 +103,7 @@ export const filterDaterange = (currentData) => {
   }
 }
 
+/* Use the selected 'from' date as the minimum allowed date in the 'to' date datepicker to prevent to < from */
 $: toDateMin = fromDateDisplay || new Date(INIT_FROM_DATE);
 
 init();

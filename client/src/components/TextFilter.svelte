@@ -89,19 +89,32 @@ const onChangeOption = (event) => {
       <!-- <button type="button" on:click={reset}>Clear</button> -->
     </div>
 
-    <div class="radio-group">
-      {#each options as option}
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="filterOption" value="{option.value}" on:change="{onChangeOption}" bind:group={filterOption}>
-          <label class="form-check-label">{option.label}</label>
-        </div>
-      {/each}
+    <div>
+      <div class="radio-group">
+        {#each options as option}
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="filterOption" value="{option.value}" on:change="{onChangeOption}" bind:group={filterOption}>
+            <label class="form-check-label">{option.label}</label>
+          </div>
+        {/each}
+      </div>
+
+      <div id="reset-button">
+        <button type="button" on:click={reset}>Reset</button>
+      </div>
     </div>
   </div>
 </form>
 
 <style>
   div.search-form input {
-    width: 100%
+    width: 100%;
+  }
+
+  div#reset-button {
+    position: relative;
+    float: right;
+    bottom: 73px;
+    right: 2px;
   }
 </style>
