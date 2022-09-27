@@ -12,7 +12,7 @@
 
 <style>
   .description-list {
-    margin-bottom: 10px;
+    margin-bottom: 0;
   }
 
   .description-list * {
