@@ -69,19 +69,31 @@ onMount(() => {
       </div>
 
       <div class="col-md-9">
-        <div>
-          <div style="float: left">
+        <div class="row">
+          <div class="col-md-6">
             <DescriptionList data={[{label: "Donors", value: donorDisplay?.length ?? "0"}]} displayClass="statistics-display" />
           </div>
-          <NewItemLink text="Add anonymous donation" href="{$Configuration.basePath}/donation/donor/1"/>
-          <NewItemLink text="Add new donor" href="{$Configuration.basePath}/donor"/>
+          <div class="col-md-6" style="position: relative">
+            <div class="add-item-links">
+              <NewItemLink text="Add anonymous donation" href="{$Configuration.basePath}/donation/donor/1"/>
+              <NewItemLink text="Add new donor" href="{$Configuration.basePath}/donor"/>
+            </div>
+          </div>
         </div>
-        <svelte:component this={DataDisplay} items={donorDisplay} Table={DonorTable}/>
+        <div class="row">
+          <div class="col-md-12">
+            <svelte:component this={DataDisplay} items={donorDisplay} Table={DonorTable}/>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <style>
-
+  .add-item-links {
+    position: absolute;
+    bottom: 0;
+    right: 15px;
+  }
 </style>
