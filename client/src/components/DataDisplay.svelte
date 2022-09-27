@@ -35,6 +35,7 @@
     border-width: 1px;
     border-color: #e5e3e1;
     border-radius: 5px;
+    margin-top: 5px;
   }
 
   :global(.table:not(:first-child)) {
