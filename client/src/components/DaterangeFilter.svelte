@@ -114,8 +114,10 @@ init();
     <input type="hidden" id="fromDateString" bind:value={fromDate} />
     <input type="hidden" id="toDateString" bind:value={toDate} />
 
-    <div class="input"><DateInput id="fromDateDisplay" format="yyyy-MM-dd" placeholder="From" min={new Date(INIT_FROM_DATE)} bind:value={fromDateDisplay} /></div>
-    <div class="input"><DateInput id="toDateDisplay" format="yyyy-MM-dd" placeholder="To" min={toDateMin} bind:value={toDateDisplay} /></div>
+    <div class="date-inputs">
+      <div class="input"><DateInput id="fromDateDisplay" format="yyyy-MM-dd" placeholder="From" min={new Date(INIT_FROM_DATE)} bind:value={fromDateDisplay} /></div>
+      <div class="input"><DateInput id="toDateDisplay" format="yyyy-MM-dd" placeholder="To" min={toDateMin} bind:value={toDateDisplay} /></div>
+    </div>
 
     <button type="button" on:click|preventDefault={onSet}>Apply</button>
     <button type="button" on:click|preventDefault={onClear}>Clear</button>
@@ -123,9 +125,16 @@ init();
 </form>
 
 <style>
-  input,
+  .date-inputs {
+    display: inline-flex;
+  }
+
   .input {
-    max-width: 37%;
+    margin-right: 10px;
+  }
+
+  :global(.input input) {
+    width: 100%;
   }
 
   .form-group {
