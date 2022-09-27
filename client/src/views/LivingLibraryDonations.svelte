@@ -218,19 +218,32 @@ init();
       </div>
 
       <div class="col-md-9">
-        <div style="float: left">
-          <DescriptionList data={[{label: "Donations", value: donationCount || ""}]} displayClass="statistics-display" />
+        <div class="row">
+          <div class="col-md-6">
+            <DescriptionList data={[{label: "Donations", value: donationCount || ""}]} displayClass="statistics-display" />
+          </div>
+          <div class="col-md-6" style="position: relative">
+            <div class="add-donation-link">
+              <NewItemLink text="New donation" href="{$Configuration.basePath}/livingLibrary/donation" />
+            </div>
+          </div>
         </div>
-        <NewItemLink text="New donation" href="{$Configuration.basePath}/livingLibrary/donation" />
-        <svelte:component this={DataDisplay} items={donationDisplay} Table={LivingLibraryTable} on:delete-record={onDeleteRecord}/>
-        <MessageDisplay bind:this={messageDisplay} />
-        {#if donationDisplay?.length > 0}<button type="button" on:click={exportData}>Export Records</button>{/if}
+        <div class="row">
+          <div class="col-md-12">
+            <svelte:component this={DataDisplay} items={donationDisplay} Table={LivingLibraryTable} on:delete-record={onDeleteRecord}/>
+            <MessageDisplay bind:this={messageDisplay} />
+            {#if donationDisplay?.length > 0}<button type="button" on:click={exportData}>Export Records</button>{/if}
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
 </div>
 
 <style>
-
+  .add-donation-link {
+    position: absolute;
+    bottom: 0;
+    right: 15px;
+  }
 </style>
