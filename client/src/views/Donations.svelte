@@ -255,14 +255,24 @@ onMount(() => {
 
       <div class="col-md-9">
         <div style="display:{donationListDisplay}">
-          <div style="display: grid; float: left">
-            <DescriptionList data={[{label: "Donations", value: donationCount || ""}, {label: "Total Items", value: donationItemCount || ""}]} displayClass="statistics-display" />
-            {#if dateRange}
-              <DescriptionList data={[{label: "From", value: dateRange.fromDate || ""}, {label: "To", value: dateRange.toDate || ""}]} displayClass="daterange-display" />
-            {/if}
+          <div class="row">
+            <div class="col-md-6">
+              <DescriptionList data={[{label: "Donations", value: donationCount || ""}, {label: "Total Items", value: donationItemCount || ""}]} displayClass="statistics-display" />
+              {#if dateRange}
+                <DescriptionList data={[{label: "From", value: dateRange.fromDate || ""}, {label: "To", value: dateRange.toDate || ""}]} displayClass="daterange-display" />
+              {/if}
+            </div>
+            <div class="col-md-6" style="position: relative">
+              <div class="add-donation-link">
+                <NewItemLink text="Add anonymous donation" href="{$Configuration.basePath}/donation/donor/1" />
+              </div>
+            </div>
           </div>
-          <NewItemLink text="Add anonymous donation" href="{$Configuration.basePath}/donation/donor/1" />
-          <svelte:component this={DataDisplay} items={donationDisplay} Table={DonationTable} args={{roleId}}/>
+          <div class="row">
+            <div class="col-md-12">
+              <svelte:component this={DataDisplay} items={donationDisplay} Table={DonationTable} args={{roleId}}/>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -298,5 +308,11 @@ onMount(() => {
 
   :global(.form-group > label) {
     margin-bottom: 5px;
+  }
+
+  .add-donation-link {
+    position: absolute;
+    bottom: 0;
+    right: 15px;
   }
 </style>

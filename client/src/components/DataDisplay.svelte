@@ -28,7 +28,6 @@
 
 <style>
   .data-display {
-    margin: 25px 0;
     max-height: 75vh;
     overflow-y: auto;
     width: 100%;
