@@ -84,13 +84,15 @@ const onChangeOption = (event) => {
 
 <form>
   <div class="form-group">
-    <div class="search-form">
-      <input id="text-filter" type="text" on:keyup={onFilterInput} bind:value="{filterValue}" placeholder={placeholderText} />
-      <!-- <button type="button" on:click={reset}>Clear</button> -->
+    <div class="row">
+      <div class="search-form col-sm-12">
+        <input id="text-filter" type="text" on:keyup={onFilterInput} bind:value="{filterValue}" placeholder={placeholderText} />
+        <!-- <button type="button" on:click={reset}>Clear</button> -->
+      </div>
     </div>
 
-    <div>
-      <div class="radio-group">
+    <div class="row filter-controls">
+      <div class="radio-group col-sm-6">
         {#each options as option}
           <div class="form-check">
             <input class="form-check-input" type="radio" name="filterOption" value="{option.value}" on:change="{onChangeOption}" bind:group={filterOption}>
@@ -99,7 +101,7 @@ const onChangeOption = (event) => {
         {/each}
       </div>
 
-      <div id="reset-button">
+      <div class="col-sm-6" id="reset-button" style="position: relative">
         <button type="button" on:click={reset}>Reset</button>
       </div>
     </div>
@@ -111,10 +113,15 @@ const onChangeOption = (event) => {
     width: 100%;
   }
 
-  div#reset-button {
+  .filter-controls {
+    height: 50px;
+  }
+
+  div#reset-button button {
     position: relative;
-    float: right;
-    bottom: 73px;
     right: 2px;
+    top: 6px;
+    float: right;
+    margin: 0;
   }
 </style>

@@ -232,7 +232,7 @@ init();
           <div class="col-md-12">
             <svelte:component this={DataDisplay} items={donationDisplay} Table={LivingLibraryTable} on:delete-record={onDeleteRecord}/>
             <MessageDisplay bind:this={messageDisplay} />
-            {#if donationDisplay?.length > 0}<button type="button" on:click={exportData}>Export Records</button>{/if}
+            {#if donationDisplay?.length > 0}<button id="export-records" type="button" on:click={exportData}>Export Records</button>{/if}
           </div>
         </div>
       </div>
@@ -245,5 +245,9 @@ init();
     position: absolute;
     bottom: 0;
     right: 15px;
+  }
+
+  button#export-records {
+    margin-top: 30px;
   }
 </style>

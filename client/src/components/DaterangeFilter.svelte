@@ -127,6 +127,7 @@ init();
 <style>
   .date-inputs {
     display: inline-flex;
+    margin-bottom: 20px;
   }
 
   .input {

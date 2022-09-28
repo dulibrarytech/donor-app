@@ -54,4 +54,8 @@
     position: sticky;
     top: 0;
   }
+
+  .data-display-message {
+    padding: 10px;
+  }
 </style>

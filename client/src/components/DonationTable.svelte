@@ -117,7 +117,7 @@
 
         <!-- Letter link -->
         {#if isAdminUser}
-          <td width="10%"><a href="{$Configuration.basePath}/letter/{donorId}/{donation.id}">Letter</a></td>
+          <td width="10%">{#if donation.donorId != 1}<a href="{$Configuration.basePath}/letter/{donorId}/{donation.id}">Letter</a>{/if}</td>
         {/if}
 
         <!-- Mark as Complete link -->
