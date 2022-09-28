@@ -9,19 +9,21 @@
 
 # User Guide to the Donor Database App
 
-A standard workflow:
+The important donation workflow:
 1. A standard user creates a new donor
 2. A standard user creates a new donation for that donor
+3. A standard user marks the donation as 'Important'
+4. An external relations user gets an email notification, logs in, checks their inbox
+5. An external relations user user creates a handwritten letter, submits it
+6. An external relations user marks in the inbox that the donation is conmplete by clicking 'Mark as Complete'
 
-3a. A standard user marks the donation as 'Important'
-4a. An external relations user gets an email notification, logs in, checks their inbox
-5a. An external relations user user creates a handwritten letter, submits it
-6a. An external relations user marks in the inbox that the donation is conmplete by clicking 'Mark as Complete'
-
-3b. A standard user marks the donation as 'Standard'
-4b. An admin user gets an email notification, logs in, checks their inbox
-5b. An admin user generates a letter, prints it and submits it
-6b. An admin user marks in the inbox that the donation is conmplete by clicking 'Mark as Complete'
+The standard donation workflow:
+1. A standard user creates a new donor
+2. A standard user creates a new donation for that donor
+3. A standard user marks the donation as 'Standard'
+4. An admin user gets an email notification, logs in, checks their inbox
+5. An admin user generates a letter, prints it and submits it
+6. An admin user marks in the inbox that the donation is conmplete by clicking 'Mark as Complete'
 
 ### Login
 
