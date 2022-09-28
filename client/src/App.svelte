@@ -60,7 +60,7 @@
 	const validateSession = async (ctx, next) => {
 		if($Configuration.runtimeEnv == "production"|| $Configuration.runtimeEnv == "testing") {
 			let path = null;
-			if(ctx.path != '/' && ctx.path != $Configuration.landingPagePath) path = ctx.path;
+			if(ctx.path != '/' && ctx.path != $Configuration.landingPagePath) path = ctx.path.replace(BASE_PATH, "");
 			if(Session.isSession("donor_db")) {
 				let data = {
 					headers: {
