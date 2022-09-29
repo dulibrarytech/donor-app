@@ -79,11 +79,11 @@
   }
 
   .user-display-wrapper {
-    width: 50%;
+    width: 19.5;
   }
 
   ul.navbar-nav {
-    width: 50%;
+    width: 79.5%;
   }
 
   ul.navbar-nav li.nav-item:not(:first-child) {
