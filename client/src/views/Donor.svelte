@@ -13,7 +13,7 @@
 
   const donorId = params.id ?? null;
   const roleId = Session.getDataItem("donor_db", 'roleId');
-  const addDonationPath = `/donation/donor/${donorId}`;
+  const addDonationPath = `${$Configuration.basePath}/donation/donor/${donorId}`;
 
   const donorUrl = `${$Configuration.donorApiDomain}/donor/${donorId ?? ""}`;
   const donorDonationUrl = `${$Configuration.donorApiDomain}/donation/donor/${donorId ?? ""}`;
