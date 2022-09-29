@@ -142,10 +142,11 @@ module.exports = (() => {
   }
 
   const putDonor = (id, data) => {
-    data[map.anonymous] = 0;
+    data[map.anonymous] = data[map.anonymous] ? parseInt(data[map.anonymous]) : 0;
+    data[map.titleID] = data[map.titleID] ? parseInt(data[map.titleID]) : 0;
 
     let sqlFields = [
-      parseInt(data[map.titleID]) ?? 0,
+      data[map.titleID],
       data[map.FirstName] ?? "",
       data[map.LastName] ?? "",
       data[map.Address1] ?? null,
@@ -156,7 +157,7 @@ module.exports = (() => {
       data[map.phone] ?? null,
       data[map.email] ?? null,
       data[map.Organization] ?? "",
-      parseInt(data[map.anonymous]) ?? 0,
+      data[map.anonymous],
       data[map.Country] ?? "USA"
     ];
 
@@ -197,7 +198,7 @@ module.exports = (() => {
       DonorModel.execute_query('post_donor', sqlFields)
       .then(
         (response) => {
-          console.log("Response data, fields", response.data, sqlFields)
+          console.log("TEST Response data, fields", response.data, sqlFields)
           resolve(response.data)
         },
         (error) => {
