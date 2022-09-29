@@ -137,10 +137,6 @@ init()
 </div>
 
 <style>
-  #livinglibrary-donation-form {
-    max-width: 80%;
-  }
-
   :global(#livinglibrary-donation-form #living-library-bookplate-form input) {
     pointer-events: none;
   }
