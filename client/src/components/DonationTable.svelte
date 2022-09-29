@@ -35,6 +35,13 @@
     return status;
   }
 
+  const formatDescriptionField = (donation) => {
+    let formatted = "No description available";
+    let length = donation.giftDescription?.length || 0;
+    if(length > 0) formatted = donation.giftDescription.substr(0, 50).concat(length > 50 ? "..." : "");
+    return formatted;
+  }
+
   const isAnonymousDonation = (donation) => {
     return donation.donorId == 1;
   }
@@ -110,7 +117,7 @@
         {/if}
 
         <!-- Description -->
-        <td width="20%">{donation.giftDescription}</td>
+        <td width="20%">{formatDescriptionField(donation)}</td>
 
         <!-- View link -->
         <td width="10%"><a href="{$Configuration.basePath}/donation/{donation.id}">View</a></td>
