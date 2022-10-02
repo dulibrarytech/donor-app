@@ -28,12 +28,13 @@
 <style>
   .user-display {
     width: 100%;
-    margin-right: 15px;
+    padding: 10px;
   }
 
   .user-display .username {
     float: right;
     display: inline-flex;
+    margin-right: 15px;
   }
 
   .user-display .icon {
