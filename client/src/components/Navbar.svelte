@@ -26,6 +26,10 @@
     livingLibraryRoutes.push({"label": "Home", "path": "/livingLibrary/donations"})
     //routes.push({"label": "Logout", "path": "/logout"}) // TODO: Add statically
   }
+  else {
+    donorRoutes = null;
+    livingLibraryRoutes = null;
+  }
 
   /* Sets the clicked nav link to active, remove active state from previously active link */
   const onClickNavItem = function(event) {
@@ -44,52 +48,76 @@
   <div class="col-md-10">
     <div class="row">
       <div class="col-md-5">
-        <div id="donor-nav">
-          <div class="navbar navbar-header">
-            <h6>Book and Material Donations</h6>
-          </div>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="collapse navbar-collapse" id="navbar-nav">
-              <ul class="navbar-nav" id="donor-nav">
-                {#each donorRoutes as route}
-                  <li class="nav-item">
-                    <a class="nav-link" href="{BASE_PATH}{route.path}" on:click={onClickNavItem}>{route.label}</a>
-                  </li>
-                {/each}
-              </ul>
+        {#if donorRoutes}
+          <div id="donor-nav">
+            <div class="navbar navbar-header">
+              <h6>Book and Material Donations</h6>
             </div>
-          </nav>
-        </div>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+              <div class="collapse navbar-collapse">
+                <ul class="navbar-nav" id="donor-nav">
+                  {#each donorRoutes as route}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{BASE_PATH}{route.path}" on:click={onClickNavItem}>{route.label}</a>
+                    </li>
+                  {/each}
+                </ul>
+              </div>
+            </nav>
+          </div>
+        {:else}
+          <nav class="navbar navbar-expand-lg navbar-light bg-light"></nav>
+        {/if}
       </div>
 
       <div class="col-md-7">
-        <div id="living-library-nav">
-          <div class="navbar navbar-header">
-            <h6>Living Library</h6>
-          </div>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="collapse navbar-collapse" id="navbar-nav">
-              <ul class="navbar-nav" id="livibg-library-nav">
-                {#each livingLibraryRoutes as route}
-                  <li class="nav-item">
-                    <a class="nav-link" href="{BASE_PATH}{route.path}" on:click={onClickNavItem}>{route.label}</a>
-                  </li>
-                {/each}
-              </ul>
+        {#if livingLibraryRoutes}
+          <div id="living-library-nav">
+            <div class="navbar navbar-header">
+              <h6>Living Library</h6>
             </div>
-          </nav>
-        </div>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+              <div class="collapse navbar-collapse">
+                <ul class="navbar-nav" id="livibg-library-nav">
+                  {#each livingLibraryRoutes as route}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{BASE_PATH}{route.path}" on:click={onClickNavItem}>{route.label}</a>
+                    </li>
+                  {/each}
+                </ul>
+              </div>
+            </nav>
+          </div>
+        {:else}
+          <nav class="navbar navbar-expand-lg navbar-light bg-light"></nav>
+        {/if}
       </div>
     </div>
   </div>
 
   <div class="col-md-2">
-    {#if userData}
-      <UserDisplay {userData} on:logout-user={onLogout} />
-    {/if}
+    <div class="row">
+      <div class="col-md-12">
+        {#if userData}
+          <div id="user-nav">
+            <div class="navbar navbar-header">
+              <UserDisplay {userData} on:logout-user={onLogout} />
+            </div>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+              <div class="collapse navbar-collapse">
+                <ul class="navbar-nav" id="living-library-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="{BASE_PATH}/logout">Logout</a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        {/if}
+      </div>
+    </div>
   </div>
 </div>
-
 
 <style>
   .nav-section {
@@ -132,15 +160,16 @@
     width: 19.5;
   }
 
-  ul.navbar-nav {
-    width: 79.5%;
-  }
-
   ul.navbar-nav li.nav-item:not(:first-child) {
     margin-left: 10px;
   }
 
   .navbar-light .navbar-nav .nav-link {
     color: rgba(0,0,0,.55);
+  }
+
+  #user-nav {
+    position: absolute;
+    right: 0px;
   }
 </style>

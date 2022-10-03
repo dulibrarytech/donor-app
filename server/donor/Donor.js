@@ -198,7 +198,6 @@ module.exports = (() => {
       DonorModel.execute_query('post_donor', sqlFields)
       .then(
         (response) => {
-          console.log("TEST Response data, fields", response.data, sqlFields)
           resolve(response.data)
         },
         (error) => {

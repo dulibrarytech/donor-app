@@ -32,7 +32,6 @@
   }
 
   .user-display .username {
-    float: right;
     display: inline-flex;
     margin-right: 15px;
   }
