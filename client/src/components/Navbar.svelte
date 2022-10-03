@@ -54,7 +54,7 @@
               <h6>Book and Material Donations</h6>
             </div>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-              <div class="collapse navbar-collapse">
+              <!-- <div class="collapse navbar-collapse"> -->
                 <ul class="navbar-nav" id="donor-nav">
                   {#each donorRoutes as route}
                     <li class="nav-item">
@@ -62,7 +62,7 @@
                     </li>
                   {/each}
                 </ul>
-              </div>
+              <!-- </div> -->
             </nav>
           </div>
         {:else}
@@ -77,7 +77,7 @@
               <h6>Living Library</h6>
             </div>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-              <div class="collapse navbar-collapse">
+              <!-- <div class="collapse navbar-collapse"> -->
                 <ul class="navbar-nav" id="livibg-library-nav">
                   {#each livingLibraryRoutes as route}
                     <li class="nav-item">
@@ -85,7 +85,7 @@
                     </li>
                   {/each}
                 </ul>
-              </div>
+              <!-- </div> -->
             </nav>
           </div>
         {:else}
@@ -97,20 +97,20 @@
 
   <div class="col-md-2">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12 nav-section">
         {#if userData}
           <div id="user-nav">
             <div class="navbar navbar-header">
               <UserDisplay {userData} on:logout-user={onLogout} />
             </div>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-              <div class="collapse navbar-collapse">
+              <!-- <div class="collapse navbar-collapse"> -->
                 <ul class="navbar-nav" id="living-library-nav">
                   <li class="nav-item">
                     <a class="nav-link" href="{BASE_PATH}/logout">Logout</a>
                   </li>
                 </ul>
-              </div>
+              <!-- </div> -->
             </nav>
           </div>
         {/if}
@@ -160,16 +160,34 @@
     width: 19.5;
   }
 
-  ul.navbar-nav li.nav-item:not(:first-child) {
-    margin-left: 10px;
-  }
-
   .navbar-light .navbar-nav .nav-link {
     color: rgba(0,0,0,.55);
   }
 
-  #user-nav {
-    position: absolute;
-    right: 0px;
+  ul.navbar-nav {
+    margin-bottom: 30px;
+  }
+
+  ul.navbar-nav li.nav-item {
+    margin-left: 10px;
+  }
+
+  @media (min-width: 768px) {
+    #user-nav {
+      position: absolute;
+      right: 0px;
+    }
+
+    ul.navbar-nav {
+      margin-bottom: 0;
+    }
+
+    ul.navbar-nav li.nav-item {
+      margin-left: 0;
+    }
+
+    ul.navbar-nav li.nav-item:not(:first-child) {
+      margin-left: 10px;
+    }
   }
 </style>
