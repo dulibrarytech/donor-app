@@ -82,10 +82,10 @@ const onChangeOption = (event) => {
 
 </script>
 
-<form class="form-group">
+<form class="form-group" id="text-filter">
   <div class="row">
     <div class="search-form col-md-12">
-      <input id="text-filter" type="text" on:keyup={onFilterInput} bind:value="{filterValue}" placeholder={placeholderText} />
+      <input type="text" on:keyup={onFilterInput} bind:value="{filterValue}" placeholder={placeholderText} />
     </div>
   </div>
 
@@ -110,15 +110,17 @@ const onChangeOption = (event) => {
     width: 100%;
   }
 
-  .filter-controls {
-    height: 50px;
+  div#reset-button button {
+    float: right;
+    margin-top: 10px;
+    margin-right: 1px;
   }
 
-  div#reset-button button {
-    position: relative;
-    right: 2px;
-    top: 6px;
-    float: right;
-    margin: 0;
+  #text-filter {
+    padding: 15px 15px 0 15px;
+  }
+
+  button {
+    margin: 0 0 1em 0;
   }
 </style>
