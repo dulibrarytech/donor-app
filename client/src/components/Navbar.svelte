@@ -172,6 +172,16 @@
     margin-left: 10px;
   }
 
+  @media (min-width: 992px) {
+    ul.navbar-nav li.nav-item {
+      margin-left: 0;
+    }
+
+    ul.navbar-nav li.nav-item:not(:first-child) {
+      margin-left: 10px;
+    }
+  }
+
   @media (min-width: 768px) {
     #user-nav {
       position: absolute;
@@ -182,12 +192,12 @@
       margin-bottom: 0;
     }
 
-    ul.navbar-nav li.nav-item {
+    /* ul.navbar-nav li.nav-item {
       margin-left: 0;
     }
 
     ul.navbar-nav li.nav-item:not(:first-child) {
       margin-left: 10px;
-    }
+    } */
   }
 </style>
