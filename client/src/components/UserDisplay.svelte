@@ -33,7 +33,6 @@
 
   .user-display .username {
     display: inline-flex;
-    margin-right: 15px;
   }
 
   .user-display .icon {

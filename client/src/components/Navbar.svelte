@@ -24,7 +24,6 @@
     donorRoutes.push({"label": "Donors", "path": "/donors", "default": true})
     donorRoutes.push({"label": "Donations", "path": "/donations"})
     livingLibraryRoutes.push({"label": "Home", "path": "/livingLibrary/donations"})
-    //routes.push({"label": "Logout", "path": "/logout"}) // TODO: Add statically
   }
   else {
     donorRoutes = null;
@@ -54,15 +53,13 @@
               <h6>Book and Material Donations</h6>
             </div>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-              <!-- <div class="collapse navbar-collapse"> -->
-                <ul class="navbar-nav" id="donor-nav">
-                  {#each donorRoutes as route}
-                    <li class="nav-item">
-                      <a class="nav-link" href="{BASE_PATH}{route.path}" on:click={onClickNavItem}>{route.label}</a>
-                    </li>
-                  {/each}
-                </ul>
-              <!-- </div> -->
+              <ul class="navbar-nav" id="donor-nav">
+                {#each donorRoutes as route}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{BASE_PATH}{route.path}" on:click={onClickNavItem}>{route.label}</a>
+                  </li>
+                {/each}
+              </ul>
             </nav>
           </div>
         {:else}
@@ -77,15 +74,13 @@
               <h6>Living Library</h6>
             </div>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-              <!-- <div class="collapse navbar-collapse"> -->
-                <ul class="navbar-nav" id="livibg-library-nav">
-                  {#each livingLibraryRoutes as route}
-                    <li class="nav-item">
-                      <a class="nav-link" href="{BASE_PATH}{route.path}" on:click={onClickNavItem}>{route.label}</a>
-                    </li>
-                  {/each}
-                </ul>
-              <!-- </div> -->
+              <ul class="navbar-nav" id="livibg-library-nav">
+                {#each livingLibraryRoutes as route}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{BASE_PATH}{route.path}" on:click={onClickNavItem}>{route.label}</a>
+                  </li>
+                {/each}
+              </ul>
             </nav>
           </div>
         {:else}
@@ -104,13 +99,11 @@
               <UserDisplay {userData} on:logout-user={onLogout} />
             </div>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-              <!-- <div class="collapse navbar-collapse"> -->
-                <ul class="navbar-nav" id="living-library-nav">
-                  <li class="nav-item">
-                    <a class="nav-link" href="{BASE_PATH}/logout">Logout</a>
-                  </li>
-                </ul>
-              <!-- </div> -->
+              <ul class="navbar-nav" id="living-library-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="{BASE_PATH}/logout">Logout</a>
+                </li>
+              </ul>
             </nav>
           </div>
         {/if}
@@ -122,6 +115,10 @@
 <style>
   .nav-section {
     background-color: #e5e3e1;
+  }
+
+  .row.nav-section {
+    width: 100%;
   }
 
   .navbar {
@@ -191,13 +188,5 @@
     ul.navbar-nav {
       margin-bottom: 0;
     }
-
-    /* ul.navbar-nav li.nav-item {
-      margin-left: 0;
-    }
-
-    ul.navbar-nav li.nav-item:not(:first-child) {
-      margin-left: 10px;
-    } */
   }
 </style>
