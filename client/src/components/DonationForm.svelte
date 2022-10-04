@@ -28,7 +28,7 @@ let buttonText;
 let buttonDisabled;
 let validationLabelDisplay = "inline";
 let messageDisplay;
-let typeSelect;
+let letterType;
 let deleteButtonText = "Delete";
 let confirmDelete = false;
 let dateDisplay = null;
@@ -67,8 +67,8 @@ const init = () => {
   isAnonymousDonor = donorId != null && donorId == 1;
 
   /* Set form displays */
-  if(data.bypassLetter == 1) typeSelect = "bypass";
-  else typeSelect = data.important && data.important == 1 ? "important" : "standard";
+  if(data.bypassLetter == 1) letterType = "bypass";
+  else letterType = data.important && data.important == 1 ? "important" : "standard";
 
   /* If there is an active donation, use the 'PUT' configuration (update donation form). Format field data */
   if(isDataDisplayForm) {
@@ -111,13 +111,13 @@ const showValidationLabels = (isVisible) => {
 
 const reset = () => {
   data = {...data, ...{dateOfGift: "", numberOfGifts: "", giftDescription: "", giftDetails: "", important: 0}};
-  typeSelect = "standard";
+  letterType = "standard";
   dateDisplay = null;
 }
 
 const onSubmitForm = () => {
-  data.important = typeSelect == "important" ? 1 : 0; // important defaults to 0 if 'bypass' is selected
-  data.bypassLetter = typeSelect == "bypass" ? 1 : 0;
+  data.important = letterType == "important" ? 1 : 0; // important defaults to 0 if 'bypass' is selected
+  data.bypassLetter = letterType == "bypass" ? 1 : 0;
   data.dateOfGift = getIsoDateString(dateDisplay);
 
   if(formValidator.validate(data)) {
@@ -217,20 +217,20 @@ init();
           <p class="form-check-label">Letter Type</p>
           <div class="form-control-group">
             <div class="form-check">
-              <input class="form-check-input" type="radio" bind:group={typeSelect} value="standard" id="type-standard" checked={typeSelect=='standard'} on:change={onChangeFormValue}>
+              <input class="form-check-input" type="radio" bind:group={letterType} value="standard" id="type-standard" checked={letterType=='standard'} on:change={onChangeFormValue}>
               <label class="form-check-label" for="type-standard">
                 Standard Letter
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" bind:group={typeSelect} value="important" id="type-important" checked={typeSelect=='important'} on:change={onChangeFormValue}>
+              <input class="form-check-input" type="radio" bind:group={letterType} value="important" id="type-important" checked={letterType=='important'} on:change={onChangeFormValue}>
               <label class="form-check-label" for="type-important">
                 Hand-Typed Letter
               </label>
             </div>
 
             <div class="form-check">
-              <input class="form-check-input" type="radio" bind:group={typeSelect} value="bypass" id="type-bypass]" checked={typeSelect=='bypass'} on:change={onChangeFormValue}>
+              <input class="form-check-input" type="radio" bind:group={letterType} value="bypass" id="type-bypass]" checked={letterType=='bypass'} on:change={onChangeFormValue}>
               <label class="form-check-label" for="type-bypass">
                 No Action Required
               </label>
