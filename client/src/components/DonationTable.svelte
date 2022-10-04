@@ -96,7 +96,15 @@
 
         {#if !isDonorPage}
           <!-- Last Name/Organization -->
-          <td width="20%">{donation.lastName || donation.organization || ""}</td>
+          {#if donation.lastName?.length > 0 && donation.organization?.length > 0}
+            <td width="20%">{donation.lastName}<br>{donation.organization}</td>
+          {:else if donation.lastName?.length > 0}
+            <td width="20%">{donation.lastName}</td>
+          {:else if donation.organization?.length > 0}
+            <td width="20%">{donation.organization}</td>
+          {:else}
+            <td width="20%"></td>
+          {/if}
 
           <!-- First Name -->
           <td width="10%">{donation.firstName || ""}</td>

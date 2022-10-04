@@ -12,15 +12,15 @@ export let placeholderText;
 const dispatch = createEventDispatcher();
 let filteredData = [];
 let filterValue;
-let filterOption = "begins_with";
+let filterOption = "contains";
 let options = [
-  {
-    label: "Begins with",
-    value: "begins_with"
-  },
   {
     label: "Contains",
     value: "contains"
+  },
+  {
+    label: "Begins with",
+    value: "begins_with"
   }
 ]
 
@@ -33,23 +33,17 @@ export const filterText = (data, filter = filterValue, option = filterOption) =>
     if(option == "begins_with") filter = '^' + filter;
 
     filtered = data.filter((item) => {
-      let re = new RegExp(filter, "gi"), values="", matches = [];
+      let re = new RegExp(filter, "gi"), values="", matches = [], words = [];
 
       for(let field of filterFields) {
         testString = item[field];
         if(typeof testString !='string') testString = String(testString)
-
         if(testString.length > 0) {
-          testString = testString.split(" ");
-
-          for(let word of testString) {
-            matches = word.toLowerCase().match(re);
-            if(matches) {
-              values = values.concat(matches);
-            }
-          }
+          matches = testString.toLowerCase().match(re);
+          if(matches?.length > 0) values = testString
         }
       }
+
       return values;
     });
   }
