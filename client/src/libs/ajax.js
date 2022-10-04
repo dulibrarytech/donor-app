@@ -6,7 +6,7 @@
 
 import {Session} from './session.js';
 
-const TIMEOUT = 12000;
+const TIMEOUT = 12000; // milliseconds
 const SESSION_NAME = "donor_db";
 
 export const ajaxRequest = (type="get", url="", callback, data=null, options=null, query=null) => {

@@ -29,22 +29,26 @@ export const filterText = (data, filter = filterValue, option = filterOption) =>
 
   if(filterValue) {
     let testString = "";
+
     filter = filter.toLowerCase();
     if(option == "begins_with") filter = '^' + filter;
 
     filtered = data.filter((item) => {
-      let re = new RegExp(filter, "gi"), values="", matches = [], words = [];
+      let re = new RegExp(filter, "gi");
+      let hasMatch=false, matches = [];
 
       for(let field of filterFields) {
         testString = item[field];
-        if(typeof testString !='string') testString = String(testString)
+        if(typeof testString !='string') testString = String(testString);
+
         if(testString.length > 0) {
           matches = testString.toLowerCase().match(re);
-          if(matches?.length > 0) values = testString
+          if(matches?.length > 0) hasMatch = true
         }
+
       }
 
-      return values;
+      return hasMatch;
     });
   }
 
