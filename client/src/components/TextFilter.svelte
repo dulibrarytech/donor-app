@@ -43,9 +43,8 @@ export const filterText = (data, filter = filterValue, option = filterOption) =>
 
         if(testString.length > 0) {
           matches = testString.toLowerCase().match(re);
-          if(matches?.length > 0) hasMatch = true
+          if(matches?.length > 0) hasMatch = true;
         }
-
       }
 
       return hasMatch;

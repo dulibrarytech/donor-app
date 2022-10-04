@@ -145,29 +145,40 @@ const sortDataDisplay = () => {
   }
 }
 
+const filterDataDisplay = (data) => {
+  let filtered;
+  filtered = dataFilter.filterData(data);
+  filtered = daterangeFilter.filterDaterange(filtered);
+  return filtered;
+}
+
 const onFilter = (event) => {
-  donationDisplay = daterangeFilter.filterDaterange(event.detail);
-  setDataDisplay(textFilter.filterText(donationDisplay) || donationDisplay);
-}
-
-const onDaterangeFilter = (event) => {
-  dateRange.from = event.detail.daterange.fromDate;
-  dateRange.to = event.detail.daterange.toDate;
-  donationDisplay = dataFilter.filterData(donations);
-  donationDisplay = daterangeFilter.filterDaterange(donationDisplay);
-  setDataDisplay(textFilter.filterText(donationDisplay) || donationDisplay);
-}
-
-const onClearDaterange = () => {
-  dateRange.from = null;
-  dateRange.to = null;
-  donationDisplay = dataFilter.filterData(donations)
-  setDataDisplay(textFilter.filterText(donationDisplay) || donationDisplay);
+  let data = event.detail;
+  if(dateRange) {data = daterangeFilter.filterDaterange(event.detail)}
+  data = textFilter.filterText(data);
+  setDataDisplay(data);
 }
 
 const onTextFilter = (event) => {
-  donationDisplay = dataFilter.filterData(event.detail || donations);
-  setDataDisplay(daterangeFilter.filterDaterange(donationDisplay));
+  if(event.detail) setDataDisplay( filterDataDisplay(event.detail ? event.detail : donations) );
+  else setDataDisplay(filterDataDisplay(donations));
+}
+
+const onDaterangeFilter = (event) => {
+  dateRange = event.detail.daterange || null;
+  let data = donations;
+  data = dataFilter.filterData(data);
+  data = daterangeFilter.filterDaterange(data)
+  data = textFilter.filterText(data);
+  setDataDisplay(data);
+}
+
+const onClearDaterange = () => {
+  dateRange = null;
+  let data = donations;
+  data = dataFilter.filterData(data);
+  data = textFilter.filterText(data);
+  setDataDisplay(data);
 }
 
 const exportData = () => {
