@@ -47,10 +47,8 @@ var sortOptions = {
 var textFilterFields = [
   "donor_date_of_donation",
   "id",
-  "donor_first_name",
-  "donor_last_name",
-  "recipient_first_name",
-  "recipient_last_name"
+  "donor_full_name",
+  "recipient_full_name"
 ];
 
 var filters = [
@@ -120,6 +118,8 @@ const parseViewData = (data) => {
   let viewData = [], viewItem;
   for(let {id, is_completed, donor, recipient} of data) {
     viewItem = {id, is_completed, ...JSON.parse(donor), ...JSON.parse(recipient)}
+    viewItem['donor_full_name'] = `${viewItem.donor_title} ${viewItem.donor_first_name} ${viewItem.donor_last_name}`;
+    viewItem['recipient_full_name'] = `${viewItem.recipient_title} ${viewItem.recipient_first_name} ${viewItem.recipient_last_name}`;
     viewData.push(viewItem);
   }
   return viewData;
