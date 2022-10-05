@@ -88,28 +88,6 @@ const viewDonationDetails = () => {
 init();
 </script>
 
-<form id="living-library-bookplate-form">
-  <div class="required">Required field</div>
-  <div class="form-group form-group-flex">
-    <div class="form-column">
-      <label for="book_author_name">Author Name</label>
-      <input type="text" id="book_author_name" bind:value={bookData.book_author_name}/>
-
-      <label for="book_bibliographic_number" class="required">Bibliographic Number<span style="display:{validationLabelDisplay}">(Required)</span></label>
-      <input type="text" id="book_bibliographic_number" bind:value={bookData.book_bibliographic_number}/>
-    </div>
-
-    <div class="form-column">
-      <label for="book_title" class="required">Book title<span style="display:{validationLabelDisplay}">(Required)</span></label>
-      <input type="text" id="book_title" bind:value={bookData.book_title}/>
-
-      <label for="book_call_number" class="required">Call Number<span style="display:{validationLabelDisplay}">(Required)</span></label>
-      <input type="text" id="book_call_number" bind:value={bookData.book_call_number}/>
-    </div>
-  </div>
-  <button type="button" on:click={onSubmit} style="display:{args.submitButtonVisible ? "block" : "none"}">Save Book Plate</button>
-</form>
-
 {#if IS_ENTRY_FORM}
 <div class="donor-display">
   <table class="table">
@@ -140,9 +118,35 @@ init();
 </div>
 {/if}
 
+<form id="living-library-bookplate-form">
+  <div class="required">Required field</div>
+  <div class="form-group form-group-flex">
+    <div class="form-column">
+      <label for="book_author_name">Author Name</label>
+      <input type="text" id="book_author_name" bind:value={bookData.book_author_name}/>
+
+      <label for="book_bibliographic_number" class="required">Bibliographic Number<span style="display:{validationLabelDisplay}">(Required)</span></label>
+      <input type="text" id="book_bibliographic_number" bind:value={bookData.book_bibliographic_number}/>
+    </div>
+
+    <div class="form-column">
+      <label for="book_title" class="required">Book title<span style="display:{validationLabelDisplay}">(Required)</span></label>
+      <input type="text" id="book_title" bind:value={bookData.book_title}/>
+
+      <label for="book_call_number" class="required">Call Number<span style="display:{validationLabelDisplay}">(Required)</span></label>
+      <input type="text" id="book_call_number" bind:value={bookData.book_call_number}/>
+    </div>
+  </div>
+  <button type="button" on:click={onSubmit} style="display:{args.submitButtonVisible ? "block" : "none"}">Save Book Plate</button>
+</form>
+
 <style>
   form {
     padding: 12px;
+  }
+
+  form#living-library-bookplate-form {
+    margin-top: 20px;
   }
 
   .form-column {
