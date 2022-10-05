@@ -181,16 +181,20 @@ const deleteDonation = () => {
   dispatch('delete-donation', donationId);
 }
 
+const onDatepickerTabKey = (event) => {
+  document.getElementById('numberOfGifts').focus();
+}
+
 init();
 </script>
 
 <form id="donation-form" class="form" method="{method}" action="{action}">
   <div class="required">Required field</div>
   <div class="form-fields container">
-    <div class="form-group row">
+    <div class="form-input-section row">
       <div class="col-md-3">
         <label for="dateOfGift" class="required input-label">Date<span style="display:{validationLabelDisplay}">(e.g. yyyy-mm-dd)</span></label>
-        <DateInput id="dateOfGift" format="yyyy-MM-dd" placeholder=""  min={new Date("1970-01-01")} bind:value={dateDisplay} on:focus-out={onChangeFormValue}/>
+        <DateInput id="dateOfGift" format="yyyy-MM-dd" placeholder="" min={new Date("1970-01-01")} bind:value={dateDisplay} on:focus-out={onChangeFormValue} on:tab={onDatepickerTabKey} />
       </div>
       <div class="col-md-6">
         <label for="numberOfGifts" class="required input-label">Item Count</label>
@@ -205,7 +209,7 @@ init();
         {/if}
       </div>
     </div>
-    <div class="form-group row">
+    <div class="form-input-section row">
       <div class="col-md-9">
         <label for="giftDescription" class="required input-label">Description</label>
         <textarea class="form-control" id="giftDescription" bind:value={data.giftDescription} on:input={onChangeFormValue}></textarea>
@@ -264,11 +268,11 @@ init();
     height: 120px;
   }
 
-  /* .form-control-group {
-    margin-bottom: 30px;
-  } */
-
   p.form-check-label {
     margin-bottom: 5px;
+  }
+
+  :global(input#dateOfGift) {
+    height: 38px;
   }
 </style>

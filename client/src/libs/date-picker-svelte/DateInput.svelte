@@ -1,4 +1,7 @@
-<script>import { fly } from 'svelte/transition';
+<script>
+/* UPDATE => DU LTS code update */
+
+import { fly } from 'svelte/transition';
 import { cubicInOut } from 'svelte/easing';
 import { toText } from './date-utils';
 import { parse, createFormat } from './parse';
@@ -126,6 +129,11 @@ function keydown(e) {
         visible = !visible;
         e.preventDefault();
     }
+
+    /* UPDATE Dispatch an avent when tab key is pressed, to allow outer components to select an element */
+    else if (e.key === 'Tab') {
+        dispatch('tab', {});
+    }
 }
 function onSelect(e) {
     disabled = false;
@@ -133,6 +141,11 @@ function onSelect(e) {
     if (closeOnSelection) {
         visible = false;
     }
+}
+
+/* UPDATE Add function for on:focus for code update (navigate datetimepicker with keyboard) */
+function onFocus(e) {
+  visible = true; // original code
 }
 </script>
 
@@ -143,7 +156,7 @@ function onSelect(e) {
     bind:value={text}
     {placeholder}
     {disabled}
-    on:focus={() => (visible = true)}
+    on:focus={onFocus}
     on:mousedown={() => (visible = true)}
     on:input={input}
     {id}
