@@ -120,21 +120,25 @@ init();
 
 <form id="living-library-bookplate-form">
   <div class="required">Required field</div>
-  <div class="form-group form-group-flex">
-    <div class="form-column">
+  <div class="form-input-section form-group-flex">
+    <div class="form-group">
       <label for="book_author_name">Author Name</label>
-      <input type="text" id="book_author_name" bind:value={bookData.book_author_name}/>
-
-      <label for="book_bibliographic_number" class="required">Bibliographic Number<span style="display:{validationLabelDisplay}">(Required)</span></label>
-      <input type="text" id="book_bibliographic_number" bind:value={bookData.book_bibliographic_number}/>
+      <input type="text" class="form-control" id="book_author_name" bind:value={bookData.book_author_name}/>
     </div>
 
-    <div class="form-column">
-      <label for="book_title" class="required">Book title<span style="display:{validationLabelDisplay}">(Required)</span></label>
-      <input type="text" id="book_title" bind:value={bookData.book_title}/>
+    <div class="form-group">
+      <label for="book_bibliographic_number" class="required">Bibliographic Number<span style="display:{validationLabelDisplay}">(Required)</span></label>
+      <input type="text" class="form-control" id="book_bibliographic_number" bind:value={bookData.book_bibliographic_number}/>
+    </div>
 
+    <div class="form-group">
+      <label for="book_title" class="required">Book title<span style="display:{validationLabelDisplay}">(Required)</span></label>
+      <input type="text" class="form-control" id="book_title" bind:value={bookData.book_title}/>
+    </div>
+
+    <div class="form-group">
       <label for="book_call_number" class="required">Call Number<span style="display:{validationLabelDisplay}">(Required)</span></label>
-      <input type="text" id="book_call_number" bind:value={bookData.book_call_number}/>
+      <input type="text" class="form-control" id="book_call_number" bind:value={bookData.book_call_number}/>
     </div>
   </div>
   <button type="button" on:click={onSubmit} style="display:{args.submitButtonVisible ? "block" : "none"}">Save Book Plate</button>
@@ -149,8 +153,13 @@ init();
     margin-top: 20px;
   }
 
-  .form-column {
-    width: 48%;
+  .form-group {
+    width: 50%;
+    padding: 0 30px;
+  }
+
+  .form-input-section {
+  	padding: 30px 0px !important;
   }
 
   .donor-display table {

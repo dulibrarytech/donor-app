@@ -149,9 +149,8 @@ init();
 
 <form id="donor-form" class="form" method="{method}" action="{action}">
   <div class="required">Required field</div>
-  <div class="form-group form-group-flex">
-    <div class="form-column">
-
+  <div class="form-input-section form-group-flex">
+    <div class="form-group">
       <label for="titleSelect">Title</label>
       <select class="form-select" name="title" id="titleSelect" bind:value={data.title} on:input={onChangeFormValue}>
         <option value="0" selected disabled hidden>No title</option>
@@ -159,50 +158,74 @@ init();
           <option value="{title.titleId}">{title.titleString}</option>
         {/each}
       </select>
+    </div>
 
+    <div class="form-group">
+      <label for="lastName" class="required">Last Name<span style="display:{validationLabelDisplay}">(Required if no organization)</span></label>
+      <input type="text" class="form-control" id="lastName" name="lastName" bind:value={data.lastName} on:input={onChangeFormValue}>
+    </div>
+
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input type="text" class="form-control" id="firstName" name="firstName" bind:value={data.firstName} on:input={onChangeFormValue}>
+    </div>
+
+    <div class="form-group">
       <label for="organization" class="required">Organization<span style="display:{validationLabelDisplay}">(Required if no last name)</span></label>
       <input type="text" class="form-control" id="organization" name="organization" bind:value={data.organization} on:input={onChangeFormValue}>
+    </div>
 
+    <div class="form-group">
+      <label for="address1">Address 1</label>
+      <input type="text" class="form-control" id="address1" name="address1" bind:value={data.address1} on:input={onChangeFormValue}>
+    </div>
+
+    <div class="form-group">
+      <label for="address2">Address 2</label>
+      <input type="text" class="form-control" id="address2" name="address2" bind:value={data.address2} on:input={onChangeFormValue}>
+    </div>
+
+    <div class="form-group">
       <label for="city">City</label>
       <input type="text" class="form-control" id="city" name="city" bind:value={data.city} on:input={onChangeFormValue}>
+    </div>
 
+    <div class="form-group">
+      <label for="state">State</label>
+      <input type="text" class="form-control" id="state" name="state" bind:value={data.state} on:input={onChangeFormValue}>
+    </div>
+
+    <div class="form-group">
+      <label for="postalCode">Postal Code</label>
+      <input type="text" class="form-control" id="postalCode" name="postalCode" bind:value={data.postalCode} on:input={onChangeFormValue}>
+    </div>
+
+    <div class="form-group">
       <label for="country">Country</label>
       <input type="text" class="form-control" id="country" name="country" bind:value={data.country} on:input={onChangeFormValue}>
     </div>
-    <div class="form-column">
-      <label for="lastName" class="required">Last Name<span style="display:{validationLabelDisplay}">(Required if no organization)</span></label>
-      <input type="text" class="form-control" id="lastName" name="lastName" bind:value={data.lastName} on:input={onChangeFormValue}>
 
-      <label for="address1">Address 1</label>
-      <input type="text" class="form-control" id="address1" name="address1" bind:value={data.address1} on:input={onChangeFormValue}>
-
-      <label for="state">State</label>
-      <input type="text" class="form-control" id="state" name="state" bind:value={data.state} on:input={onChangeFormValue}>
-
+    <div class="form-group">
       <label for="phone">Phone</label>
       <input type="text" class="form-control" id="phone" name="phone" bind:value={data.phone} on:input={onChangeFormValue}>
     </div>
-    <div class="form-column">
-      <label for="firstName">First Name</label>
-      <input type="text" class="form-control" id="firstName" name="firstName" bind:value={data.firstName} on:input={onChangeFormValue}>
 
-      <label for="address2">Address 2</label>
-      <input type="text" class="form-control" id="address2" name="address2" bind:value={data.address2} on:input={onChangeFormValue}>
-
-      <label for="postalCode">Postal Code</label>
-      <input type="text" class="form-control" id="postalCode" name="postalCode" bind:value={data.postalCode} on:input={onChangeFormValue}>
-
+    <div class="form-group">
       <label for="email">Email<span style="display:{validationLabelDisplay}">(e.g. test@example.com)</span></label>
       <input type="email" class="form-control" id="email" name="email" bind:value={data.email} on:input={onChangeFormValue}>
     </div>
   </div>
-
   <button class="btn btn-default" id="update-data-button" type="submit" on:click|preventDefault={onSubmitForm} disabled={buttonDisabled}>{buttonText}</button> <!-- TODO: on:click|preventDefault={onSubmitDonorForm} to add validation -->
 </form>
 <MessageDisplay bind:this={messageDisplay} />
 
 <style>
-  .form-column {
-    width: 30%;
+  .form-group {
+    width: 33%;
+    padding: 0 30px;
+  }
+
+  .form-input-section {
+  	padding: 30px 0px !important;
   }
 </style>
