@@ -24,6 +24,7 @@ var toDateMin = new Date(INIT_FROM_DATE);
 var toDateDisplay = "";
 var fromDateDisplay = "";
 var filteredData = [];
+var toInput;
 
 let validationRules = {
   fromDateDisplay: {
@@ -103,6 +104,16 @@ export const filterDaterange = (currentData) => {
   }
 }
 
+const onTabFrom = (event) => {
+  if(event.detail.shift) dispatch('reverse-tab', {});
+  else document.querySelector('#fromDateInput input').focus();
+}
+
+const onTabTo = (event) => {
+  if(event.detail.shift) document.querySelector('#toDateInput input').focus();
+  else document.getElementById('applyButton').focus();
+}
+
 /* Use the selected 'from' date as the minimum allowed date in the 'to' date datepicker to prevent to < from */
 $: toDateMin = fromDateDisplay || new Date(INIT_FROM_DATE);
 
@@ -115,11 +126,11 @@ init();
     <input type="hidden" id="toDateString" bind:value={toDate} />
 
     <div class="date-inputs">
-      <div class="input"><DateInput id="fromDateDisplay" format="yyyy-MM-dd" placeholder="From" min={new Date(INIT_FROM_DATE)} bind:value={fromDateDisplay} /></div>
-      <div class="input"><DateInput id="toDateDisplay" format="yyyy-MM-dd" placeholder="To" min={toDateMin} bind:value={toDateDisplay} /></div>
+      <div class="input" id="toDateInput"><DateInput id="fromDateDisplay" format="yyyy-MM-dd" placeholder="From" min={new Date(INIT_FROM_DATE)} bind:value={fromDateDisplay} on:tab={onTabFrom} /></div>
+      <div class="input" id="fromDateInput"><DateInput id="toDateDisplay" format="yyyy-MM-dd" placeholder="To" min={toDateMin} bind:value={toDateDisplay} on:tab={onTabTo} bind:this={toInput}/></div>
     </div>
 
-    <button type="button" on:click|preventDefault={onSet}>Apply</button>
+    <button type="button" id="applyButton" on:click|preventDefault={onSet}>Apply</button>
     <button type="button" on:click|preventDefault={onClear}>Clear</button>
   </div>
 </form>

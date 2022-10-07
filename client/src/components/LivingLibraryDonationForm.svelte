@@ -198,6 +198,11 @@ const submit = () => {
   else messageDisplay.displayTimeoutMessage("Form has validation errors");
 }
 
+const onDatepickerTabKey = (event) => {
+  if(event.detail.shift) document.getElementById('donor_amount_of_donation').focus();
+  else document.getElementById('donor_notes').focus();
+}
+
 init();
 </script>
 
@@ -321,13 +326,13 @@ init();
   <div class="form-input-section form-group-flex">
     <div class="form-group">
       <label for="donor_amount_of_donation" class="required">Amount of Donation<span style="display:{validationLabelDisplay}">(e.g. 1500.00)</span></label>
-      <input type="text" id="donor_amount_of_donation" bind:value={donorData.donor_amount_of_donation} style="pointer-events:{inputPointerEvents}"/>
+      <input type="text" class="form-control" id="donor_amount_of_donation" bind:value={donorData.donor_amount_of_donation} style="pointer-events:{inputPointerEvents}"/>
     </div>
 
     <div class="form-group">
       <label for="donor_date_of_donation" class="required">Date of Donation<span style="display:{validationLabelDisplay}">(e.g. yyyy-mm-dd)</span></label>
       <div style="pointer-events:{inputPointerEvents}">
-        <DateInput format="yyyy-MM-dd" placeholder="" min={new Date("1970-01-01")} bind:value={dateDisplay} on:select={onSelectDateOfDonation}/>
+        <DateInput id="dateOfDonation" format="yyyy-MM-dd" placeholder="" min={new Date("1970-01-01")} bind:value={dateDisplay} on:select={onSelectDateOfDonation} on:tab={onDatepickerTabKey}/>
       </div>
     </div>
 
@@ -408,5 +413,9 @@ init();
     width: 23%;
     padding-right: 15px;
     padding-bottom: 6px;
+  }
+
+  :global(input#dateOfDonation) {
+    height: 38px;
   }
 </style>

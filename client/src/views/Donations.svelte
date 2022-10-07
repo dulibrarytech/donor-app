@@ -232,6 +232,11 @@ const onClearDaterange = () => {
   setDataDisplay(data);
 }
 
+const onDatepickerTabOut = () => {
+  console.log("onDatepickerTabOut")
+  // TODO: Select reset button of search form, or whatever the previous action element on the page is
+}
+
 onMount(() => {
  init();
 })
@@ -247,7 +252,7 @@ onMount(() => {
           <h6>Search:</h6>
           <TextFilter data={donations} bind:this={textFilter} on:filter-text={onTextFilter} on:text-filter-change-option={onTextFilter} filterFields={["giftDescription", "lastName", "firstName", "organization"]} placeholderText="Search all fields" />
           <h6>Daterange:</h6>
-          <DaterangeFilter data={donations} dateField="dateOfGift" on:daterange-select={onDaterangeFilter} on:clear-daterange={onClearDaterange} bind:this={daterangeFilter}/>
+          <DaterangeFilter data={donations} dateField="dateOfGift" on:daterange-select={onDaterangeFilter} on:clear-daterange={onClearDaterange} on:reverse-tab={onDatepickerTabOut} bind:this={daterangeFilter}/>
           <h6>Filter:</h6>
           <DataFilterMultiField data={donations} {filters} on:filter={onFilter} bind:this={dataFilter}/>
         </div>

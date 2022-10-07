@@ -132,7 +132,7 @@ function keydown(e) {
 
     /* UPDATE Dispatch an avent when tab key is pressed, to allow outer components to select an element */
     else if (e.key === 'Tab') {
-        dispatch('tab', {});
+        dispatch('tab', {shift: e.shiftKey});
     }
 }
 function onSelect(e) {
@@ -147,6 +147,7 @@ function onSelect(e) {
 function onFocus(e) {
   visible = true; // original code
 }
+
 </script>
 
 <div class="date-time-field" on:focusout={onFocusOut} on:keydown={keydown}>

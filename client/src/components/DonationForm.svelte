@@ -182,7 +182,8 @@ const deleteDonation = () => {
 }
 
 const onDatepickerTabKey = (event) => {
-  document.getElementById('numberOfGifts').focus();
+  if(event.detail.shift) {} // TODO: Tab to previous action element, or swap date and item count
+  else document.getElementById('numberOfGifts').focus();
 }
 
 init();
