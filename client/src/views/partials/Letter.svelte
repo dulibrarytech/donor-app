@@ -19,8 +19,8 @@ $: {
 </script>
 
 <div id="letter-content">
-  <div class="header-logo-image">
-    <div class="float-right" style="height: 100%">
+  <div class="header-logo-image-section">
+    <div class="header-logo-image float-right" style="height: 100%">
       <img src="{BASE_PATH}/assets/img/private/{$Configuration.letterHeadImageFilename}" alt="Dean's office logo" />
     </div>
   </div>
@@ -69,8 +69,13 @@ $: {
     float: right;
   }
 
-  .header-logo-image {
+  .header-logo-image-section {
     height: 96px;
+    margin-bottom: 30px;
+  }
+
+  .header-logo-image {
+    width: 195px;
   }
 
   img {
