@@ -14,7 +14,6 @@ router.post('/authenticate', sanitizeData, validateOrigin, async (req, res) => {
 
 if(runtimeEnv == "production") router.use(validateToken);
 router.get('/validate', async (req, res) => {
-  console.log("/validate returning res:", res.headers)
   res.send();
 });
 
