@@ -230,13 +230,8 @@ init();
     </div>
 
     <div class="form-group">
-      <label for="donor_address" class="required">Address</label>
-      <input type="text" class="form-control" id="donor_address" bind:value={donorData.donor_address} style="pointer-events:{inputPointerEvents}" />
-    </div>
-
-    <div class="form-group">
-      <label for="donor_zip" class="required">Zip Code<span style="display:{validationLabelDisplay}">(e.g. 80210 or 80210-4711)</span></label>
-      <input type="text" class="form-control" id="donor_zip" bind:value={donorData.donor_zip} style="pointer-events:{inputPointerEvents}" />
+      <label for="donor_last_name" class="required">Last Name</label>
+      <input type="text" class="form-control" id="donor_last_name" bind:value={donorData.donor_last_name} style="pointer-events:{inputPointerEvents}" />
     </div>
 
     <div class="form-group">
@@ -245,13 +240,18 @@ init();
     </div>
 
     <div class="form-group">
+      <label for="donor_address" class="required">Address</label>
+      <input type="text" class="form-control" id="donor_address" bind:value={donorData.donor_address} style="pointer-events:{inputPointerEvents}" />
+    </div>
+
+    <div class="form-group">
       <label for="donor_city" class="required">City</label>
       <input type="text" class="form-control" id="donor_city" bind:value={donorData.donor_city} style="pointer-events:{inputPointerEvents}" />
     </div>
 
     <div class="form-group">
-      <label for="donor_last_name" class="required">Last Name</label>
-      <input type="text" class="form-control" id="donor_last_name" bind:value={donorData.donor_last_name} style="pointer-events:{inputPointerEvents}" />
+      <label for="donor_zip" class="required">Zip Code<span style="display:{validationLabelDisplay}">(e.g. 80210 or 80210-4711)</span></label>
+      <input type="text" class="form-control" id="donor_zip" bind:value={donorData.donor_zip} style="pointer-events:{inputPointerEvents}" />
     </div>
 
     <div class="form-group">
@@ -312,13 +312,13 @@ init();
     </div>
 
     <div class="form-group">
-      <label for="recipient_first_name" class="required">First Name</label>
-      <input type="text" class="form-control" id="recipient_first_name" bind:value={recipientData.recipient_first_name} style="pointer-events:{inputPointerEvents}"/>
+      <label for="recipient_last_name" class="required">Last Name</label>
+      <input type="text" class="form-control" id="recipient_last_name" bind:value={recipientData.recipient_last_name} style="pointer-events:{inputPointerEvents}"/>
     </div>
 
     <div class="form-group">
-      <label for="recipient_last_name" class="required">Last Name</label>
-      <input type="text" class="form-control" id="recipient_last_name" bind:value={recipientData.recipient_last_name} style="pointer-events:{inputPointerEvents}"/>
+      <label for="recipient_first_name" class="required">First Name</label>
+      <input type="text" class="form-control" id="recipient_first_name" bind:value={recipientData.recipient_first_name} style="pointer-events:{inputPointerEvents}"/>
     </div>
   </div>
 
