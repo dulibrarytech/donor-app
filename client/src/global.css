@@ -110,6 +110,10 @@ footer {
 	font-weight: 500;
 }
 
+.filter-form form {
+	margin-bottom: 10px;
+}
+
 /* .form-group { */
 .form-input-section {
 	border-style: solid;

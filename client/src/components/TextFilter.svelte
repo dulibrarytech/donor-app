@@ -79,25 +79,27 @@ const onChangeOption = (event) => {
 
 </script>
 
-<form class="form-group" id="text-filter">
-  <div class="row">
-    <div class="search-form col-md-12">
-      <input type="text" on:keyup={onFilterInput} bind:value="{filterValue}" placeholder={placeholderText} />
-    </div>
-  </div>
-
-  <div class="row filter-controls">
-    <div class="radio-group col-md-6">
-      {#each options as option}
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="filterOption" value="{option.value}" on:change="{onChangeOption}" bind:group={filterOption}>
-          <label class="form-check-label">{option.label}</label>
-        </div>
-      {/each}
+<form id="text-filter">
+  <div class="form-group">
+    <div class="row">
+      <div class="search-form col-md-12">
+        <input type="text" on:keyup={onFilterInput} bind:value="{filterValue}" placeholder={placeholderText} />
+      </div>
     </div>
 
-    <div class="col-md-6" id="reset-button" style="position: relative">
-      <button type="button" on:click={reset}>Reset</button>
+    <div class="row filter-controls">
+      <div class="radio-group col-md-6">
+        {#each options as option}
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="filterOption" value="{option.value}" on:change="{onChangeOption}" bind:group={filterOption}>
+            <label class="form-check-label">{option.label}</label>
+          </div>
+        {/each}
+      </div>
+
+      <div class="col-md-6" id="reset-button" style="position: relative">
+        <button type="button" on:click={reset}>Reset</button>
+      </div>
     </div>
   </div>
 </form>
@@ -113,11 +115,18 @@ const onChangeOption = (event) => {
     margin-right: 1px;
   }
 
-  #text-filter {
+  /* #text-filter {
     padding: 15px 15px 0 15px;
-  }
+  } */
 
   button {
     margin: 0 0 1em 0;
+  }
+
+  .form-group {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #e5e3e1;
+    border-radius: 3px;
   }
 </style>
