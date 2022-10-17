@@ -15,7 +15,7 @@ module.exports = function () {
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
       app.use(cors());
   }
-  else if (process.env.NODE_ENV === 'production') {
+  else {
       app.use(cors({
         origin: process.env.CORS_ALLOWED_ORIGIN
       }));
