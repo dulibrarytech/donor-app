@@ -97,12 +97,12 @@
 	router(`${BASE_PATH}/donors`, validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
-	}, () => page = Donors); // <-- next()
+	}, () => page = Donors);
 
 	router(`${BASE_PATH}/donor`, validateSession, (ctx, next) => {
 		params = ctx.params;
 		next();
-	}, () => page = Donor); // <-- next()
+	}, () => page = Donor);
 
 	router(`${BASE_PATH}/donor/:id`, validateSession, (ctx, next) => {
 		params = ctx.params;
