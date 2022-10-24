@@ -58,7 +58,7 @@ const generatePdf = () => {
   let filenameIdentifier = data.lastName.length > 0 ? data.lastName.replace(/[^a-zA-Z ]/g, '').replace(/ /g, '-') : data.organization.replace(/[^a-zA-Z ]/g, '').replace(/ /g, '-');
   if(filenameIdentifier.length < 1) filenameIdentifier = "no-donor-data";
   filenameIdentifier += ("_" + donationId);
-  Html2Pdf(document.getElementById("letter-content")).save(`${filenameIdentifier}.pdf`);
+  Html2Pdf().from(document.getElementById("letter-content")).save(`${filenameIdentifier}.pdf`);
 }
 
 onMount(() => {
