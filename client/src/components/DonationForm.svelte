@@ -118,9 +118,10 @@ const reset = () => {
 const onSubmitForm = () => {
   data.important = letterType == "important" ? 1 : 0;
   data.bypassLetter = letterType == "bypass" ? 1 : 0;
-  data.dateOfGift = getIsoDateString(dateDisplay);
 
   if(formValidator.validate(data)) {
+    data.dateOfGift = getIsoDateString(dateDisplay);
+
     messageDisplay.displayMessage("Submitting data...");
     ajaxRequest(method, action, async function(error, response, status) {
       if(error) {
@@ -139,7 +140,7 @@ const onSubmitForm = () => {
         if(response.message) console.log(response.message)
         let message = method == "post" ? `New donation created. ${emailStatusMessage}` : "Donation record updated";
         messageDisplay.displayMessage(message);
-        
+
         setTimeout(() => {
           messageDisplay.displayMessage("");
           if(method == 'post') reset();
