@@ -116,7 +116,7 @@ const reset = () => {
 }
 
 const onSubmitForm = () => {
-  data.important = letterType == "important" ? 1 : 0; // important defaults to 0 if 'bypass' is selected
+  data.important = letterType == "important" ? 1 : 0;
   data.bypassLetter = letterType == "bypass" ? 1 : 0;
   data.dateOfGift = getIsoDateString(dateDisplay);
 
@@ -131,12 +131,15 @@ const onSubmitForm = () => {
       }
       else {
         response = await response.json()
-        let notificationMessageFeedback = "";
-        if(response.emailSent == true) notificationMessageFeedback = "Notification emails sent."
-        if(response.message) console.log(response.message)
-        let message = method == "post" ? `New donation created. ${notificationMessageFeedback}` : "Donation record updated";
 
+        let emailStatusMessage = "";
+        if(response.emailStatus == 1) emailStatusMessage = "Notification emails sent";
+        else if(response.emailStatus == 2) emailStatusMessage = "Error sending email notifications";
+
+        if(response.message) console.log(response.message)
+        let message = method == "post" ? `New donation created. ${emailStatusMessage}` : "Donation record updated";
         messageDisplay.displayMessage(message);
+        
         setTimeout(() => {
           messageDisplay.displayMessage("");
           if(method == 'post') reset();

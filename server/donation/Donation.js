@@ -261,23 +261,27 @@ module.exports = (() => {
       DonationModel.execute_query('post_donation', [...giftFields, ...giftDescriptionsFields])
       .then(
         (result) => {
-          let sendEmailNotifications = config.enableEmailNotifications == "true" && !isAnonymousDonation && !isLetterBypassed;
-          let response = {};
           let donationId = result.data[0]?.insertId || null;
+          let sendEmailNotifications = config.enableEmailNotifications == "true" && !isAnonymousDonation && !isLetterBypassed;
 
-          response['data'] = result.data;
-          response['emailSent'] = false;
-          response['donationId'] = donationId;
+          let response = {
+            data: result.data,
+            emailStatus: 0,
+            donationId
+          };
 
           if(sendEmailNotifications) {
             Service.sendNewDonationNotifications({...data, donationId}, function(error) {
-              if(error) response['message'] = error;
-              else response['emailSent'] = true;
+              if(error) {
+                response['emailStatus'] = 2;
+                response['message'] = `Error sending email notifications: ${error}`;
+              }
+              else response['emailStatus'] = 1;
               resolve(response)
             });
           }
           else {
-            response['message'] = config.enableEmailNotifications == false ? "Email notifications are disabled" : null;
+            if(config.enableEmailNotifications == "false") response['message'] = "Email notifications are disabled";
             resolve(response)
           }
         },
