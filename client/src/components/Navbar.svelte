@@ -117,10 +117,6 @@
     background-color: #e5e3e1;
   }
 
-  .row.nav-section {
-    width: 100%;
-  }
-
   .navbar {
     background-color: #e5e3e1 !important;
 		min-height: 50px;
