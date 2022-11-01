@@ -57,7 +57,7 @@ module.exports = (() => {
 
       EmailHelper.sendEmail(params, body, function(error, messageId) {
         if(error) {
-          console.log(`Error sending new donation notification emails, id: ${donationId}, Error: ${error}`);
+          console.log(`Error sending new donation notification emails, id: ${donationId}, ${error}`);
           callback(error);
         }
         else {

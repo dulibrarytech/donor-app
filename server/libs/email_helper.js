@@ -9,7 +9,8 @@ exports.sendEmail = async (params, body, callback) => {
     let transporter = nodemailer.createTransport({
       host: config.emailHost,
       port: config.emailPort,
-      secure: config.emailPort == 465 // true for 465, false for other ports
+      secure: config.emailPort == 465, // true for 465, false for other ports
+      ignoreTLS: config.emailPort != 465 // false for 465, true for other ports
     });
 
     // send mail with defined transport object
