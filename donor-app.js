@@ -8,7 +8,7 @@
 require('dotenv').config();
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = 1;
 
 var express = require('./config/express');
 var app = express();
