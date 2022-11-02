@@ -63,6 +63,7 @@
             </nav>
           </div>
         {:else}
+          <div class="navbar navbar-header"></div>
           <nav class="navbar navbar-expand-lg navbar-light bg-light"></nav>
         {/if}
       </div>
@@ -84,6 +85,7 @@
             </nav>
           </div>
         {:else}
+          <div class="navbar navbar-header"></div>
           <nav class="navbar navbar-expand-lg navbar-light bg-light"></nav>
         {/if}
       </div>
@@ -106,6 +108,11 @@
               </ul>
             </nav>
           </div>
+        {:else}
+          <div id="user-nav">
+            <div class="navbar navbar-header"></div>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light"></nav>
+          </div>
         {/if}
       </div>
     </div>
@@ -115,6 +122,7 @@
 <style>
   .nav-section {
     background-color: #e5e3e1;
+    max-width: 100%;
   }
 
   .navbar {
