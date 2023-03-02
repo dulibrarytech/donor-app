@@ -1,71 +1,88 @@
-1. /config folder, express.js file
+# Donor App
 
-2. Database global var OR connect in model
+### * This readme file is not complete *
 
-3. Add /server folder, update package.json paths to '../client' path ref
+Required node version: >= 14
 
+## Install
 
+1. Create DB - cfg
 
+2. clone app (donor-app server and client)
 
-# User Guide to the Donor Database App
+4. nvm env config client/server (node_env set to production)
 
-The important donation workflow:
-1. A standard user creates a new donor
-2. A standard user creates a new donation for that donor
-3. A standard user marks the donation as 'Important'
-4. An external relations user gets an email notification, logs in, checks their inbox
-5. An external relations user user creates a handwritten letter, submits it
-6. An external relations user marks in the inbox that the donation is conmplete by clicking 'Mark as Complete'
+4. npm install
 
-The standard donation workflow:
-1. A standard user creates a new donor
-2. A standard user creates a new donation for that donor
-3. A standard user marks the donation as 'Standard'
-4. An admin user gets an email notification, logs in, checks their inbox
-5. An admin user generates a letter, prints it and submits it
-6. An admin user marks in the inbox that the donation is conmplete by clicking 'Mark as Complete'
+5. Private images - create folder and upload signature image file and letter header file to /img/private folder
 
-### Login
+6. nvm build
 
-### Inbox
-This is where you can see if there are any actions for you to do
-- Standard Users will not see the inbox
-- Admin users will see in the inbox when donations are created and marked as standard - when the automatic letter is generated, the user is meant to go into their inbox and mark the donation as complete by clicking 'Mark as complete'
-- External relations users will see in the inbox when donations are created and marked as important - when the handwritten letter is completed the user can mark in the inbox 'Mark as complete'
+7. If application is not running at domain root (i.e. app is accessed via a relative path from the domain root) update the following paths in 'client/public/index.html':
 
-### Email notifications
-The admins get notifications about standard donations
-The external relations gets notified of important donations
-Standard user get no notifications
+  a. <link rel='icon' type='image/png' href='{/PATH_TO_APP}/favicon.png'>
 
-### Letter generation (the automatic + signed letter)
-Admin users and can generate a letter
-External relations users can not generate a letter
-Standard users can not generate a letter 
+  b. <link rel='stylesheet' href='{/PATH_TO_APP}/build/bundle.css'>
 
-### Pages
-All users can see all donations and make edits and add donors/ donations
+  c. <script defer src='{/PATH_TO_APP}/build/bundle.js'></script>
 
-#### Donors
-here you can add a new donor, view previous donors, or add an anonymous donation. You can also search through previous donors. There is also a shortcut to add donations from a donor here.
+# Client Run dev (webpack dev server)
 
-#### Previous Donor page 
-you can view and edit the information of previous donors. It will also show previous donations if they exist. You can view their donations, and there is also an opton to Add a new donation for this donor, and there is also a shortcut the status of a donation.
+1. client: from /, npm run client
 
-#### New donor page
-a blank donor page, will create a new donor when you submit the form
+2. client dev and (prod|dev) server: from /, npm run dev
 
-#### Donations
-here you can search through previous donations, view previous donations, or ad an anonymous donation.
+# Client run build (Must build project with npm build from /client folder)
 
-#### Donation page
-here you can view and edit a record from a single donation
+1. client only: from /client, npm run start
 
-#### New donation page
-a blank donation page, will create a new donation that is anonymous or belonging to a donor based on how you navigated to the page, once you submit the form
+2. client and server: from /, npm run start
 
-#### Living Library
-this takes you to the living library app. The functionality is the same as before. Used by Nancy, Lisa
+# Updates
 
-#### Logout
-exit the site
+1. To update client dev server app port, set --port flag in client/package.json 'dev' (or current run) scripts
+
+2. webpack.config.js Added Dotenv library
+
+3. webpack.config.js Added devServer {} public setting via .env (server domain for webpack 'allowed hosts')
+
+## Client
+
+#### RUNTIME_ENV
+
+The Node runtime environment. Options:
+
+### Environment settings
+
+##### 'production':
+
+1. Request data is compressed
+2. Session token validated with each request to the server
+
+##### 'testing':
+
+1. No data compression
+2. Session token validated with each request to the server
+
+##### 'development':
+
+1. No data compression
+2. No session token validation
+
+## Server
+
+### Environment settings
+
+#### RUNTIME_ENV
+
+The Node runtime environment. Options:
+
+##### 'production':
+
+1. Request data is compressed
+2. Session token validated with each request to the server
+
+##### 'development':
+
+1. No data compression
+2. No session token validation
