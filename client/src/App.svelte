@@ -4,10 +4,11 @@
 
 	import { Configuration } from './config';
 	import { Session } from './libs/session.js';
+	import {JWTDecode} from './libs/jwt-decode.js';
 
 	// Template Components
-  import Header from "./views/partials/Header.svelte";
-  import Footer from "./views/partials/Footer.svelte";
+  	import Header from "./views/partials/Header.svelte";
+  	import Footer from "./views/partials/Footer.svelte";
 	import Navbar from "./components/Navbar.svelte";
 
 	// Views
@@ -26,15 +27,21 @@
 	let page;
 	let params;
 
+	let{ssoUrl, ssoResponseUrl, ssoLogoutUrl} = $Configuration;
+
 	const BASE_PATH = $Configuration.basePath || "";
 
 	const onNavigate = (event) => {
 		lscache.flush();
 	}
 
+	// creates the local session and redirects to landing page
 	const login = (data) => {
 		Session.create("donor_db", data.sessionData.token, data.sessionData.userData);
-		if (data.loginRedirectPath) window.location.replace(`${BASE_PATH}${data.loginRedirectPath}`);
+
+		if (data.loginRedirectPath) {
+			window.location.replace(`${BASE_PATH}${data.loginRedirectPath}`);
+		}
 		else {
 			let {roleId} = data.sessionData.userData;
 			let homeRoute = (roleId == 2 || roleId == 3) ? "/inbox" : "/";
@@ -42,25 +49,33 @@
 		}
 	}
 
+	// destroys the local session and redirects to login page
 	const logout = (requestPath=null) => {
+		console.log("Logout")
 		if(Session.isSession("donor_db")) Session.destroy("donor_db");
 		lscache.flush();
-		if(requestPath) window.location.replace(`${BASE_PATH}/login?redirect=${requestPath}`);
-		else window.location.replace(`${BASE_PATH}/login`);
+		window.location.replace(ssoLogoutUrl);
 	}
 
+	// called by Login.svelte form
 	const onLogin = (event) => {
 		if(event.detail) login(event.detail);
-  }
+  	}
 
+	// called by 'logout' button click
 	const onLogout = (event) => {
 		logout();
 	}
 
+	// router request middleware
 	const validateSession = async (ctx, next) => {
 		if($Configuration.runtimeEnv == "production"|| $Configuration.runtimeEnv == "testing") {
-			let path = null;
-			if(ctx.path != '/' && ctx.path != $Configuration.landingPagePath) path = ctx.path.replace(BASE_PATH, "");
+			let loginRedirect = null;
+
+			if(ctx.path != '/' && ctx.path != $Configuration.landingPagePath) {
+				loginRedirect = ctx.path.replace(BASE_PATH, "");
+			}
+
 			if(Session.isSession("donor_db")) {
 				let data = {
 					headers: {
@@ -70,14 +85,20 @@
 
 				let response = await fetch(`${$Configuration.donorApiDomain}/user/validate`, data);
 				if(response.status == 200) next()
-				else logout(path)
+				else logout()
 			}
-			else logout(path)
+			else {
+				let url = `${ssoUrl}?app_url=${ssoResponseUrl}`;
+
+				if(loginRedirect) url += `&path=${loginRedirect}`;
+
+				window.location.replace(url);
+			}
 		}
 		else next()
 	}
 
-  /*
+  	/*
  	 * Router
  	 */
 	router(`${BASE_PATH}/`, () => {
@@ -85,14 +106,31 @@
 	});
 
 	router(`${BASE_PATH}/login`, (ctx, next) => {
-		params = ctx.params;
-		next();
-	}, () => page = Login);
+		let token = null;
+		let redirect = null;
+		
+		let queryparams = ctx.querystring.split('&');
+		for(let param of queryparams) {
+			if(param.indexOf("token") >= 0) token = param.replace("token=", "");
+			if(param.indexOf("redirect") >= 0) redirect = param.replace("redirect=", "");
+		}
+
+		if(token) {
+			let data = {
+				sessionData: {
+					token,
+					userData: JWTDecode.jwtDecode(token)
+				},
+				loginRedirectPath: redirect
+			}
+			login(data);
+		}
+		else console.error("Session token missing");
+	});
 
 	router(`${BASE_PATH}/logout`, (ctx, next) => {
 		logout();
-		next();
-	}, () => page = Login);
+	});
 
 	router(`${BASE_PATH}/donors`, validateSession, (ctx, next) => {
 		params = ctx.params;

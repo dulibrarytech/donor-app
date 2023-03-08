@@ -12,6 +12,10 @@ module.exports = {
     authServiceUrl: process.env.AUTH_SERVICE_URL,
     tokenKey: process.env.AUTH_TOKEN_SECRET_KEY,
     sessionTokenDuration: process.env.SESSION_TOKEN_DURATION,
+
+    ssoHost: process.env.SSO_HOST,
+    ssoClientLoginPath: process.env.SSO_CLIENT_LOGIN_PATH,
+
     emailHost: process.env.EMAIL_HOST,
     emailPort: process.env.EMAIL_PORT,
     emailNotificationLinkDonorAppUrl: process.env.EMAIL_NOTIFICATION_LINK_DONOR_APP_URL,
