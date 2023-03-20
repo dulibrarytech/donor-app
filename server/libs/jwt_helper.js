@@ -20,3 +20,18 @@ exports.createToken = (data) => {
 exports.getTokenData = (token) => {
   return jwt.decode(token);
 }
+
+exports.verifyToken = (token) => {
+  let data = null;
+
+  try {
+    var decoded = jwt.verify(token, tokenKey);
+    if(decoded) {
+      data = decoded;
+    }
+  } catch(err) {
+    console.log(err);
+  }
+
+  return data;
+}

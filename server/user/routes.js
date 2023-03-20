@@ -18,7 +18,12 @@ ROUTER.post('/sso', async (req, res) => {
   CONTROLLER.ssoAuthenticate(req, res);
 });
 
+ROUTER.get('/token/:token', async (req, res) => {
+  CONTROLLER.tokenValidate(req, res);
+});
+
 if(RUNTIME_ENV == "production") ROUTER.use(validateToken);
+
 ROUTER.get('/validate', async (req, res) => {
   res.send();
 });

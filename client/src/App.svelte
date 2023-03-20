@@ -89,9 +89,7 @@
 			}
 			else {
 				let url = `${ssoUrl}?app_url=${ssoResponseUrl}`;
-
 				if(loginRedirect) url += `&path=${loginRedirect}`;
-
 				window.location.replace(url);
 			}
 		}
@@ -105,7 +103,7 @@
 		window.location.replace(`${BASE_PATH}${$Configuration.landingPagePath}`);
 	});
 
-	router(`${BASE_PATH}/login`, (ctx, next) => {
+	router(`${BASE_PATH}/login`, async (ctx, next) => {
 		let token = null;
 		let redirect = null;
 		
@@ -116,16 +114,23 @@
 		}
 
 		if(token) {
-			let data = {
-				sessionData: {
-					token,
-					userData: JWTDecode.jwtDecode(token)
-				},
-				loginRedirectPath: redirect
+			let url = `${$Configuration.donorApiDomain}/user/token/${token}`;
+			let response = await fetch(url);
+
+			response = await response.json();
+			if(response.isValid) {
+				let data = {
+					sessionData: {
+						token,
+						userData: response.data || JWTDecode.jwtDecode(token)
+					},
+					loginRedirectPath: redirect
+				}
+				login(data);
 			}
-			login(data);
+			else window.location.replace('/');
 		}
-		else window.location.replace('/')
+		else window.location.replace('/');
 	});
 
 	router(`${BASE_PATH}/logout`, (ctx, next) => {

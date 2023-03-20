@@ -48,7 +48,6 @@ exports.ssoAuthenticate = async (req, res) => {
 
         let clientLoginUrl = `${CONFIG.ssoClientLoginPath}?token=${token}`;
         if(path) clientLoginUrl += `&redirect=${path}`;
-
         res.redirect(clientLoginUrl);
       }
       else {
@@ -63,4 +62,13 @@ exports.ssoAuthenticate = async (req, res) => {
     console.error(error);
     res.status(500).send();
   }
+}
+
+exports.tokenValidate = async (req, res) => {
+  let isValid = false;
+  let token = req.params.token || null;  
+  let data = JWTHelper.verifyToken(token);
+
+	if(data) isValid = true;
+	res.send({isValid, data});
 }
