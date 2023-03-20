@@ -34,11 +34,11 @@ exports.userAuthenticate = async (req, res) => {
 }
 
 exports.ssoAuthenticate = async (req, res) => {
-  try {
-    let username = req.body.employeeID || "";
-    let host = req.body.HTTP_HOST || ""; 
-    let path = req.query.path || "";
+  let username = req.body.employeeID || "";
+  let host = req.body.HTTP_HOST || ""; 
+  let path = req.query.path || "";
 
+  try {
     if(host = CONFIG.ssoHost) {
       let response = await User.authorize(username);
 

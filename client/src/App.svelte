@@ -125,7 +125,7 @@
 			}
 			login(data);
 		}
-		else console.error("Session token missing");
+		else window.location.replace('/')
 	});
 
 	router(`${BASE_PATH}/logout`, (ctx, next) => {
