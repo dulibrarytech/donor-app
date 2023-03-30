@@ -43,7 +43,7 @@ exports.ssoAuthenticate = async (req, res) => {
       let response = await User.authorize(username);
 
       if(response.isAuthorized === true) {
-        let userData = (({ roleId, username, firstName, lastName }) => ({ roleId, username, firstName, lastName }))(response.data);
+        let userData = (({ roleId, firstName, lastName }) => ({ roleId, firstName, lastName }))(response.data);
         let token = JWTHelper.createToken(userData);
 
         let clientLoginUrl = `${CONFIG.ssoClientLoginPath}?token=${token}`;

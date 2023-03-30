@@ -69,7 +69,7 @@
 
 	// router request middleware
 	const validateSession = async (ctx, next) => {
-		if($Configuration.runtimeEnv == "production"|| $Configuration.runtimeEnv == "testing") {
+		if($Configuration.runtimeEnv == "production" || $Configuration.runtimeEnv == "testing") {
 			let loginRedirect = null;
 
 			if(ctx.path != '/' && ctx.path != $Configuration.landingPagePath) {
@@ -77,14 +77,12 @@
 			}
 
 			if(Session.isSession("donor_db")) {
-				let data = {
-					headers: {
-						'authorization': Session.getToken("donor_db") || ""
-					}
-				}
+				let token = Session.getToken("donor_db") || "";
 
-				let response = await fetch(`${$Configuration.donorApiDomain}/user/validate`, data);
-				if(response.status == 200) next()
+				let response = await fetch(`${$Configuration.donorApiDomain}/user/token/${token}`);
+				response = await response.json();
+
+				if(response.isValid) next()
 				else logout()
 			}
 			else {
