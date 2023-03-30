@@ -86,7 +86,7 @@
 				else logout()
 			}
 			else {
-				let url = `${ssoUrl}?app_url=${ssoResponseUrl}`;
+				let url = `${ssoUrl}?app_url=${ssoResponseUrl || "null_sso_redirect_url"}`;
 				if(loginRedirect) url += `&path=${loginRedirect}`;
 				window.location.replace(url);
 			}
