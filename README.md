@@ -12,11 +12,14 @@ Required node version: >= 14
 
 4. nvm env config client/server (node_env set to production)
 
-4. npm install
+4. npm install 
+  - from project root, run "npm i"
+  - from /client folder, run "npm i"
 
 5. Private images - create folder and upload signature image file and letter header file to /img/private folder
 
-6. nvm build
+6. build client
+  - from /client folder, run "npm run build"
 
 7. If application is not running at domain root (i.e. app is accessed via a relative path from the domain root) update the following paths in 'client/public/index.html':
 
@@ -32,11 +35,11 @@ Required node version: >= 14
 
 2. client dev and (prod|dev) server: from /, npm run dev
 
-# Client run build (Must build project with npm build from /client folder)
+# Client run prod (Must build project with npm build from /client folder)
 
-1. client only: from /client, npm run start
+1. client only: from /client, npm run start (app runs on port set in .env)
 
-2. client and server: from /, npm run start
+2. client and server: from /, npm run start (app runs on port set in .env)
 
 # Updates
 
